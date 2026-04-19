@@ -282,7 +282,7 @@ body {
   transition: opacity 0.15s, transform 0.15s;
   transform: translateX(-50%) translateY(-4px);
   z-index: 999;
-  box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.06);
 }
 .nav-dropdown:hover .nav-dropdown-menu {
   opacity: 1;

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="google-site-verification" content="QnajyTO6WUy1fi-9SI5Na1QjbwBmUOQ3NcPNY-HWlFw" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Add a Debate Timer to Your Tabroom Paradigm | DebateClock</title>
+<meta name="description" content="Add a permanent DebateClock link to your Tabroom.com paradigm. Debaters click it before every round — no room code needed, same timer every tournament Saturday.">
+<link rel="canonical" href="https://debateclock.org/setup/judge-paradigm/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta property="og:title" content="How to Add a Debate Timer to Your Tabroom Paradigm">
+<meta property="og:description" content="Paste one link into your Tabroom paradigm. Debaters get your personal timer room every round — no setup, no room code.">
+<meta property="og:url" content="https://debateclock.org/setup/judge-paradigm/">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+
+<style>
+  .step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 24px 0;
+  }
+  .step {
+    display: flex;
+    gap: 20px;
+    padding: 0 0 32px 0;
+    position: relative;
+  }
+  .step:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 40px;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .step-num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .step-content { flex: 1; padding-top: 8px; }
+  .step-content h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .step-content p { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
+
+  .link-box {
+    background: var(--bg2);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .link-box-url {
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    flex: 1;
+  }
+  .link-box-url span { color: var(--accent); }
+  .link-box-copy {
+    background: var(--accent);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    padding: 8px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .link-box-copy:hover { opacity: 0.9; }
+
+  .tabroom-mockup {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+  .tabroom-mockup .tb-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted-2);
+    margin-bottom: 8px;
+  }
+  .tabroom-mockup .tb-field {
+    background: var(--bg3);
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    padding: 10px 12px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+  .tabroom-mockup .tb-field .highlight {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .benefit-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 24px 0;
+  }
+  .benefit-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    text-align: center;
+  }
+  .benefit-card .icon { font-size: 24px; margin-bottom: 10px; }
+  .benefit-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .benefit-card p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  .name-demo {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 14px 0;
+  }
+  .name-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    color: var(--muted);
+  }
+  .name-tag span { color: var(--accent); }
+
+  @media (max-width: 640px) {
+    .benefit-row { grid-template-columns: 1fr; }
+    .link-box { flex-direction: column; align-items: flex-start; }
+    .link-box-url { font-size: 14px; }
+  }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Add a Debate Timer to Your Tabroom Paradigm",
+  "description": "Add a permanent DebateClock link to your Tabroom.com judge paradigm so debaters automatically get your personal timer room before every round.",
+  "totalTime": "PT2M",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Get your personal paradigm link",
+      "text": "Your link is debateclock.org/j/[your-name] — replace [your-name] with the name on your Tabroom profile. For example: debateclock.org/j/prasha"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Open your Tabroom paradigm",
+      "text": "Log into Tabroom.com, click your name in the top right, then click Edit Paradigm."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Paste your link",
+      "text": "Paste your debateclock.org/j/[name] link at the top of your paradigm text. Add a short note like: Timer: debateclock.org/j/[name]"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Save and share",
+      "text": "Save your paradigm. Debaters read paradigms before every round — they will click your link and join your timer room automatically."
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a paradigm link for DebateClock?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A paradigm link is a permanent URL in the format debateclock.org/j/[your-name] that always opens the same timer room. When debaters click it from your Tabroom paradigm, they join your room without needing a room code." }
+    },
+    {
+      "@type": "Question",
+      "name": "Do debaters need to create an account?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. DebateClock requires no account, no signup, and no install for either the judge or the debater. The link opens directly in any browser." }
+    },
+    {
+      "@type": "Question",
+      "name": "Will the same link work at every tournament?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The paradigm link is permanent and deterministic — debateclock.org/j/alice always opens the same room for that judge. It works at every tournament without any setup." }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="brand" href="/"><span class="brand-dot"></span>DebateClock</a>
+  <div class="nav-links">
+    <a href="/timer/lincoln-douglas/">LD</a>
+    <a href="/timer/policy-debate/">Policy</a>
+    <a href="/timer/public-forum/">PF</a>
+    <a href="/timer/world-schools/">WSDC</a>
+    <a href="/timer/british-parliamentary/">BP</a>
+  </div>
+  <a class="nav-cta" href="/app/">Open timer</a>
+</nav>
+
+<section class="hero">
+  <div class="badge"><span class="badge-dot"></span>2-minute setup · works every tournament · no room code needed</div>
+  <h1>Add DebateClock to your <span>Tabroom paradigm</span></h1>
+  <p class="hero-sub">Paste one link into your Tabroom paradigm. Every debater who reads your paradigm before the round clicks it and joins your timer room automatically — same link, every tournament, forever.</p>
+  <div class="cta-row">
+    <a class="btn-primary" href="#setup">Set it up now</a>
+    <a class="btn-outline" href="/app/">Open timer</a>
+  </div>
+  <div class="hero-meta">No signup · No install · Works on any phone or laptop</div>
+</section>
+
+<section class="section">
+  <h2>Why this matters</h2>
+  <p>Most judges start each round by saying "give me a second to pull up a timer" or asking the debaters to time themselves. The paradigm link eliminates that friction entirely. Debaters read your paradigm in the tab bay before the round. They click the link, join your room, and the debater display is already open on their laptop when the round starts.</p>
+
+  <div class="benefit-row">
+    <div class="benefit-card">
+      <div class="icon">📋</div>
+      <h4>Debaters come prepared</h4>
+      <p>They read your paradigm before the round. Your timer link is right there. They join before you sit down.</p>
+    </div>
+    <div class="benefit-card">
+      <div class="icon">🔗</div>
+      <h4>Same link every time</h4>
+      <p>Your personal room never changes. One link in your paradigm works at every tournament for the entire season.</p>
+    </div>
+    <div class="benefit-card">
+      <div class="icon">📱</div>
+      <h4>Zero setup per round</h4>
+      <p>No room code to share. No QR code to scan. Debater opens the link, judge opens the app. Round starts.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="setup">
+  <h2>Setup — 2 minutes</h2>
+
+  <div class="step-list">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3>Find your personal timer link</h3>
+        <p>Your link uses your name exactly as it appears on Tabroom — lowercase, hyphens instead of spaces. Examples:</p>
+        <div class="name-demo">
+          <div class="name-tag">debateclock.org/j/<span>prasha</span></div>
+          <div class="name-tag">debateclock.org/j/<span>sarah-chen</span></div>
+          <div class="name-tag">debateclock.org/j/<span>coach-miller</span></div>
+        </div>
+        <p>The room is deterministic — the same name always opens the same room, every time, on every device.</p>
+        <div class="link-box">
+          <div class="link-box-url">debateclock.org/j/<span>your-name</span></div>
+          <button class="link-box-copy" onclick="copyLink()">Copy template</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h3>Open your Tabroom paradigm</h3>
+        <p>Log into <strong>Tabroom.com</strong> → click your name in the top-right corner → click <strong>Edit Paradigm</strong>. The paradigm editor opens as a text field.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3>Paste your link at the top</h3>
+        <p>Add one line at the very top of your paradigm — debaters see this first. Keep it short so they actually click it.</p>
+        <div class="tabroom-mockup">
+          <div class="tb-label">Your paradigm (example)</div>
+          <div class="tb-field">⏱ Timer: <span class="highlight">debateclock.org/j/your-name</span> — click before the round starts
+
+[Your actual paradigm content below...]
+
+I flow on paper. I value clear line-by-line refutation...
+</div>
+        </div>
+        <p>The single line at the top is enough. Debaters in the tab bay will see it while reading and click it before you enter the room.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h3>Test it before your first tournament</h3>
+        <p>Open your paradigm link on your phone. On a second device, open the same URL. Both should connect to the same room instantly — no room code needed.</p>
+        <p>On tournament day: open <strong>debateclock.org/app/</strong> on your phone as usual. The debater's display will already be connected when they click your paradigm link from their laptop.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>How the paradigm link works</h2>
+  <p>The URL <code style="font-family:'DM Mono',monospace;color:var(--accent);">debateclock.org/j/your-name</code> is a permanent room code derived from your name. It always resolves to the same 6-character room. No account is stored — the room is generated client-side from a hash of the name, so it's the same on every device without any server lookup.</p>
+  <p>This means: the link never expires, never requires renewal, and works even if you haven't opened the app yet when the debater clicks it. When you open the app on your phone, your room is already waiting with any debaters who joined from the link.</p>
+</section>
+
+<section class="section">
+  <h2>Frequently asked questions</h2>
+  <div class="faq">
+    <details class="faq-item">
+      <summary>What name should I use in the link?</summary>
+      <div>Use whatever name debaters would recognize from your Tabroom profile — typically first name or full name, lowercased, with hyphens instead of spaces. The exact name doesn't matter as long as you use the same one every tournament. debateclock.org/j/alice and debateclock.org/j/alice-smith are different rooms.</div>
+    </details>
+    <details class="faq-item">
+      <summary>Do debaters need to create an account?</summary>
+      <div>No. DebateClock requires no account for anyone. The debater clicks the link, the display opens in their browser, and they're connected. No signup, no install, no permissions beyond a browser.</div>
+    </details>
+    <details class="faq-item">
+      <summary>What if two judges have the same name?</summary>
+      <div>Add a middle initial or use your full name to make it unique — debateclock.org/j/sarah-m or debateclock.org/j/sarah-chen. Any string that's unique to you works.</div>
+    </details>
+    <details class="faq-item">
+      <summary>Will this work at every tournament all season?</summary>
+      <div>Yes. The link is permanent. Paste it once in your paradigm and it works at every tournament without any changes. The room is re-created fresh each time — there's no stale state from previous rounds.</div>
+    </details>
+    <details class="faq-item">
+      <summary>What if the debater's school blocks the site?</summary>
+      <div>The debater can use their phone instead — DebateClock works on any device with a browser. The display is optimized for mobile. Alternatively, the judge can share the room code manually as a fallback.</div>
+    </details>
+  </div>
+</section>
+
+<div class="cta-band">
+  <h2>Ready to set up your paradigm link?</h2>
+  <p>Two minutes now, zero friction every Saturday.</p>
+  <div class="cta-row">
+    <a class="btn-primary" href="/app/">Open timer</a>
+    <a class="btn-outline" href="/blog/judge-debater-sync/">How two-device sync works</a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>US Formats</h4>
+      <a href="/timer/lincoln-douglas/">Lincoln-Douglas</a>
+      <a href="/timer/policy-debate/">Policy (CX)</a>
+      <a href="/timer/public-forum/">Public Forum</a>
+      <a href="/timer/parliamentary/">Parliamentary</a>
+    </div>
+    <div class="footer-col">
+      <h4>International</h4>
+      <a href="/timer/world-schools/">World Schools (WSDC)</a>
+      <a href="/timer/british-parliamentary/">British Parliamentary</a>
+    </div>
+    <div class="footer-col">
+      <h4>Setup</h4>
+      <a href="/setup/judge-paradigm/">Tabroom paradigm setup</a>
+      <a href="/blog/judge-debater-sync/">Two-device sync guide</a>
+      <a href="/blog/debate-timer-prep-time/">Prep time pool explained</a>
+    </div>
+  </div>
+  <div class="footer-row">
+    <div>
+      <a href="/" style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;">
+        <span style="width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);"></span>
+        DebateClock
+      </a>
+      <span style="margin-left:12px;">free browser debate timer</span>
+    </div>
+    <a href="https://tally.so/r/QKAMOX" target="_blank" rel="noopener" class="feedback-btn">★ Give feedback</a>
+  </div>
+</footer>
+
+<script>
+function copyLink() {
+  const url = 'debateclock.org/j/your-name';
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.querySelector('.link-box-copy');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy template', 2000);
+  }).catch(() => {
+    prompt('Copy this link:', 'debateclock.org/j/your-name');
+  });
+}
+</script>
+
+</body>
+</html>

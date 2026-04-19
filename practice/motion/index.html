@@ -272,7 +272,8 @@
   .main-clock.speech-go { color: #22C55E; }
   .main-clock.speech-warn { color: #F59E0B; }
   .main-clock.speech-critical { color: #EF4444; }
-  .main-clock.speech-done { color: #5B6175; }
+  .main-clock.speech-overtime { color: #EF4444; animation: flash-overtime 0.7s ease-in-out infinite; }
+  @keyframes flash-overtime { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
   .clock-sub {
     font-size: 13px;

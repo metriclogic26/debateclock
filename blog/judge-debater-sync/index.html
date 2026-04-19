@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="google-site-verification" content="QnajyTO6WUy1fi-9SI5Na1QjbwBmUOQ3NcPNY-HWlFw" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Debate Timer on Two Devices: How Judge-Debater Sync Actually Works | DebateClock</title>
+<meta name="description" content="Why running a debate timer on two synced devices — one for the judge, one for the debater — changes how rounds flow. How room codes, QR pairing, and real-time sync work without any signup.">
+<link rel="canonical" href="https://debateclock.org/blog/judge-debater-sync/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:title" content="Debate Timer on Two Devices: How Judge-Debater Sync Actually Works">
+<meta property="og:description" content="Room codes, QR pairing, and real-time sync — why it matters for remote rounds and in-person tournaments alike.">
+<meta property="og:url" content="https://debateclock.org/blog/judge-debater-sync/">
+<meta property="og:type" content="article">
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+
+<style>
+  .article { max-width: 720px; margin: 0 auto; padding: 40px 32px 20px; }
+  .article h1 {
+    font-size: clamp(30px, 4vw, 44px); font-weight: 700;
+    line-height: 1.15; letter-spacing: -0.02em;
+    margin: 18px 0 14px;
+  }
+  .article .meta {
+    font-size: 13px; color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 28px;
+  }
+  .article h2 {
+    font-size: clamp(22px, 2.6vw, 28px); font-weight: 600;
+    letter-spacing: -0.01em; line-height: 1.25;
+    margin: 40px 0 14px;
+  }
+  .article h3 { font-size: 18px; font-weight: 600; margin: 24px 0 10px; }
+  .article p, .article ul, .article ol {
+    color: var(--text); font-size: 16px; line-height: 1.75;
+    margin-bottom: 18px;
+  }
+  .article p strong { color: var(--text); font-weight: 600; }
+  .article ul, .article ol { margin-left: 22px; }
+  .article ul li, .article ol li { margin-bottom: 8px; }
+  .article code {
+    background: var(--bg2);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .article a { color: var(--accent); text-decoration: none; }
+  .article a:hover { text-decoration: underline; }
+  .article .btn-primary { color: #fff; }
+  .article .btn-primary:hover { text-decoration: none; }
+  .article .btn-outline { color: var(--text); }
+  .article .btn-outline:hover { text-decoration: none; }
+
+  .tldr {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 26px;
+    margin: 28px 0;
+  }
+  .tldr h3 {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--green);
+    margin: 0 0 8px;
+  }
+  .tldr p { font-size: 15px; margin: 0; color: var(--muted); }
+
+  .callout {
+    background: rgba(59,130,246,0.06);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 24px 0;
+    font-size: 15px;
+    color: var(--text);
+  }
+  .callout strong { color: var(--accent); }
+
+  .scenario {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .scenario h3 {
+    margin-top: 0;
+    color: var(--green);
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .scenario p { font-size: 15px; margin-bottom: 10px; }
+  .scenario p:last-child { margin-bottom: 0; }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Debate Timer on Two Devices: How Judge-Debater Sync Actually Works",
+  "description": "Why running a debate timer on two synced devices changes how rounds flow, and how room codes, QR pairing, and real-time sync work without any signup.",
+  "author": { "@type": "Organization", "name": "DebateClock" },
+  "publisher": { "@type": "Organization", "name": "DebateClock", "url": "https://debateclock.org/" },
+  "datePublished": "2026-04-19",
+  "dateModified": "2026-04-19",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://debateclock.org/blog/judge-debater-sync/" }
+}
+</script>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="brand" href="/">
+    <span class="brand-dot"></span>
+    DebateClock
+  </a>
+  <div class="nav-links">
+    <a href="/timer/lincoln-douglas/">LD</a>
+    <a href="/timer/policy-debate/">Policy</a>
+    <a href="/timer/public-forum/">PF</a>
+    <a href="/timer/parliamentary/">Parli</a>
+  </div>
+  <a class="nav-cta" href="/app/">Open timer</a>
+</nav>
+
+<article class="article">
+  <div class="meta">April 2026 · 5 min read · Setup &amp; workflow</div>
+  <h1>Debate timer on two devices: how judge-debater sync actually works</h1>
+
+  <div class="tldr">
+    <h3>TL;DR</h3>
+    <p>Running the timer on two devices — the judge's phone for controls, the debater's laptop or tablet for a big read-only countdown — removes the awkwardness of asking "how much time do I have?" mid-speech. Modern browser tools do this with a shared room code and WebSocket sync, no signup or app install. The judge stays in control; the debater just watches.</p>
+  </div>
+
+  <p>For years, the default debate-timer setup was one phone, held by the judge, tilted toward the debater whenever they needed to see the clock. It worked because there wasn't a better option. Every debater has spent at least a few rounds half-craning their neck to catch a glimpse of the timer between arguments.</p>
+
+  <p>Browser-based timers changed the math. When the timer runs in a webpage and two devices can share a session, the judge keeps a controller on their phone and the debater gets a full-screen countdown on their own laptop. They don't interrupt each other. Nobody has to lean across the table.</p>
+
+  <p>The magic is in the sync. Here's how it actually works.</p>
+
+  <h2>The model: one room, two roles</h2>
+
+  <p>Every round creates a <strong>room</strong> — a short identifier, usually a 6-character code. Any device that knows the code can join the room. Inside, devices play one of two roles:</p>
+
+  <ul>
+    <li><strong>Controller</strong> — the judge's device. Has full controls: start, pause, next speech, start prep, reset, and so on.</li>
+    <li><strong>Display</strong> — the debater's device. Shows a large read-only countdown. No buttons; nothing to tap by accident mid-round.</li>
+  </ul>
+
+  <p>When the judge taps <strong>Start</strong>, the controller sends a message to the room: "speech started at time X." Every display device in that room receives that message and updates its countdown to match. If the judge hits <strong>Pause</strong>, a pause message goes out and both screens freeze at the same moment.</p>
+
+  <div class="callout">
+    <strong>Why it feels instantaneous:</strong> the sync transport is WebSockets, which keep a persistent connection open between each device and a tiny coordination server. Messages propagate in tens of milliseconds — faster than the debater's eye can register the clock changing. It feels like one timer, not two.
+  </div>
+
+  <h2>How devices join a room</h2>
+
+  <p>Three common ways, in order of practicality at an in-person round:</p>
+
+  <h3>1. QR code pairing</h3>
+  <p>The judge's controller displays a QR code. The debater points their laptop camera or phone camera at it and the browser opens the display URL with the room code already in it. Total setup time: about 4 seconds. This is the method that works best at a tournament where the judge is managing time pressure between rounds.</p>
+
+  <h3>2. Copy-paste link</h3>
+  <p>The controller has a button that copies the room URL to the clipboard. The judge pastes it into whatever's handy — iMessage, Discord, email — and the debater clicks it on their end. Works well for remote rounds where a QR code isn't an option.</p>
+
+  <h3>3. Typed room code</h3>
+  <p>The room code is displayed as plain text (e.g. <code>K7M2XR</code>). The debater types it into a "join room" field on a separate device. Less common, but useful when the camera is dead or the copy-paste path is inconvenient.</p>
+
+  <h2>What the sync actually carries</h2>
+
+  <p>This is where the engineering nuance matters. There are two ways to transmit timer state, and only one of them is reliable.</p>
+
+  <p><strong>Naive approach:</strong> the controller sends the current countdown value (e.g. <code>4:32</code>) every second. Every display receives it and renders it. Problem: any network hiccup makes the display skip or stutter. Problem: two displays might show slightly different values if their messages arrive out of order.</p>
+
+  <p><strong>Better approach:</strong> the controller sends the <strong>timestamp</strong> at which the current speech started, plus the speech duration. Every display computes "remaining time" locally by subtracting the current time from the start timestamp. Messages only need to fire on state changes — start, pause, reset — not every second.</p>
+
+  <p>This is drift-proof. If a device reconnects after a 20-second network blip, it gets the current speech's start time and can compute exactly where it should be. No catch-up animation. No jumps.</p>
+
+  <h2>Where sync changes the round experience</h2>
+
+  <div class="scenario">
+    <h3>Scenario: LD round, flow-heavy case</h3>
+    <p>The affirmative is deep in a rebuttal, flipping flow sheets, running sub-points. They know they need to wrap up soon but don't want to interrupt their rhythm by glancing away.</p>
+    <p>Without two-device sync, they'd have to pause, look at the judge's phone across the table, process the time, and resume. Maybe 3 seconds, but enough to lose the thread of the argument.</p>
+    <p>With two-device sync, the laptop in front of them is already showing <code>0:42</code> in large type. One peripheral glance, no pause, no rhythm break. They wrap in time.</p>
+  </div>
+
+  <div class="scenario">
+    <h3>Scenario: PF round, crossfire</h3>
+    <p>Four speakers are standing for grand crossfire. The judge is taking notes. No one wants to interrupt to ask how much time is left.</p>
+    <p>With a shared display, a laptop at the front of the room shows the crossfire clock to all four debaters at once. They self-regulate. The judge never has to break focus to show the timer.</p>
+  </div>
+
+  <div class="scenario">
+    <h3>Scenario: remote round, different cities</h3>
+    <p>The judge is in Boston, the debater is in Seattle, on a video call. There's no physical timer to share. Screen-sharing the judge's phone is clunky and drops frames.</p>
+    <p>With browser sync, the debater just opens the room URL in a second tab or on a second monitor. Their countdown matches the judge's exactly. The video call stays dedicated to the round itself.</p>
+  </div>
+
+  <h2>What you need to run two-device sync</h2>
+
+  <ul>
+    <li><strong>Two devices</strong> that have web browsers. Any combination works: phone + laptop, tablet + phone, two laptops, phone + tablet. The two roles don't care which hardware plays them.</li>
+    <li><strong>Internet on both.</strong> Most tournament venues have usable WiFi. Cellular data works fine too. The sync protocol is lightweight — a round uses under 10 KB of bandwidth total.</li>
+    <li><strong>A browser-based timer</strong> with sync built in. <a href="/">DebateClock</a> is the one we build; there are a small number of others.</li>
+  </ul>
+
+  <p>Setup time, start to first speech: under 60 seconds. Zero accounts. Zero installs.</p>
+
+  <div class="cta-band" style="margin-top: 40px;">
+    <h2>Try two-device sync in your next round</h2>
+    <p>Free, no signup. Open on the judge's phone, share the QR code, done.</p>
+    <div class="cta-row">
+      <a class="btn-primary" href="/app/">Open timer</a>
+      <a class="btn-outline" href="/timer/lincoln-douglas/">LD format details</a>
+    </div>
+  </div>
+
+  <h2>A quick FAQ</h2>
+
+  <h3>What happens if the WiFi drops mid-round?</h3>
+  <p>Each device keeps its own timer running locally based on the last known start timestamp. When connectivity returns, devices re-sync silently. Short outages (under 30 seconds) are typically invisible to the debater.</p>
+
+  <h3>Can more than two devices join a room?</h3>
+  <p>Yes. You can have one controller and multiple displays — useful when you want a display visible to the debater, another to the opposing team, and maybe one for the room as a whole. DebateClock supports any number of read-only displays in a room.</p>
+
+  <h3>Is the data private?</h3>
+  <p>Rooms are ephemeral. There's no account, no history, no stored session data. When the last device leaves the room, the room is gone. The only data in transit is the current timer state.</p>
+
+  <h3>Does the judge need to keep their phone unlocked?</h3>
+  <p>Not necessarily, but the controller should stay awake during the round. DebateClock uses the browser's wake lock API on the controller to prevent the screen from timing out mid-speech. If the screen does lock, the timer keeps running and the debater's display stays accurate.</p>
+
+</article>
+
+<footer class="site-footer">
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>Formats</h4>
+      <a href="/timer/lincoln-douglas/">Lincoln-Douglas</a>
+      <a href="/timer/policy-debate/">Policy (CX)</a>
+      <a href="/timer/public-forum/">Public Forum</a>
+      <a href="/timer/parliamentary/">Parliamentary</a>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="/">Home</a>
+      <a href="/app/">Open timer</a>
+      <a href="/app/display/">Debater display</a>
+    </div>
+    <div class="footer-col">
+      <h4>Writing</h4>
+      <a href="/blog/debate-timer-prep-time/">Prep time pools</a>
+      <a href="/blog/judge-debater-sync/">Two-device sync</a>
+      <a href="/alternative/debatekeeper/">vs Debatekeeper</a>
+    </div>
+  </div>
+  <div class="footer-row">
+    <div>
+      <a href="/" style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;">
+        <span style="width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);"></span>
+        DebateClock
+      </a>
+      <span style="margin-left:12px;">free browser debate timer</span>
+    </div>
+    <a href="https://tally.so/r/QKAMOX" target="_blank" rel="noopener" class="feedback-btn">★ Give feedback</a>
+  </div>
+</footer>
+
+</body>
+</html>

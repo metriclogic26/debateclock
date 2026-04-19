@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extemp Prep Room Timer — Free Extemporaneous Speaking Clock | DebateClock</title>
+<meta name="description" content="Free extemp prep room timer. Coach tracks up to 10 students simultaneously. Each student gets their own 30-minute individual countdown. No app, no signup, any browser.">
+<link rel="canonical" href="https://debateclock.org/practice/extemp/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta property="og:title" content="Extemp Prep Room Timer — Track 10 Students at Once">
+<meta property="og:description" content="Free extemp prep room clock. Up to 10 individual 30-min countdowns on one screen. No app, no signup.">
+<meta property="og:url" content="https://debateclock.org/practice/extemp/">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+
+<style>
+  .extemp-wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 28px 20px 80px;
+  }
+
+  /* ── SETUP ── */
+  .setup-bar {
+    background: #111318;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .setup-bar-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .setup-bar-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #5B6175;
+  }
+  .setup-select {
+    background: #0A0C0F;
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: #E8EAF0;
+    cursor: pointer;
+  }
+  .setup-select:focus { outline: none; border-color: #3B82F6; }
+
+  .reset-all-btn {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #8B90A0;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .reset-all-btn:hover { color: #E8EAF0; border-color: rgba(255,255,255,0.14); }
+
+  /* ── GRID ── */
+  .student-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+
+  /* ── STUDENT CARD ── */
+  .student-card {
+    background: #111318;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .student-card.running {
+    border-color: #22C55E;
+    background: linear-gradient(135deg, rgba(34,197,94,0.06) 0%, #111318 60%);
+  }
+  .student-card.warn {
+    border-color: #F59E0B;
+    background: linear-gradient(135deg, rgba(245,158,11,0.08) 0%, #111318 60%);
+  }
+  .student-card.critical {
+    border-color: #EF4444;
+    background: linear-gradient(135deg, rgba(239,68,68,0.10) 0%, #111318 60%);
+  }
+  .student-card.overtime {
+    border-color: #EF4444;
+    background: linear-gradient(135deg, rgba(239,68,68,0.14) 0%, #111318 60%);
+  }
+  .student-card.done {
+    border-color: rgba(255,255,255,0.05);
+    opacity: 0.6;
+  }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .student-name-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 3px 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #E8EAF0;
+    width: 100%;
+    transition: border-color 0.15s;
+  }
+  .student-name-input:focus { outline: none; border-bottom-color: #3B82F6; }
+  .student-name-input::placeholder { color: #5B6175; font-weight: 400; }
+
+  .card-status {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .card-status.idle { background: rgba(91,97,117,0.2); color: #5B6175; }
+  .card-status.running { background: rgba(34,197,94,0.15); color: #22C55E; }
+  .card-status.warn { background: rgba(245,158,11,0.15); color: #F59E0B; }
+  .card-status.critical { background: rgba(239,68,68,0.15); color: #EF4444; }
+  .card-status.overtime { background: rgba(239,68,68,0.2); color: #EF4444; }
+  .card-status.done { background: rgba(91,97,117,0.2); color: #5B6175; }
+
+  /* topic field */
+  .topic-input {
+    background: #0A0C0F;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: #8B90A0;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.15s;
+  }
+  .topic-input:focus { outline: none; border-color: rgba(255,255,255,0.14); color: #E8EAF0; }
+  .topic-input::placeholder { color: #5B6175; }
+
+  /* clock */
+  .card-clock {
+    font-family: 'DM Mono', monospace;
+    font-size: 46px;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: #5B6175;
+    text-align: center;
+    padding: 4px 0;
+  }
+  .card-clock.running { color: #22C55E; }
+  .card-clock.warn    { color: #F59E0B; }
+  .card-clock.critical { color: #EF4444; }
+  .card-clock.overtime { color: #EF4444; animation: ot-flash 0.7s ease-in-out infinite; }
+  @keyframes ot-flash { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+  /* progress */
+  .card-progress {
+    height: 3px;
+    background: #1E232D;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .card-progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: #22C55E;
+    transition: width 0.5s linear, background 0.3s;
+  }
+  .card-progress-fill.warn { background: #F59E0B; }
+  .card-progress-fill.critical, .card-progress-fill.overtime { background: #EF4444; }
+
+  /* controls */
+  .card-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .card-btn {
+    background: #181C23;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    padding: 9px 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #E8EAF0;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+  }
+  .card-btn:hover { background: #1E232D; border-color: rgba(255,255,255,0.12); }
+  .card-btn.start { background: #22C55E; color: #04140a; border-color: #22C55E; }
+  .card-btn.start:hover { opacity: 0.9; }
+  .card-btn.pause { background: #3B82F6; color: #fff; border-color: #3B82F6; }
+  .card-btn.danger { color: #EF4444; }
+
+  /* add/remove student */
+  .grid-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+    justify-content: center;
+  }
+  .grid-action-btn {
+    background: #111318;
+    border: 1px dashed rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #8B90A0;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .grid-action-btn:hover { border-color: rgba(255,255,255,0.2); color: #E8EAF0; }
+
+  @media (max-width: 600px) {
+    .student-grid { grid-template-columns: 1fr 1fr; }
+    .card-clock { font-size: 36px; }
+    .setup-bar { gap: 12px; }
+    .reset-all-btn { margin-left: 0; width: 100%; }
+  }
+  @media (max-width: 400px) {
+    .student-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="brand" href="/"><span class="brand-dot"></span>DebateClock</a>
+  <div class="nav-links">
+    <a href="/app/">Competition</a>
+    <a href="/practice/motion/">Motion</a>
+    <a href="/practice/extemp/" style="color:var(--text);">Extemp</a>
+  </div>
+  <a class="nav-cta" href="/app/">Competition timer</a>
+</nav>
+
+<div class="extemp-wrap">
+  <div style="margin-bottom:24px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#5B6175;margin-bottom:8px;">Practice Tool</div>
+    <h1 style="font-size:26px;font-weight:700;color:#E8EAF0;margin:0 0 8px;">Extemp prep room clock</h1>
+    <p style="font-size:14px;color:#8B90A0;margin:0;">Track every student's individual prep countdown on one screen. Tap a card to start that student's clock.</p>
+  </div>
+
+  <!-- SETUP BAR -->
+  <div class="setup-bar">
+    <div class="setup-bar-group">
+      <div class="setup-bar-label">Prep time</div>
+      <select class="setup-select" id="prepTimeSelect" onchange="updatePrepTime()">
+        <option value="1800">30 min (Extemp)</option>
+        <option value="300">5 min (Impromptu)</option>
+        <option value="120">2 min (Impromptu)</option>
+        <option value="900">15 min (Practice)</option>
+        <option value="custom">Custom…</option>
+      </select>
+    </div>
+    <div class="setup-bar-group" id="customPrepWrap" style="display:none;">
+      <div class="setup-bar-label">Minutes</div>
+      <input type="number" class="setup-select" id="customPrepInput" value="30" min="1" max="60" style="width:70px;" oninput="updatePrepTime()">
+    </div>
+    <div class="setup-bar-group">
+      <div class="setup-bar-label">Students</div>
+      <select class="setup-select" id="studentCountSelect" onchange="setStudentCount()">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5" selected>5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+    </div>
+    <button class="reset-all-btn" onclick="resetAll()">↺ Reset all</button>
+  </div>
+
+  <!-- STUDENT GRID -->
+  <div class="student-grid" id="studentGrid"></div>
+
+  <div class="grid-actions">
+    <button class="grid-action-btn" onclick="addStudent()">+ Add student</button>
+    <button class="grid-action-btn" onclick="startAll()">▶ Start all</button>
+  </div>
+</div>
+
+<div class="site-disclaimer">
+  Informational timing aid only &middot; Not affiliated with NSDA, WUDC, WSDC, CUSID, or Tabroom &middot; Always defer to the tournament director for timing disputes &middot; <a href="/terms/">Terms &amp; Privacy</a>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>Practice Tools</h4>
+      <a href="/practice/motion/">Motion timer</a>
+      <a href="/practice/extemp/">Extemp prep room</a>
+    </div>
+    <div class="footer-col">
+      <h4>Competition</h4>
+      <a href="/app/">Two-device timer</a>
+      <a href="/setup/judge-paradigm/">Tabroom setup</a>
+    </div>
+    <div class="footer-col">
+      <h4>Formats</h4>
+      <a href="/timer/lincoln-douglas/">Lincoln-Douglas</a>
+      <a href="/timer/world-schools/">World Schools</a>
+      <a href="/timer/british-parliamentary/">British Parliamentary</a>
+    </div>
+  </div>
+  <div class="footer-row">
+    <div>
+      <a href="/" style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;">
+        <span style="width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);"></span>
+        DebateClock
+      </a>
+      <span style="margin-left:12px;">free browser debate timer</span>
+    </div>
+    <a href="https://tally.so/r/QKAMOX" target="_blank" rel="noopener" class="feedback-btn">★ Give feedback</a>
+  </div>
+</footer>
+
+<script>
+// ── State ────────────────────────────────────────────────────
+var prepSecs = 1800; // 30 min default
+var students = [];
+var raf;
+
+// ── Audio ────────────────────────────────────────────────────
+var audioCtx = null;
+document.addEventListener('click', function() {
+  if (audioCtx) return;
+  try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+}, { once: false });
+
+function beep(freq, dur, vol) {
+  if (!audioCtx) return;
+  var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+  o.type = 'sine'; o.frequency.value = freq;
+  g.gain.setValueAtTime(vol||0.18, audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+  o.connect(g); g.connect(audioCtx.destination);
+  o.start(); o.stop(audioCtx.currentTime + dur);
+}
+function ding(id) {
+  beep(880, 0.15, 0.22);
+  setTimeout(function(){ beep(1320, 0.25, 0.18); }, 120);
+  // Flash the card
+  var card = document.getElementById('card-' + id);
+  if (card) {
+    card.style.transition = 'background 0.1s';
+    card.style.background = 'rgba(239,68,68,0.3)';
+    setTimeout(function(){ card.style.background = ''; }, 300);
+  }
+}
+
+// ── Student model ─────────────────────────────────────────────
+function makeStudent(idx) {
+  return {
+    id: idx,
+    name: 'Student ' + (idx + 1),
+    topic: '',
+    phase: 'idle', // idle | running | paused | overtime | done
+    startedAt: null,
+    elapsed: 0,
+    bells: { five: false, one: false, zero: false }
+  };
+}
+
+// ── Prep time ─────────────────────────────────────────────────
+function updatePrepTime() {
+  var sel = document.getElementById('prepTimeSelect').value;
+  var customWrap = document.getElementById('customPrepWrap');
+  if (sel === 'custom') {
+    customWrap.style.display = '';
+    var mins = parseInt(document.getElementById('customPrepInput').value) || 30;
+    prepSecs = mins * 60;
+  } else {
+    customWrap.style.display = 'none';
+    prepSecs = parseInt(sel);
+  }
+}
+
+// ── Build grid ────────────────────────────────────────────────
+function setStudentCount() {
+  var n = parseInt(document.getElementById('studentCountSelect').value);
+  while (students.length < n) students.push(makeStudent(students.length));
+  students = students.slice(0, n);
+  renderGrid();
+}
+
+function addStudent() {
+  if (students.length >= 10) return;
+  students.push(makeStudent(students.length));
+  var sel = document.getElementById('studentCountSelect');
+  sel.value = students.length;
+  renderGrid();
+}
+
+function renderGrid() {
+  var grid = document.getElementById('studentGrid');
+  grid.innerHTML = '';
+  students.forEach(function(s) {
+    grid.appendChild(buildCard(s));
+  });
+}
+
+function buildCard(s) {
+  var div = document.createElement('div');
+  div.className = 'student-card';
+  div.id = 'card-' + s.id;
+
+  var elapsed = getElapsed(s);
+  var rem = Math.max(0, prepSecs - elapsed);
+  var isOT = elapsed > prepSecs;
+  var phase = s.phase;
+  var clockPhase = phase === 'idle' ? 'idle'
+    : isOT ? 'overtime'
+    : rem <= 60 ? 'critical'
+    : rem <= 300 ? 'warn'
+    : 'running';
+
+  div.innerHTML =
+    '<div class="card-top">' +
+      '<input class="student-name-input" type="text" value="' + esc(s.name) + '" placeholder="Student name" ' +
+        'onchange="students[' + s.id + '].name=this.value">' +
+      '<span class="card-status ' + clockPhase + '">' + statusLabel(s, isOT) + '</span>' +
+    '</div>' +
+    '<input class="topic-input" type="text" value="' + esc(s.topic) + '" placeholder="Topic drawn…" ' +
+      'onchange="students[' + s.id + '].topic=this.value">' +
+    '<div class="card-clock ' + clockPhase + '" id="clock-' + s.id + '">' +
+      (isOT ? '-' + fmtSec(elapsed - prepSecs) : fmtSec(rem)) +
+    '</div>' +
+    '<div class="card-progress"><div class="card-progress-fill ' + clockPhase + '" id="prog-' + s.id + '" ' +
+      'style="width:' + (isOT ? 0 : rem/prepSecs*100) + '%"></div></div>' +
+    '<div class="card-controls">' + controlsHTML(s, clockPhase) + '</div>';
+
+  return div;
+}
+
+function statusLabel(s, isOT) {
+  if (s.phase === 'idle') return 'Ready';
+  if (isOT) return 'Overtime';
+  if (s.phase === 'paused') return 'Paused';
+  if (s.phase === 'done') return 'Done';
+  var elapsed = getElapsed(s);
+  var rem = Math.max(0, prepSecs - elapsed);
+  if (rem <= 60) return 'Critical';
+  if (rem <= 300) return '5 min left';
+  return 'Running';
+}
+
+function controlsHTML(s, clockPhase) {
+  if (s.phase === 'idle') {
+    return '<button class="card-btn start" onclick="startStudent(' + s.id + ')">▶ Start</button>' +
+           '<button class="card-btn danger" onclick="removeStudent(' + s.id + ')">Remove</button>';
+  }
+  if (s.phase === 'running' || s.phase === 'overtime') {
+    return '<button class="card-btn pause" onclick="pauseStudent(' + s.id + ')">⏸ Pause</button>' +
+           '<button class="card-btn" onclick="resetStudent(' + s.id + ')">↺ Reset</button>';
+  }
+  if (s.phase === 'paused') {
+    return '<button class="card-btn start" onclick="resumeStudent(' + s.id + ')">▶ Resume</button>' +
+           '<button class="card-btn" onclick="resetStudent(' + s.id + ')">↺ Reset</button>';
+  }
+  if (s.phase === 'done') {
+    return '<button class="card-btn" onclick="resetStudent(' + s.id + ')">↺ Again</button>' +
+           '<button class="card-btn danger" onclick="removeStudent(' + s.id + ')">Remove</button>';
+  }
+  return '';
+}
+
+// ── Controls ──────────────────────────────────────────────────
+function startStudent(id) {
+  var s = students[id];
+  s.phase = 'running';
+  s.startedAt = Date.now();
+  s.elapsed = 0;
+  s.bells = { five: false, one: false, zero: false };
+  rebuildCard(s);
+}
+
+function pauseStudent(id) {
+  var s = students[id];
+  s.elapsed = getElapsed(s);
+  s.startedAt = null;
+  s.phase = 'paused';
+  rebuildCard(s);
+}
+
+function resumeStudent(id) {
+  var s = students[id];
+  s.startedAt = Date.now();
+  s.phase = 'running';
+  rebuildCard(s);
+}
+
+function resetStudent(id) {
+  var s = students[id];
+  s.phase = 'idle';
+  s.startedAt = null;
+  s.elapsed = 0;
+  s.bells = { five: false, one: false, zero: false };
+  rebuildCard(s);
+}
+
+function removeStudent(id) {
+  students.splice(id, 1);
+  // Re-index
+  students.forEach(function(s, i) { s.id = i; });
+  document.getElementById('studentCountSelect').value = students.length;
+  renderGrid();
+}
+
+function startAll() {
+  students.forEach(function(s) {
+    if (s.phase === 'idle') {
+      s.phase = 'running';
+      s.startedAt = Date.now();
+      s.elapsed = 0;
+      s.bells = { five: false, one: false, zero: false };
+    }
+  });
+  renderGrid();
+}
+
+function resetAll() {
+  students.forEach(function(s) {
+    s.phase = 'idle';
+    s.startedAt = null;
+    s.elapsed = 0;
+    s.bells = { five: false, one: false, zero: false };
+  });
+  renderGrid();
+}
+
+// ── Helpers ───────────────────────────────────────────────────
+function getElapsed(s) {
+  if (s.phase === 'running' || s.phase === 'overtime') {
+    return s.elapsed + (s.startedAt ? (Date.now() - s.startedAt) / 1000 : 0);
+  }
+  return s.elapsed;
+}
+
+function fmtSec(s) {
+  s = Math.max(0, Math.floor(s));
+  return Math.floor(s/60) + ':' + ('0' + (s%60)).slice(-2);
+}
+
+function esc(str) {
+  return String(str).replace(/"/g, '&quot;').replace(/</g, '&lt;');
+}
+
+function rebuildCard(s) {
+  var old = document.getElementById('card-' + s.id);
+  if (old) old.parentNode.replaceChild(buildCard(s), old);
+}
+
+// ── RAF tick — only updates clock/progress in-place ──────────
+function tick() {
+  students.forEach(function(s) {
+    if (s.phase !== 'running' && s.phase !== 'overtime') return;
+
+    var elapsed = getElapsed(s);
+    var rem = Math.max(0, prepSecs - elapsed);
+    var isOT = elapsed > prepSecs;
+    var clockPhase = isOT ? 'overtime' : rem <= 60 ? 'critical' : rem <= 300 ? 'warn' : 'running';
+
+    // Update overtime phase
+    if (isOT && s.phase !== 'overtime') {
+      s.phase = 'overtime';
+      rebuildCard(s);
+      return;
+    }
+
+    // Update clock text
+    var clockEl = document.getElementById('clock-' + s.id);
+    var progEl = document.getElementById('prog-' + s.id);
+    var card = document.getElementById('card-' + s.id);
+    if (!clockEl) return;
+
+    clockEl.textContent = isOT ? '-' + fmtSec(elapsed - prepSecs) : fmtSec(rem);
+    clockEl.className = 'card-clock ' + clockPhase;
+    if (progEl) {
+      progEl.style.width = isOT ? '0%' : (rem/prepSecs*100) + '%';
+      progEl.className = 'card-progress-fill ' + clockPhase;
+    }
+    if (card) {
+      card.className = 'student-card ' + (s.phase === 'running' ? clockPhase : s.phase);
+    }
+
+    // Update status badge
+    var badge = card ? card.querySelector('.card-status') : null;
+    if (badge) {
+      badge.textContent = statusLabel(s, isOT);
+      badge.className = 'card-status ' + clockPhase;
+    }
+
+    // Bells
+    if (audioCtx) {
+      if (!s.bells.five && rem <= 300 && rem > 299) { beep(660, 0.15); s.bells.five = true; }
+      if (!s.bells.one  && rem <= 60  && rem > 59)  { beep(880, 0.18); s.bells.one  = true; }
+      if (!s.bells.zero && isOT)                     { ding(s.id);      s.bells.zero = true; }
+    }
+  });
+
+  raf = requestAnimationFrame(tick);
+}
+
+// ── Init ──────────────────────────────────────────────────────
+setStudentCount();
+tick();
+</script>
+
+</body>
+</html>

@@ -76,6 +76,64 @@ export const FORMATS = {
       { id: 'pmr', label: 'Prime Minister Rebuttal (PMR)',           side: 'aff', duration: 240, isCX: false },
     ],
   },
+
+  WSDC: {
+    id: 'WSDC',
+    name: 'World Schools (WSDC)',
+    shortName: 'WSDC',
+    prepPoolSeconds: { aff: 0, neg: 0 },
+    // POI window: min 1-7 of each 8-min constructive. Reply speeches have no POI.
+    // Bell schedule: 1:00 (POIs open), 7:00 (POIs close), 8:00 (double bell).
+    speeches: [
+      { id: 'p1',     label: '1st Proposition',   side: 'aff', duration: 480, isCX: false, poiStartSec: 60, poiEndSec: 420 },
+      { id: 'o1',     label: '1st Opposition',     side: 'neg', duration: 480, isCX: false, poiStartSec: 60, poiEndSec: 420 },
+      { id: 'p2',     label: '2nd Proposition',    side: 'aff', duration: 480, isCX: false, poiStartSec: 60, poiEndSec: 420 },
+      { id: 'o2',     label: '2nd Opposition',     side: 'neg', duration: 480, isCX: false, poiStartSec: 60, poiEndSec: 420 },
+      { id: 'p3',     label: '3rd Proposition',    side: 'aff', duration: 480, isCX: false, poiStartSec: 60, poiEndSec: 420 },
+      { id: 'o3',     label: '3rd Opposition',     side: 'neg', duration: 480, isCX: false, poiStartSec: 60, poiEndSec: 420 },
+      { id: 'oreply', label: 'Opposition Reply',   side: 'neg', duration: 240, isCX: false },
+      { id: 'preply', label: 'Proposition Reply',  side: 'aff', duration: 240, isCX: false },
+    ],
+  },
+
+  BPUni: {
+    id: 'BPUni',
+    name: 'British Parliamentary (Uni / WUDC)',
+    shortName: 'BP',
+    prepPoolSeconds: { aff: 0, neg: 0 },
+    // 4 teams: OG (Opening Gov) = aff, OO (Opening Opp) = neg,
+    //          CG (Closing Gov) = aff, CO (Closing Opp) = neg
+    // POI window: min 1-6 of each 7-min speech.
+    speeches: [
+      { id: 'pm',  label: 'Prime Minister (OG)',              side: 'aff', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'lo',  label: 'Leader of Opposition (OO)',        side: 'neg', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'dpm', label: 'Deputy Prime Minister (OG)',       side: 'aff', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'dlo', label: 'Deputy Leader of Opposition (OO)', side: 'neg', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'mg',  label: 'Member for Government (CG)',       side: 'aff', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'mo',  label: 'Member for Opposition (CO)',       side: 'neg', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'gw',  label: 'Government Whip (CG)',             side: 'aff', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'ow',  label: 'Opposition Whip (CO)',             side: 'neg', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+    ],
+  },
+
+  BPHS: {
+    id: 'BPHS',
+    name: 'British Parliamentary (High School)',
+    shortName: 'BP-HS',
+    prepPoolSeconds: { aff: 0, neg: 0 },
+    // 5-min speeches. POI window: 0:30 to 4:30 (30s protected at start AND end).
+    // Explicitly not supported by Debatekeeper per user reviews.
+    speeches: [
+      { id: 'pm',  label: 'Prime Minister (OG)',              side: 'aff', duration: 300, isCX: false, poiStartSec: 30, poiEndSec: 270 },
+      { id: 'lo',  label: 'Leader of Opposition (OO)',        side: 'neg', duration: 300, isCX: false, poiStartSec: 30, poiEndSec: 270 },
+      { id: 'dpm', label: 'Deputy Prime Minister (OG)',       side: 'aff', duration: 300, isCX: false, poiStartSec: 30, poiEndSec: 270 },
+      { id: 'dlo', label: 'Deputy Leader of Opposition (OO)', side: 'neg', duration: 300, isCX: false, poiStartSec: 30, poiEndSec: 270 },
+      { id: 'mg',  label: 'Member for Government (CG)',       side: 'aff', duration: 300, isCX: false, poiStartSec: 30, poiEndSec: 270 },
+      { id: 'mo',  label: 'Member for Opposition (CO)',       side: 'neg', duration: 300, isCX: false, poiStartSec: 30, poiEndSec: 270 },
+      { id: 'gw',  label: 'Government Whip (CG)',             side: 'aff', duration: 300, isCX: false, poiStartSec: 30, poiEndSec: 270 },
+      { id: 'ow',  label: 'Opposition Whip (CO)',             side: 'neg', duration: 300, isCX: false, poiStartSec: 30, poiEndSec: 270 },
+    ],
+  },
 };
 
 export const FORMAT_LIST = Object.values(FORMATS);

@@ -206,7 +206,29 @@ export function speechPhase(state, now = Date.now()) {
 }
 
 // Parli POI window: 1:00–6:00 into 7-min constructives, POI signal allowed
-export function parliPOIWindow(state, now = Date.now()) {
+
+// POI window check -- works for WSDC, BP, and legacy Parli formats.
+// Speeches with POI windows carry poiStartSec / poiEndSec fields.
+export function poiWindow(state, now) {
+  if (now === undefined) now = Date.now();
+  var sp = currentSpeech(state);
+  if (!sp) return false;
+  var elapsed = speechElapsedMs(state, now);
+  if (sp.poiStartSec != null && sp.poiEndSec != null) {
+    return elapsed >= sp.poiStartSec * 1000 && elapsed <= sp.poiEndSec * 1000;
+  }
+  if (state.format === "Parli") {
+    if (sp.duration < 420) return false;
+    return elapsed >= 60000 && elapsed <= (sp.duration - 60) * 1000;
+  }
+  return false;
+}
+
+// Backward-compat alias
+export var parliPOIWindow = poiWindow;
+
+// Legacy (alias above)
+export function parliPOIWindow_UNUSED(state, now = Date.now()) {
   const sp = currentSpeech(state);
   if (!sp || state.format !== 'Parli') return false;
   if (sp.duration < 420) return false;  // POI only in 7-min constructives

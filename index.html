@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DebateClock — Free Browser Debate Timer with Shared Prep Pool</title>
+<meta name="description" content="Free browser-based debate timer. Shared prep time pool for LD, Policy, and Public Forum. Judge controls phone, debater sees big countdown. No signup, no install.">
+<link rel="canonical" href="https://debateclock.org/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta property="og:title" content="DebateClock — Free Browser Debate Timer with Shared Prep Pool">
+<meta property="og:description" content="Shared prep time pool for Policy, LD, and PF. Two-device sync. No install.">
+<meta property="og:url" content="https://debateclock.org/">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0A0C0F;
+    --bg2: #111318;
+    --bg3: #181C23;
+    --border: rgba(255,255,255,0.07);
+    --text: #E8EAF0;
+    --muted: #8B90A0;
+    --green: #22C55E;
+    --red: #EF4444;
+    --amber: #F59E0B;
+    --accent: #3B82F6;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 16px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 32px; max-width: 1100px; margin: 0 auto;
+  }
+  .brand { display: flex; align-items: center; gap: 10px;
+    font-size: 17px; font-weight: 600; color: var(--text); text-decoration: none; }
+  .brand-dot { width: 12px; height: 12px; border-radius: 50%;
+    background: var(--green); box-shadow: 0 0 12px var(--green); }
+  .nav-cta {
+    background: var(--accent); color: #fff; padding: 10px 20px;
+    border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500;
+    transition: opacity 0.15s;
+  }
+  .nav-cta:hover { opacity: 0.92; }
+
+  .hero { max-width: 800px; margin: 0 auto; padding: 80px 32px 60px; text-align: center; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(34,197,94,0.08);
+    border: 1px solid rgba(34,197,94,0.2);
+    border-radius: 999px; padding: 6px 14px;
+    font-size: 13px; color: var(--green);
+    margin-bottom: 28px;
+  }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  h1 { font-size: clamp(36px, 5vw, 58px); font-weight: 700;
+    line-height: 1.08; letter-spacing: -0.03em; margin-bottom: 22px; }
+  h1 span { color: var(--green); }
+  .sub { font-size: 18px; color: var(--muted); max-width: 600px;
+    margin: 0 auto 36px; line-height: 1.6; }
+  .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary, .btn-outline {
+    padding: 14px 28px; border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
+    cursor: pointer; text-decoration: none; display: inline-block;
+    transition: all 0.15s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; border: none; }
+  .btn-primary:hover { opacity: 0.92; transform: translateY(-1px); }
+  .btn-outline { background: transparent; color: var(--text);
+    border: 1px solid var(--border); }
+  .btn-outline:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); }
+  .meta { margin-top: 18px; font-size: 13px; color: var(--muted);
+    font-family: 'DM Mono', monospace; }
+
+  .formats {
+    max-width: 900px; margin: 0 auto; padding: 20px 32px 40px;
+  }
+  .format-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  @media (max-width: 820px) { .format-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 440px) { .format-grid { grid-template-columns: 1fr; } }
+  .format-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 14px; padding: 22px;
+    transition: border-color 0.2s;
+  }
+  .format-card:hover { border-color: rgba(255,255,255,0.14); }
+  .format-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .format-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .format-card .prep { margin-top: 10px; font-family: 'DM Mono', monospace;
+    font-size: 12px; color: var(--green); }
+
+  .gap { max-width: 800px; margin: 20px auto 60px; padding: 40px 32px;
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; }
+  .gap h2 { font-size: 24px; margin-bottom: 16px; font-weight: 600; letter-spacing: -0.01em; }
+  .gap p { color: var(--muted); font-size: 15px; margin-bottom: 10px; }
+  .gap strong { color: var(--text); font-weight: 500; }
+
+  footer {
+    max-width: 900px; margin: 0 auto; padding: 40px 32px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+    font-size: 13px; color: var(--muted);
+  }
+  footer a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
+  footer a:hover { color: var(--text); }
+  .feedback-btn {
+    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 10px 20px; display: inline-block;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .feedback-btn:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="/">
+    <span class="brand-dot"></span>
+    DebateClock
+  </a>
+  <a class="nav-cta" href="/app/">Open timer</a>
+</nav>
+
+<section class="hero">
+  <div class="badge"><span class="badge-dot"></span>Free forever · no signup</div>
+  <h1>Debate timer with <span>shared prep time pool</span></h1>
+  <p class="sub">
+    Judge on phone. Debater on tablet. Real-time sync. Prep pool tracks automatically
+    across all speeches and auto-pauses on every speech.
+  </p>
+  <div class="cta-row">
+    <a class="btn-primary" href="/app/">Start timing — no signup</a>
+    <a class="btn-outline" href="/app/display">I'm the debater</a>
+  </div>
+  <div class="meta">LD · Policy · Public Forum · Parliamentary</div>
+</section>
+
+<section class="formats">
+  <div class="format-grid">
+    <div class="format-card">
+      <h3>Lincoln-Douglas</h3>
+      <p>AC · NC · 1AR · NR · 2AR, with CX between constructives.</p>
+      <div class="prep">4 min prep per debater</div>
+    </div>
+    <div class="format-card">
+      <h3>Policy (CX)</h3>
+      <p>1AC through 2AR with CX between each constructive.</p>
+      <div class="prep">8 min prep per team</div>
+    </div>
+    <div class="format-card">
+      <h3>Public Forum</h3>
+      <p>Constructives · Crossfires · Summaries · Grand Crossfire · Final Focus.</p>
+      <div class="prep">3 min prep per team</div>
+    </div>
+    <div class="format-card">
+      <h3>Parliamentary</h3>
+      <p>PMC · LOC · MGC · MOC · LOR · PMR with POI windows.</p>
+      <div class="prep">No prep time</div>
+    </div>
+  </div>
+</section>
+
+<section class="gap">
+  <h2>What most debate timers miss</h2>
+  <p>Most mobile debate timers share the same gap that affects every LD, Policy, and PF round:
+    <strong>shared prep time pools</strong>. They treat prep as a per-speech countdown, which isn’t how these formats
+    actually work — prep is a pool each side draws from across the whole round.</p>
+  <p>DebateClock is built around that pool. The judge taps "Start Prep — Aff" — the pool counts down on both the
+    judge's controller and the debater's display simultaneously. Stop it, and it saves the remaining time for next use.
+    Start a speech, and active prep auto-pauses. It's how the format actually works.</p>
+</section>
+
+<footer>
+  <div>
+    <a href="/">DebateClock</a> · free browser debate timer
+  </div>
+  <div>
+    <a href="https://tally.so/r/QKAMOX" target="_blank" rel="noopener" class="feedback-btn">★ Give feedback</a>
+  </div>
+</footer>
+
+</body>
+</html>

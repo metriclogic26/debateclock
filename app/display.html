@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>DebateClock — Display</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0A0C0F;
+    --text: #E8EAF0;
+    --muted: #8B90A0;
+    --green: #22C55E;
+    --red: #EF4444;
+    --amber: #F59E0B;
+    --accent: #3B82F6;
+  }
+  html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); }
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+    touch-action: manipulation;
+  }
+  body.vanished { background: #000; }
+  body.blackout { background: #000; }
+  body.flashing { animation: flash-bg 0.45s ease-in-out 3; }
+  @keyframes flash-bg {
+    0%, 100% { background: var(--bg); }
+    50% { background: #fff; }
+  }
+
+  .display {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    height: 100vh; height: 100dvh;
+    padding: 20px;
+    position: relative;
+    transition: background 0.4s ease;
+  }
+  body.vanished .display > *, body.blackout .display > * { visibility: hidden; }
+
+  .phase-go       { background: rgba(34,197,94,0.08); }
+  .phase-warn     { background: rgba(245,158,11,0.10); }
+  .phase-critical { background: rgba(239,68,68,0.14); }
+  .phase-overtime { background: rgba(239,68,68,0.24); }
+
+  .join-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    max-width: 420px;
+  }
+  .join-card h1 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+  .join-card p { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+  .room-input {
+    width: 100%;
+    background: #0B0D14;
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 10px;
+    padding: 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 22px; letter-spacing: 0.2em; text-align: center;
+    color: var(--text);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  .room-input:focus { outline: none; border-color: var(--accent); }
+  .join-btn {
+    width: 100%;
+    background: var(--accent);
+    border: none; border-radius: 10px;
+    color: #fff;
+    padding: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 600;
+    cursor: pointer;
+  }
+  .join-btn:hover { opacity: 0.92; }
+
+  .top-bar {
+    position: absolute; top: 20px; left: 20px; right: 20px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; color: var(--muted);
+    pointer-events: none;
+    font-family: 'DM Mono', monospace;
+  }
+  .top-bar .left, .top-bar .right {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .top-bar .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+
+  .speech-label {
+    font-size: clamp(18px, 3vw, 28px);
+    font-weight: 600;
+    color: var(--text);
+    text-align: center;
+    letter-spacing: -0.01em;
+    margin-bottom: 14px;
+    opacity: 0.85;
+    padding: 0 20px;
+  }
+  .speech-side {
+    font-size: clamp(11px, 1.4vw, 14px);
+    font-weight: 600;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 40px;
+  }
+  .phase-go .speech-side       { color: var(--green); }
+  .phase-warn .speech-side     { color: var(--amber); }
+  .phase-critical .speech-side { color: var(--red); }
+  .phase-overtime .speech-side { color: var(--red); }
+
+  .clock {
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: clamp(120px, 28vw, 400px);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+    text-align: center;
+    transition: color 0.3s;
+  }
+  .phase-go .clock       { color: var(--green); }
+  .phase-warn .clock     { color: var(--amber); }
+  .phase-critical .clock { color: var(--red); }
+  .phase-overtime .clock { color: var(--red); animation: flash-clock 0.6s ease-in-out infinite; }
+  @keyframes flash-clock { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+  .prep-bar {
+    position: absolute; bottom: 40px; left: 20px; right: 20px;
+    display: flex; justify-content: center; gap: 32px;
+    color: var(--muted);
+    font-size: clamp(13px, 1.6vw, 16px);
+  }
+  .prep-bar .side {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'DM Mono', monospace;
+  }
+  .prep-bar .side.active { color: var(--accent); font-weight: 500; }
+  .prep-bar .side-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .prep-bar .side.aff .side-dot { background: var(--green); }
+  .prep-bar .side.neg .side-dot { background: var(--red); }
+  .prep-bar .side.active .side-dot {
+    background: var(--accent) !important;
+    box-shadow: 0 0 10px var(--accent);
+  }
+
+  .poi-cue {
+    position: absolute; top: 64px; left: 50%; transform: translateX(-50%);
+    padding: 6px 14px;
+    background: rgba(245,158,11,0.18);
+    border: 1px solid rgba(245,158,11,0.4);
+    border-radius: 999px;
+    color: var(--amber);
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .poi-cue.visible { opacity: 1; }
+
+  .watermark {
+    position: absolute; bottom: 10px; right: 14px;
+    font-size: 10px; color: rgba(255,255,255,0.12);
+    font-family: 'DM Mono', monospace;
+    pointer-events: none;
+  }
+  .fs-hint {
+    position: absolute; top: 14px; right: 14px;
+    font-size: 11px; color: var(--muted);
+    opacity: 0.5;
+    font-family: 'DM Mono', monospace;
+    pointer-events: none;
+  }
+
+  .status-indicator {
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .status-indicator .conn-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--amber);
+  }
+  .status-indicator .conn-dot.connected { background: var(--green); }
+  .status-indicator .conn-dot.disconnected { background: var(--red); }
+
+  @media (max-width: 480px) {
+    .top-bar { font-size: 11px; }
+    .prep-bar { gap: 16px; font-size: 12px; bottom: 20px; }
+    .speech-label { font-size: 16px; margin-bottom: 10px; }
+    .speech-side { margin-bottom: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="display" id="joinScreen" style="display:none;">
+  <div class="join-card">
+    <h1>Join a debate</h1>
+    <p>Enter the room code from the judge's screen.</p>
+    <input class="room-input" id="roomInput" placeholder="ABCDEF" maxlength="6" autocomplete="off" inputmode="text">
+    <button class="join-btn" id="joinBtn">Join room</button>
+  </div>
+</div>
+
+<div class="display phase-go" id="display" style="display:none;">
+  <div class="top-bar">
+    <div class="left">
+      <span class="status-indicator">
+        <span class="conn-dot" id="connDot"></span>
+        <span id="roomLabel">—</span>
+      </span>
+    </div>
+    <div class="right">
+      <span id="formatLabel">—</span>
+    </div>
+  </div>
+
+  <div class="poi-cue" id="poiCue">POI Window Open</div>
+
+  <div class="speech-label" id="speechLabel">—</div>
+  <div class="speech-side" id="speechSide"></div>
+  <div class="clock" id="clock">0:00</div>
+
+  <div class="prep-bar" id="prepBar">
+    <div class="side aff" id="prepBarAff"><span class="side-dot"></span><span>AFF prep <span id="prepAffClock">0:00</span></span></div>
+    <div class="side neg" id="prepBarNeg"><span class="side-dot"></span><span>NEG prep <span id="prepNegClock">0:00</span></span></div>
+  </div>
+
+  <div class="fs-hint" id="fsHint">tap for fullscreen · sound</div>
+  <div class="watermark">debateclock.org</div>
+</div>
+
+<script type="module">
+import { FORMATS } from './formats.js';
+import {
+  currentSpeech, currentSpeechDurationMs, speechElapsedMs, speechRemainingMs,
+  prepRemainingMs, speechPhase, parliPOIWindow, formatClock,
+} from './state.js';
+import { DebateClockSocket, normalizeRoomCode } from './sync.js';
+
+function getRoomFromUrl() {
+  const params = new URLSearchParams(location.search);
+  return normalizeRoomCode(params.get('room'));
+}
+
+let room = getRoomFromUrl();
+
+if (!room) {
+  document.getElementById('joinScreen').style.display = 'flex';
+  document.getElementById('joinBtn').addEventListener('click', joinRoom);
+  document.getElementById('roomInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') joinRoom();
+  });
+} else {
+  document.getElementById('display').style.display = 'flex';
+  connect();
+}
+
+function joinRoom() {
+  const input = document.getElementById('roomInput');
+  const code = normalizeRoomCode(input.value);
+  if (code.length !== 6) { input.focus(); return; }
+  location.search = `?room=${code}`;
+}
+
+let state = null;
+let bellPlayedAt = { one_min: false, thirty: false, zero: false };
+let prevSpeechIdx = null;
+
+function connect() {
+  document.getElementById('roomLabel').textContent = `ROOM ${room}`;
+
+  const sock = new DebateClockSocket({
+    room,
+    role: 'display',
+    onState(newState) {
+      state = newState;
+      render();
+    },
+    onStatus(status) {
+      const dot = document.getElementById('connDot');
+      dot.classList.remove('connected', 'disconnected');
+      if (status === 'connected') dot.classList.add('connected');
+      else if (status === 'disconnected' || status === 'error') dot.classList.add('disconnected');
+    },
+  });
+
+  acquireWakeLock();
+
+  // Unlock audio + fullscreen on any tap (browsers require user gesture)
+  document.body.addEventListener('click', handleBodyTap);
+
+  requestAnimationFrame(tick);
+}
+
+function handleBodyTap() {
+  unlockAudio();
+  const doc = document.documentElement;
+  if (!document.fullscreenElement && doc.requestFullscreen) {
+    doc.requestFullscreen().catch(() => {});
+  }
+  const hint = document.getElementById('fsHint');
+  if (hint) hint.style.display = 'none';
+}
+
+// ─── WAKE LOCK ──────────────────────────────────────────────────────────
+let wakeLock = null;
+async function acquireWakeLock() {
+  if (!('wakeLock' in navigator)) return;
+  try {
+    wakeLock = await navigator.wakeLock.request('screen');
+  } catch (e) {}
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') acquireWakeLock();
+});
+
+// ─── WEB AUDIO BELLS (synthesized, no asset files) ──────────────────────
+let audioCtx = null;
+function unlockAudio() {
+  if (audioCtx) return;
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+  } catch (e) {}
+}
+function beep(freq = 880, duration = 0.18, volume = 0.18) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = 'sine';
+  osc.frequency.value = freq;
+  gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.start(); osc.stop(audioCtx.currentTime + duration);
+}
+function ding() {
+  beep(880, 0.15, 0.2);
+  setTimeout(() => beep(1320, 0.25, 0.18), 120);
+}
+
+// ─── RENDER ─────────────────────────────────────────────────────────────
+function render() {
+  if (!state) return;
+  const now = Date.now();
+
+  document.body.classList.toggle('blackout', !!state.blackout);
+  const remaining = speechRemainingMs(state, now);
+  const totalDur = currentSpeechDurationMs(state);
+  const shouldVanish = state.vanishAtZero && remaining <= 0 && state.speechRunning && totalDur > 0;
+  document.body.classList.toggle('vanished', shouldVanish);
+
+  if (state.flash && !document.body.classList.contains('flashing')) {
+    document.body.classList.add('flashing');
+    setTimeout(() => document.body.classList.remove('flashing'), 1500);
+  }
+
+  const phase = speechPhase(state, now);
+  const display = document.getElementById('display');
+  display.classList.remove('phase-go', 'phase-warn', 'phase-critical', 'phase-overtime');
+  display.classList.add('phase-' + phase);
+
+  const sp = currentSpeech(state);
+  document.getElementById('speechLabel').textContent = sp ? sp.label : '—';
+  const sideLabel = sp
+    ? (sp.isCX ? 'CROSS-EXAMINATION' : (sp.side === 'aff' ? 'AFFIRMATIVE' : sp.side === 'neg' ? 'NEGATIVE' : 'BOTH TEAMS'))
+    : '';
+  document.getElementById('speechSide').textContent = sideLabel;
+  document.getElementById('clock').textContent = formatClock(remaining);
+
+  const fmt = FORMATS[state.format];
+  document.getElementById('formatLabel').textContent = fmt ? fmt.shortName : '—';
+
+  const affRem = prepRemainingMs(state, 'aff', now);
+  const negRem = prepRemainingMs(state, 'neg', now);
+  document.getElementById('prepAffClock').textContent = formatClock(affRem, false);
+  document.getElementById('prepNegClock').textContent = formatClock(negRem, false);
+  document.getElementById('prepBarAff').classList.toggle('active', state.activePrepSide === 'aff');
+  document.getElementById('prepBarNeg').classList.toggle('active', state.activePrepSide === 'neg');
+
+  const hasPrep = state.prepPoolTotalMs.aff > 0 || state.prepPoolTotalMs.neg > 0;
+  document.getElementById('prepBar').style.display = hasPrep ? 'flex' : 'none';
+
+  document.getElementById('poiCue').classList.toggle('visible', parliPOIWindow(state, now));
+
+  if (prevSpeechIdx !== state.currentSpeechIdx) {
+    bellPlayedAt = { one_min: false, thirty: false, zero: false };
+    prevSpeechIdx = state.currentSpeechIdx;
+  }
+
+  if (state.speechRunning && audioCtx) {
+    if (!bellPlayedAt.one_min && remaining <= 60_000 && remaining > 59_000) {
+      beep(660, 0.2); bellPlayedAt.one_min = true;
+    }
+    if (!bellPlayedAt.thirty && remaining <= 30_000 && remaining > 29_000) {
+      beep(660, 0.12); setTimeout(() => beep(660, 0.12), 180); bellPlayedAt.thirty = true;
+    }
+    if (!bellPlayedAt.zero && remaining <= 0 && remaining > -1_000) {
+      ding(); bellPlayedAt.zero = true;
+    }
+  }
+}
+
+function tick() {
+  render();
+  requestAnimationFrame(tick);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "cleanUrls": false,
+  "trailingSlash": true,
+  "rewrites": [
+    { "source": "/j/:name", "destination": "/app/index.html" },
+    { "source": "/app/display", "destination": "/app/display.html" },
+    { "source": "/app/display/", "destination": "/app/display.html" }
+  ]
+}

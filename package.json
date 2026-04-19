@@ -1,0 +1,16 @@
+{
+  "name": "debateclock",
+  "version": "0.1.0",
+  "description": "Free browser debate timer with shared prep time pool. Judge controls, debater display, no signup.",
+  "main": "party/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "partykit dev",
+    "deploy": "partykit deploy"
+  },
+  "keywords": ["debate", "timer", "lincoln-douglas", "policy-debate", "public-forum", "parliamentary"],
+  "license": "ISC",
+  "dependencies": {
+    "partykit": "^0.0.115"
+  }
+}

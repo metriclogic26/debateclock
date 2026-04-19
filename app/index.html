@@ -571,7 +571,7 @@
 <div class="toast" id="toast"></div>
 
 <script type="module">
-import { FORMATS, FORMAT_LIST, initialStateForFormat } from './formats.js';
+import { FORMATS, FORMAT_LIST, initialStateForFormat } from '/app/formats.js';
 import {
   currentSpeech, currentSpeechDurationMs, speechElapsedMs, speechRemainingMs,
   startSpeech, pauseSpeech, resetSpeech, nextSpeech, prevSpeech, jumpToSpeech,
@@ -579,8 +579,8 @@ import {
   prepRemainingMs,
   speechPhase, formatClock,
   toggleBlackout, triggerFlash, clearFlash, toggleVanish,
-} from './state.js';
-import { DebateClockSocket, makeRoomCode, normalizeRoomCode, hashToCode } from './sync.js';
+} from '/app/state.js';
+import { DebateClockSocket, makeRoomCode, normalizeRoomCode, hashToCode } from '/app/sync.js';
 
 function getRoomCode() {
   const params = new URLSearchParams(location.search);

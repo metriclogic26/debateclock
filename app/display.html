@@ -240,12 +240,12 @@
 </div>
 
 <script type="module">
-import { FORMATS } from './formats.js';
+import { FORMATS } from '/app/formats.js';
 import {
   currentSpeech, currentSpeechDurationMs, speechElapsedMs, speechRemainingMs,
   prepRemainingMs, speechPhase, parliPOIWindow, formatClock,
-} from './state.js';
-import { DebateClockSocket, normalizeRoomCode } from './sync.js';
+} from '/app/state.js';
+import { DebateClockSocket, normalizeRoomCode } from '/app/sync.js';
 
 function getRoomFromUrl() {
   const params = new URLSearchParams(location.search);

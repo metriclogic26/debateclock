@@ -274,15 +274,19 @@ body {
 
 .nav-dropdown-menu {
   position: absolute;
-  top: c;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  background: #0D0F17;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 12px;
   padding: 8px;
   min-width: 200px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.15s, transform 0.15s;
-  transform: translateX(-50%) translateY(-4px);
   z-index: 999;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.06);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.9), 0 0 0 1px rgba(0,0,0,0.5);
 }
 .nav-dropdown:hover .nav-dropdown-menu {
   opacity: 1;

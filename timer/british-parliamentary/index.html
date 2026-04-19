@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="google-site-verification" content="QnajyTO6WUy1fi-9SI5Na1QjbwBmUOQ3NcPNY-HWlFw" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>British Parliamentary Debate Timer — Free, BP Uni & High School | DebateClock</title>
+<meta name="description" content="Free British Parliamentary debate timer for WUDC and high school BP. POI window signal, 7-min or 5-min speeches, two-device sync. No signup, any browser.">
+<link rel="canonical" href="https://debateclock.org/timer/british-parliamentary/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta property="og:title" content="British Parliamentary Debate Timer — Free, BP Uni & High School">
+<meta property="og:description" content="Free BP timer with POI window cue. Covers university (7-min) and high school (5-min) variants. Two-device sync, no signup.">
+<meta property="og:url" content="https://debateclock.org/timer/british-parliamentary/">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+
+<style>
+  .variant-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .variant-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+  }
+  .variant-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .variant-card .tag {
+    display: inline-block;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    padding: 2px 8px; border-radius: 4px;
+    background: rgba(59,130,246,0.12); color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .variant-card p { font-size: 13px; color: var(--muted); line-height: 1.55; }
+  @media (max-width: 640px) { .variant-grid { grid-template-columns: 1fr; } }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "DebateClock — British Parliamentary Timer",
+  "url": "https://debateclock.org/timer/british-parliamentary/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Web",
+  "description": "Free browser-based British Parliamentary debate timer covering both WUDC university (7-min) and high school (5-min) variants, with automatic POI window signal and two-device sync.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "featureList": [
+    "BP University (WUDC) — 7-min speeches, POI window 1:00–6:00",
+    "BP High School — 5-min speeches, POI window 0:30–4:30",
+    "Automatic POI window cue on debater display",
+    "Two-device sync: judge controller + debater display",
+    "No signup, no install, works on any device"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What are the speech times in British Parliamentary debate?",
+      "acceptedAnswer": { "@type": "Answer", "text": "University BP (WUDC) uses 8 speeches of 7 minutes each, across 4 teams: Opening Government, Opening Opposition, Closing Government, and Closing Opposition. High school BP uses the same structure but with 5-minute speeches." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the POI window in British Parliamentary?",
+      "acceptedAnswer": { "@type": "Answer", "text": "In university BP, the POI window is minutes 1 through 6 of each 7-minute speech — the first and last minute are protected. In high school BP with 5-minute speeches, the window is from 0:30 to 4:30, leaving 30 seconds protected at each end." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there prep time in British Parliamentary?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. British Parliamentary has no in-round prep time. Teams prepare before the round, and speeches run back-to-back with no breaks for prep between them." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this work for WUDC or Worlds-level BP?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The BP University preset uses the standard 7-minute speech format used at WUDC and most university circuit competitions. DebateClock is not affiliated with or approved by WUDC — it is an independent timing tool." }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<nav class="site-nav">
+  <a class="brand" href="/"><span class="brand-dot"></span>DebateClock</a>
+  <div class="nav-links">
+    <a href="/timer/lincoln-douglas/">LD</a>
+    <a href="/timer/policy-debate/">Policy</a>
+    <a href="/timer/public-forum/">PF</a>
+    <a href="/timer/parliamentary/">Parli</a>
+    <a href="/timer/world-schools/">WSDC</a>
+    <a href="/timer/british-parliamentary/">BP</a>
+  </div>
+  <a class="nav-cta" href="/app/">Open timer</a>
+</nav>
+
+<section class="hero">
+  <div class="badge"><span class="badge-dot"></span>Free · Uni &amp; High School · POI window built in</div>
+  <h1>British Parliamentary debate timer with <span>POI window</span></h1>
+  <p class="hero-sub">Free BP timer covering both university (WUDC, 7-min) and high school (5-min) formats. Automatic POI window cue, two-device sync, no signup, no install.</p>
+  <div class="cta-row">
+    <a class="btn-primary" href="/app/">Open timer — no signup</a>
+    <a class="btn-outline" href="#speech-order">See the speech order</a>
+  </div>
+  <div class="hero-meta">Works on any phone, tablet, or laptop</div>
+</section>
+
+<section class="section">
+  <h2>Two BP formats, one timer</h2>
+  <p>British Parliamentary splits into two common variants. Both use the same 4-team structure but differ on speech length and the exact POI window boundaries. DebateClock has both preloaded.</p>
+
+  <div class="variant-grid">
+    <div class="variant-card">
+      <div class="tag">BP UNIVERSITY</div>
+      <h3>WUDC / University Circuit</h3>
+      <p>7-minute speeches across all 8 positions. POI window: minutes 1:00 through 6:00. First and last minute protected. Standard at WUDC and most national university competitions.</p>
+    </div>
+    <div class="variant-card">
+      <div class="tag">BP HIGH SCHOOL</div>
+      <h3>High School Circuit</h3>
+      <p>5-minute speeches. POI window: 0:30 through 4:30 — 30 seconds protected at both start and end. This variant is explicitly missing from most mobile debate timers.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Why judges use DebateClock for BP</h2>
+  <p>BP judging requires tracking which of the 4 teams is speaking and whether the POI window is open — at the same time as flowing four simultaneous cases and tracking comparative rankings. The POI window cue on the debater display removes one thing the judge would otherwise have to manage manually.</p>
+  <p>The automatic cue appears on the debater's screen at the opening of the window and disappears at the close. The bell rings at each boundary. Neither the judge nor the speaker needs to look at their watch.</p>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <h3>POI window cue</h3>
+      <p>Amber signal appears on the debater display at window open, clears at window close. Bell at each boundary.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Both BP variants</h3>
+      <p>Select university (7-min) or high school (5-min) from the format picker. Correct POI window loads automatically.</p>
+    </div>
+    <div class="feature-card">
+      <h3>8 speeches, no prep</h3>
+      <p>PM, LO, DPM, DLO, Member Gov, Member Opp, Govt Whip, Opp Whip — all preloaded. No in-round prep pool.</p>
+    </div>
+    <div class="feature-card">
+      <h3>Two-device sync</h3>
+      <p>Judge controls from a phone. Debater watches a full-screen countdown on a tablet or laptop.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="speech-order">
+  <h2>British Parliamentary speech order</h2>
+  <p>University (WUDC): 7-minute speeches, POI window 1:00–6:00. High school: 5-minute speeches, POI window 0:30–4:30. All 8 positions below apply to both variants.</p>
+
+  <table class="speech-table">
+    <thead>
+      <tr><th>#</th><th>Speech</th><th>Team</th><th>Uni (7-min)</th><th>HS (5-min)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="mono">01</td><td>Prime Minister</td><td><span class="side-aff">OG</span></td><td class="mono">7:00</td><td class="mono">5:00</td></tr>
+      <tr><td class="mono">02</td><td>Leader of Opposition</td><td><span class="side-neg">OO</span></td><td class="mono">7:00</td><td class="mono">5:00</td></tr>
+      <tr><td class="mono">03</td><td>Deputy Prime Minister</td><td><span class="side-aff">OG</span></td><td class="mono">7:00</td><td class="mono">5:00</td></tr>
+      <tr><td class="mono">04</td><td>Deputy Leader of Opp.</td><td><span class="side-neg">OO</span></td><td class="mono">7:00</td><td class="mono">5:00</td></tr>
+      <tr><td class="mono">05</td><td>Member for Government</td><td><span class="side-aff">CG</span></td><td class="mono">7:00</td><td class="mono">5:00</td></tr>
+      <tr><td class="mono">06</td><td>Member for Opposition</td><td><span class="side-neg">CO</span></td><td class="mono">7:00</td><td class="mono">5:00</td></tr>
+      <tr><td class="mono">07</td><td>Government Whip</td><td><span class="side-aff">CG</span></td><td class="mono">7:00</td><td class="mono">5:00</td></tr>
+      <tr><td class="mono">08</td><td>Opposition Whip</td><td><span class="side-neg">CO</span></td><td class="mono">7:00</td><td class="mono">5:00</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Teams:</strong> OG = Opening Government · OO = Opening Opposition · CG = Closing Government · CO = Closing Opposition. No prep pool. Speeches run back-to-back.</p>
+</section>
+
+<section class="section">
+  <h2>Frequently asked questions</h2>
+  <div class="faq">
+    <details class="faq-item">
+      <summary>What are the speech times in British Parliamentary?</summary>
+      <div>University BP (WUDC) uses 7-minute speeches. High school BP uses 5-minute speeches. Both formats have 8 speeches across 4 teams in the same order.</div>
+    </details>
+    <details class="faq-item">
+      <summary>When is the POI window open in BP?</summary>
+      <div>University BP: the window opens at 1:00 and closes at 6:00, leaving one minute protected at each end. High school BP: the window opens at 0:30 and closes at 4:30, leaving 30 seconds protected at each end.</div>
+    </details>
+    <details class="faq-item">
+      <summary>Is there prep time in BP?</summary>
+      <div>No. British Parliamentary has no in-round prep pool. Teams prepare before the round starts; there is no prep between speeches.</div>
+    </details>
+    <details class="faq-item">
+      <summary>Which BP format should I use for WUDC?</summary>
+      <div>Select "British Parliamentary (Uni / WUDC)" from the format picker. It uses 7-minute speeches and a POI window from 1:00 to 6:00, matching the standard used at WUDC and most university competitions.</div>
+    </details>
+    <details class="faq-item">
+      <summary>Does the timer work for Canadian Parliamentary (CUSID)?</summary>
+      <div>Canadian Parliamentary is very close to BP University — 7-minute speeches, same POI window structure. The BP University preset covers most CUSID rounds. Asian Parliamentary (also 7-min with similar POI rules) is on the roadmap.</div>
+    </details>
+  </div>
+</section>
+
+<div class="cta-band">
+  <h2>Ready to time your next BP round?</h2>
+  <p>Free forever. No signup. Opens in any browser.</p>
+  <div class="cta-row">
+    <a class="btn-primary" href="/app/">Open timer</a>
+    <a class="btn-outline" href="/timer/world-schools/">WSDC format</a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>US Formats</h4>
+      <a href="/timer/lincoln-douglas/">Lincoln-Douglas</a>
+      <a href="/timer/policy-debate/">Policy (CX)</a>
+      <a href="/timer/public-forum/">Public Forum</a>
+      <a href="/timer/parliamentary/">Parliamentary</a>
+    </div>
+    <div class="footer-col">
+      <h4>International</h4>
+      <a href="/timer/world-schools/">World Schools (WSDC)</a>
+      <a href="/timer/british-parliamentary/">British Parliamentary</a>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="/">Home</a>
+      <a href="/app/">Open timer</a>
+    </div>
+  </div>
+  <div class="footer-row">
+    <div>
+      <a href="/" style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;">
+        <span style="width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);"></span>
+        DebateClock
+      </a>
+      <span style="margin-left:12px;">free browser debate timer</span>
+    </div>
+    <a href="https://tally.so/r/QKAMOX" target="_blank" rel="noopener" class="feedback-btn">★ Give feedback</a>
+  </div>
+</footer>
+</body>
+</html>

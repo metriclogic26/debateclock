@@ -706,37 +706,36 @@ function tick() {
       transitionToSpeech();
     }
 
-  } else if (phase === 'speech') {
-    var srem = Math.max(0, totalSpeechMs - el);
+  } else if (phase === 'speech' || phase === 'overtime') {
+    var sremRaw = totalSpeechMs - el;
+    var srem = Math.max(0, sremRaw);
+    var isOT = sremRaw < 0;
     var spct = srem / totalSpeechMs * 100;
-    var sphase = srem > 60000 ? 'go' : srem > 30000 ? 'warn' : 'critical';
-    if (srem <= 0) sphase = 'done';
-
-    clockEl.textContent = fmtMs(srem);
+    var sphase = isOT ? 'overtime' : srem > 60000 ? 'go' : srem > 30000 ? 'warn' : 'critical';
+    clockEl.textContent = isOT ? '-' + fmtMs(-sremRaw) : fmtMs(srem);
     clockEl.className = 'main-clock speech-' + sphase;
-    fillEl.className = 'progress-bar-fill speech-' + sphase;
-    fillEl.style.width = spct + '%';
-    subEl.textContent = srem > 0 ? fmtMs(el) + ' elapsed' : 'Overtime';
-
-    // Bells
+    fillEl.className = 'progress-bar-fill speech-critical';
+    fillEl.style.width = isOT ? '0%' : spct + '%';
+    subEl.textContent = isOT ? 'Overtime' : fmtMs(el) + ' elapsed';
     if (audioCtx) {
       if (!bellFlags.oneMin && srem <= 60000 && srem > 59000) { beep(660,0.2); bellFlags.oneMin = true; }
       if (!bellFlags.thirtyS && srem <= 30000 && srem > 29000) { beep(660,0.12); setTimeout(()=>beep(660,0.12),180); bellFlags.thirtyS = true; }
-      if (!bellFlags.zero && srem <= 0) { ding(); bellFlags.zero = true; }
+      if (!bellFlags.zero && isOT) { ding(); bellFlags.zero = true; }
     }
-
-    if (srem <= 0) {
-      // show done
-      running = false;
-      phase = 'done';
-      document.getElementById('phaseBadge').textContent = 'Done';
+    if (isOT && phase !== 'overtime') {
+      phase = 'overtime';
+      document.getElementById('phaseBadge').textContent = 'Overtime';
       document.getElementById('phaseBadge').className = 'running-phase-badge done';
-      document.getElementById('runningControls').style.display = 'none';
-      document.getElementById('doneOverlay').classList.add('visible');
-      var fmt = document.getElementById('formatSelect').value;
-      document.getElementById('doneMsg').textContent =
-        (motionText ? '"' + motionText.slice(0,60) + (motionText.length>60?'…':'') + '"' : 'Speech complete.');
-      return;
+      document.getElementById('skipBtn').style.display = 'none';
+      document.getElementById('adjBtn').style.display = 'none';
+      document.getElementById('playPauseBtn').textContent = '✓ Done';
+      document.getElementById('playPauseBtn').onclick = function() {
+        running = false; phase = 'done';
+        document.getElementById('runningControls').style.display = 'none';
+        document.getElementById('doneOverlay').classList.add('visible');
+        document.getElementById('doneMsg').textContent =
+          (motionText ? '"' + motionText.slice(0,60) + (motionText.length>60?'…':'') + '"' : 'Speech complete.');
+      };
     }
   }
 

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="google-site-verification" content="QnajyTO6WUy1fi-9SI5Na1QjbwBmUOQ3NcPNY-HWlFw" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shared Prep Time Pool: Why Most Debate Timers Get It Wrong | DebateClock</title>
+<meta name="description" content="A guide to shared prep time pools in Lincoln-Douglas, Policy, and Public Forum debate. Why per-speech timers fail judges, what accurate pool tracking looks like, and how to run it correctly.">
+<link rel="canonical" href="https://debateclock.org/blog/debate-timer-prep-time/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+<meta property="og:title" content="Shared Prep Time Pool: Why Most Debate Timers Get It Wrong">
+<meta property="og:description" content="Per-speech countdowns aren't how debate prep actually works. A guide for judges and coaches running LD, Policy, and PF.">
+<meta property="og:url" content="https://debateclock.org/blog/debate-timer-prep-time/">
+<meta property="og:type" content="article">
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+
+<style>
+  /* Blog-specific type tweaks */
+  .article { max-width: 720px; margin: 0 auto; padding: 40px 32px 20px; }
+  .article h1 {
+    font-size: clamp(30px, 4vw, 44px); font-weight: 700;
+    line-height: 1.15; letter-spacing: -0.02em;
+    margin: 18px 0 14px;
+  }
+  .article .meta {
+    font-size: 13px; color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 28px;
+  }
+  .article h2 {
+    font-size: clamp(22px, 2.6vw, 28px); font-weight: 600;
+    letter-spacing: -0.01em; line-height: 1.25;
+    margin: 40px 0 14px;
+  }
+  .article h3 { font-size: 18px; font-weight: 600; margin: 24px 0 10px; }
+  .article p, .article ul, .article ol {
+    color: var(--text); font-size: 16px; line-height: 1.75;
+    margin-bottom: 18px;
+  }
+  .article p strong { color: var(--text); font-weight: 600; }
+  .article ul, .article ol { margin-left: 22px; }
+  .article ul li, .article ol li { margin-bottom: 8px; }
+  .article blockquote {
+    border-left: 3px solid var(--accent);
+    padding: 8px 0 8px 20px;
+    margin: 20px 0;
+    color: var(--muted);
+    font-size: 16px;
+    font-style: italic;
+  }
+  .article code {
+    background: var(--bg2);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .article a { color: var(--accent); text-decoration: none; }
+  .article a:hover { text-decoration: underline; }
+
+  .tldr {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 26px;
+    margin: 28px 0;
+  }
+  .tldr h3 {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--green);
+    margin: 0 0 8px;
+  }
+  .tldr p { font-size: 15px; margin: 0; color: var(--muted); }
+
+  .callout {
+    background: rgba(59,130,246,0.06);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 24px 0;
+    font-size: 15px;
+    color: var(--text);
+  }
+  .callout strong { color: var(--accent); }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Shared Prep Time Pool: Why Most Debate Timers Get It Wrong",
+  "description": "A guide to shared prep time pools in Lincoln-Douglas, Policy, and Public Forum debate. Why per-speech timers fail judges, what accurate pool tracking looks like, and how to run it correctly.",
+  "author": { "@type": "Organization", "name": "DebateClock" },
+  "publisher": { "@type": "Organization", "name": "DebateClock", "url": "https://debateclock.org/" },
+  "datePublished": "2026-04-19",
+  "dateModified": "2026-04-19",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://debateclock.org/blog/debate-timer-prep-time/" }
+}
+</script>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="brand" href="/">
+    <span class="brand-dot"></span>
+    DebateClock
+  </a>
+  <div class="nav-links">
+    <a href="/timer/lincoln-douglas/">LD</a>
+    <a href="/timer/policy-debate/">Policy</a>
+    <a href="/timer/public-forum/">PF</a>
+    <a href="/timer/parliamentary/">Parli</a>
+  </div>
+  <a class="nav-cta" href="/app/">Open timer</a>
+</nav>
+
+<article class="article">
+  <div class="meta">April 2026 · 6 min read · Judging &amp; coaching</div>
+  <h1>Shared prep time pool: why most debate timers get it wrong</h1>
+
+  <div class="tldr">
+    <h3>TL;DR</h3>
+    <p>In Lincoln-Douglas, Policy, and Public Forum, prep time is a <strong>pool</strong> — each side (or each team) draws from a single allocation across the entire round. Most mobile timers treat it as a per-speech countdown, which doesn't match how the format actually works and puts the tracking burden on the judge. Tracking it properly takes a timer that stops and resumes the pool, not one that resets on every speech.</p>
+  </div>
+
+  <p>If you've ever judged a Lincoln-Douglas round and found yourself whispering "that's about 45 seconds" into a phone timer while a debater flips through flow sheets, you already know the problem. The prep in LD isn't a countdown that starts over at each speech. It's a single <strong>4-minute pool per debater</strong> that carries forward through the whole round. The affirmative might take 15 seconds before the 1AR, two full minutes before the 2AR, and the math has to balance by the end.</p>
+
+  <p>That's hard to do on the fly. And most of the tools built for debate timing don't help — they present prep as yet another countdown with a start and stop button, but they don't retain state between speeches. So judges end up tracking it manually, on paper, or in their head, which is exactly what the timer was supposed to prevent.</p>
+
+  <h2>What a prep pool actually is</h2>
+
+  <p>A prep pool is a single allocation of prep time that a debater (LD) or team (Policy, PF) can use across the entire round, at their discretion. It's called "shared" for two reasons:</p>
+
+  <ul>
+    <li><strong>Shared across speeches</strong> — the pool doesn't reset per speech. Time saved early is available later.</li>
+    <li><strong>Shared across partners</strong> (in Policy and PF only) — either debater on a team can request prep from the same pool.</li>
+  </ul>
+
+  <p>The standard amounts under NSDA rules as of the 2025-26 season:</p>
+
+  <ul>
+    <li><strong>Lincoln-Douglas:</strong> 4 minutes per debater</li>
+    <li><strong>Policy (CX):</strong> 8 minutes per team</li>
+    <li><strong>Public Forum:</strong> 3 minutes per team</li>
+    <li><strong>Parliamentary:</strong> no in-round prep (pre-round only)</li>
+  </ul>
+
+  <p>Each of those numbers is a ceiling, not a per-speech allotment. The debater decides how to spend it.</p>
+
+  <h2>Why per-speech timers fail</h2>
+
+  <p>A per-speech timer looks like this: countdown to zero, then reset. When prep starts, the display shows a 4:00 countdown. When the debater stops prep, the timer resets to 4:00 for the next speech. The judge has to remember that "actually they already used 1:15 before the 1AR, so we only have 2:45 left" — and hold that number in their head, round after round, through an entire day of judging.</p>
+
+  <p>The consequences show up predictably:</p>
+
+  <ul>
+    <li><strong>Overage by accident.</strong> A debater takes 2 minutes before a rebuttal that should have used their last 45 seconds. Neither the judge nor the debater noticed.</li>
+    <li><strong>Conservative play.</strong> Good debaters under-use their pool to avoid running out, which wastes a competitive resource.</li>
+    <li><strong>Disputes at the ballot.</strong> Post-round, someone checks the math and finds the prep arithmetic doesn't add up. The judge has to adjudicate something they were supposed to have tracked in real time.</li>
+  </ul>
+
+  <p>None of this is the debater's fault. They're running a debate. The timer is supposed to track the pool.</p>
+
+  <h2>What a pool-aware timer does differently</h2>
+
+  <p>A timer that understands pool-based prep does three things a countdown timer doesn't:</p>
+
+  <h3>1. It persists pool state across speeches</h3>
+
+  <p>When prep stops, the remaining time saves. When prep resumes, it picks up where it left off. The display for the affirmative debater might read <code>3:17</code> at the start of the round, <code>2:45</code> after some pre-1AR prep, and <code>0:58</code> by the final focus — one continuous accounting.</p>
+
+  <h3>2. It auto-pauses active prep when a speech starts</h3>
+
+  <p>This sounds obvious but most timers don't do it. When the 1NC begins, any active prep from the negative needs to stop automatically. Otherwise the pool drains while the debater is already speaking. A pool-aware timer does the bookkeeping: speech running → prep paused → prep pool saves its remaining time.</p>
+
+  <h3>3. It surfaces the pool on the debater's display</h3>
+
+  <p>The debater needs to know how much they have left without asking the judge mid-round. A proper setup shows the pool on whatever screen the debater is already watching — their laptop, their tablet — with the remaining time visible at a glance.</p>
+
+  <div class="callout">
+    <strong>The architectural difference:</strong> a per-speech timer tracks time. A pool-aware timer tracks an <em>account balance</em>. The debater makes deposits (saving prep) and withdrawals (using prep), and the balance follows them through the round.
+  </div>
+
+  <h2>Tracking manually vs. tracking automatically</h2>
+
+  <p>The workaround most judges use is a physical stopwatch plus a piece of flow paper with "Aff prep used" and "Neg prep used" columns. Tick marks after each use. It works. It also splits the judge's attention at the exact moments they need to be listening hardest — usually right before a rebuttal, when the debater is signaling "I'm taking prep" and the judge has two hands full of notes.</p>
+
+  <p>Automating it is the higher-leverage move. If the timer does the pool math, the judge can give the actual content of the debate their full attention. That's the job.</p>
+
+  <h2>How DebateClock handles it</h2>
+
+  <p>This is the feature <a href="/">DebateClock</a> was built around. Each format's prep pool is preloaded — 4 minutes per debater in LD, 8 minutes per team in Policy, 3 minutes per team in PF, none in Parliamentary. The judge taps <strong>Start Prep — Aff</strong> or <strong>Start Prep — Neg</strong> when a debater requests it. The pool counts down on both the judge's phone and the debater's display. Tap again to stop; remaining time saves.</p>
+
+  <p>The two behaviors that matter most:</p>
+
+  <ul>
+    <li><strong>Auto-pause on speech start.</strong> Hit Start on the next speech and any active prep stops itself. No double-drain.</li>
+    <li><strong>Pool persists across speeches.</strong> The pool state follows the round. When the aff has 58 seconds left going into the 2AR, that's what the display shows.</li>
+  </ul>
+
+  <p>It works on any device the judge already has — phone, laptop, tablet — and the debater sees a full-screen countdown on a separate device, synchronized in real time. No signup, no install.</p>
+
+  <div class="cta-band" style="margin-top: 40px;">
+    <h2>Try a pool-aware timer for your next round</h2>
+    <p>Free forever. No signup. Opens in any browser.</p>
+    <div class="cta-row">
+      <a class="btn-primary" href="/app/">Open timer</a>
+      <a class="btn-outline" href="/timer/lincoln-douglas/">LD format details</a>
+    </div>
+  </div>
+
+  <h2>A quick FAQ</h2>
+
+  <h3>What happens if a debater runs out of prep?</h3>
+  <p>Most formats don't allow further prep once the pool is exhausted — the debater has to proceed without it. DebateClock disables the prep button when the pool hits zero, so there's no ambiguity.</p>
+
+  <h3>Can the judge add time back if they made an accounting mistake?</h3>
+  <p>Yes. The prep reset button restores the full pool for both sides. The speech timer has <code>+30s</code> and <code>-30s</code> buttons for adjusting on the fly, and prep can be started and stopped manually to fine-tune consumption.</p>
+
+  <h3>What about flex-prep and other variants?</h3>
+  <p>DebateClock uses the standard NSDA allocations as defaults (4 / 8 / 3 minutes). For flex-prep or local variants with different pools, the judge can use the same start/stop/reset controls — the underlying pool logic doesn't care about the number. Future versions will include a format editor for leagues running non-standard timings.</p>
+
+  <h3>Does this work if I only have one device?</h3>
+  <p>Yes. The same interface runs as a single-device timer, too. The debater can watch the same screen as the judge, or the judge can tilt the screen toward them before each speech. Two-device sync is the recommended setup but it's optional.</p>
+
+</article>
+
+<footer class="site-footer">
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>Formats</h4>
+      <a href="/timer/lincoln-douglas/">Lincoln-Douglas</a>
+      <a href="/timer/policy-debate/">Policy (CX)</a>
+      <a href="/timer/public-forum/">Public Forum</a>
+      <a href="/timer/parliamentary/">Parliamentary</a>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="/">Home</a>
+      <a href="/app/">Open timer</a>
+      <a href="/app/display/">Debater display</a>
+    </div>
+    <div class="footer-col">
+      <h4>Writing</h4>
+      <a href="/blog/debate-timer-prep-time/">Prep time pools</a>
+    </div>
+  </div>
+  <div class="footer-row">
+    <div>
+      <a href="/" style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;">
+        <span style="width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);"></span>
+        DebateClock
+      </a>
+      <span style="margin-left:12px;">free browser debate timer</span>
+    </div>
+    <a href="https://tally.so/r/QKAMOX" target="_blank" rel="noopener" class="feedback-btn">★ Give feedback</a>
+  </div>
+</footer>
+
+</body>
+</html>

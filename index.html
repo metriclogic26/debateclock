@@ -167,7 +167,188 @@
   <div class="meta">LD · Policy · Public Forum · Parliamentary</div>
 </section>
 
-<section class="formats">
+
+  <!-- HOMEPAGE DEMO -->
+  <div class="demo-section">
+    <div class="demo-section-label">Live demo — see how it works</div>
+    <div class="demo-wrap">
+
+      <!-- JUDGE SIDE -->
+      <div class="demo-judge">
+        <div>
+          <div class="demo-panel-label">Judge · Controller</div>
+        </div>
+        <div>
+          <div class="demo-speech-name" id="demoSpeechName">Affirmative Constructive (AC)</div>
+          <div class="demo-speech-side" id="demoSpeechSide">Affirmative</div>
+        </div>
+        <div class="demo-judge-clock" id="demoJudgeClock">6:00</div>
+        <div class="demo-progress">
+          <div class="demo-progress-fill" id="demoProgressFill" style="width:100%"></div>
+        </div>
+        <div class="demo-btns">
+          <div class="demo-btn" style="opacity:0.4;">◀</div>
+          <div class="demo-btn primary" id="demoPauseBtn">⏸ Pause</div>
+        </div>
+
+        <div>
+          <div class="demo-prep-header">
+            <div class="demo-prep-title">Prep Time Pool</div>
+          </div>
+          <div class="demo-prep-sides">
+            <div class="demo-prep-side active-prep" id="demoPrepAff">
+              <div class="demo-prep-side-label"><span>AFF</span><span class="demo-prep-dot aff"></span></div>
+              <div class="demo-prep-clock" id="demoPrepAffClock">4:00</div>
+              <div class="demo-prep-used" id="demoPrepAffUsed">0:00 used</div>
+              <div class="demo-prep-bar"><div class="demo-prep-bar-fill" id="demoPrepAffBar" style="width:100%"></div></div>
+            </div>
+            <div class="demo-prep-side" id="demoPrepNeg">
+              <div class="demo-prep-side-label"><span>NEG</span><span class="demo-prep-dot neg"></span></div>
+              <div class="demo-prep-clock" id="demoPrepNegClock">4:00</div>
+              <div class="demo-prep-used" id="demoPrepNegUsed">0:00 used</div>
+              <div class="demo-prep-bar"><div class="demo-prep-bar-fill" id="demoPrepNegBar" style="width:100%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEBATER SIDE -->
+      <div class="demo-debater">
+        <div class="demo-debater-label">Debater · Display</div>
+        <div class="demo-debater-speech" id="demoDebaterSpeech">Affirmative Constructive (AC)</div>
+        <div class="demo-debater-side" id="demoDebaterSide">AFFIRMATIVE</div>
+        <div class="demo-big-clock" id="demoBigClock">6:00</div>
+        <div class="demo-poi-badge" id="demoPoiBadge">POI Window</div>
+        <div class="demo-debater-prep">
+          <div class="demo-debater-prep-side aff" id="demoDebaterPrepAff">
+            <span class="demo-debater-prep-dot aff"></span>
+            AFF prep <span id="demoDebaterAffTime">4:00</span>
+          </div>
+          <div class="demo-debater-prep-side neg" id="demoDebaterPrepNeg">
+            <span class="demo-debater-prep-dot neg"></span>
+            NEG prep <span id="demoDebaterNegTime">4:00</span>
+          </div>
+        </div>
+        <div class="demo-watermark">debateclock.org</div>
+      </div>
+
+    </div>
+
+    <!-- Format selector -->
+    <div class="demo-formats">
+      <div class="demo-format-tag active" data-format="LD" onclick="demoSetFormat(this)">LD</div>
+      <div class="demo-format-tag" data-format="Policy" onclick="demoSetFormat(this)">Policy</div>
+      <div class="demo-format-tag" data-format="PF" onclick="demoSetFormat(this)">PF</div>
+      <div class="demo-format-tag" data-format="WSDC" onclick="demoSetFormat(this)">WSDC</div>
+      <div class="demo-format-tag" data-format="BP" onclick="demoSetFormat(this)">BP</div>
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    // ── Demo state ──────────────────────────────────────────────
+    var FORMATS = {
+      LD:     { speech: 'Affirmative Constructive (AC)', side: 'AFFIRMATIVE', duration: 360, prep: 240, hasPOI: false },
+      Policy: { speech: '1st Aff Constructive (1AC)',   side: 'AFFIRMATIVE', duration: 480, prep: 480, hasPOI: false },
+      PF:     { speech: '1st Speaker — Team A (Pro)',   side: 'TEAM A',      duration: 240, prep: 180, hasPOI: false },
+      WSDC:   { speech: '1st Proposition',              side: 'PROPOSITION', duration: 480, prep: 0,   hasPOI: true,  poiStart: 60, poiEnd: 420 },
+      BP:     { speech: 'Prime Minister (OG)',          side: 'OPENING GOV', duration: 420, prep: 0,   hasPOI: true,  poiStart: 60, poiEnd: 360 },
+    };
+
+    var currentFmt = 'LD';
+    var startedAt = Date.now();
+    var prepAffUsed = 0;
+    var prepAffStartedAt = null;
+    var animFrame;
+
+    function fmt(ms) {
+      ms = Math.max(0, ms);
+      var s = Math.floor(ms / 1000);
+      return Math.floor(s/60) + ':' + ('0' + (s%60)).slice(-2);
+    }
+
+    function tick() {
+      var f = FORMATS[currentFmt];
+      var elapsed = (Date.now() - startedAt) / 1000;
+      var remaining = Math.max(0, f.duration - elapsed);
+      var pct = remaining / f.duration * 100;
+
+      // phase
+      var phase = remaining > 60 ? 'go' : remaining > 30 ? 'warn' : 'critical';
+      if (remaining === 0) phase = 'critical';
+
+      // speech clock
+      var clockStr = fmt(remaining * 1000);
+      document.getElementById('demoJudgeClock').textContent = clockStr;
+      document.getElementById('demoBigClock').textContent = clockStr;
+      document.getElementById('demoJudgeClock').className = 'demo-judge-clock' + (phase !== 'go' ? ' ' + phase : '');
+      document.getElementById('demoBigClock').className = 'demo-big-clock' + (phase !== 'go' ? ' ' + phase : '');
+      document.getElementById('demoDebaterSide').className = 'demo-debater-side' + (phase !== 'go' ? ' ' + phase : '');
+
+      // progress bar
+      document.getElementById('demoProgressFill').style.width = pct + '%';
+      document.getElementById('demoProgressFill').className = 'demo-progress-fill' + (phase !== 'go' ? ' ' + phase : '');
+
+      // POI badge
+      var poiVisible = false;
+      if (f.hasPOI) {
+        poiVisible = elapsed >= f.poiStart && elapsed <= f.poiEnd;
+      }
+      document.getElementById('demoPoiBadge').className = 'demo-poi-badge' + (poiVisible ? ' visible' : '');
+
+      // prep pool — aff ticks for first 30s of demo, then stops; neg untouched
+      var prepAffUsedMs = prepAffStartedAt ? prepAffUsed + (Date.now() - prepAffStartedAt) : prepAffUsed;
+      prepAffUsedMs = Math.min(prepAffUsedMs, f.prep * 1000);
+      var prepAffRem = Math.max(0, f.prep * 1000 - prepAffUsedMs);
+      var affPct = f.prep > 0 ? prepAffRem / (f.prep * 1000) * 100 : 0;
+
+      if (f.prep > 0) {
+        document.getElementById('demoPrepAffClock').textContent = fmt(prepAffRem);
+        document.getElementById('demoPrepAffUsed').textContent = fmt(prepAffUsedMs) + ' used';
+        document.getElementById('demoPrepAffBar').style.width = affPct + '%';
+        document.getElementById('demoPrepNegClock').textContent = fmt(f.prep * 1000);
+        document.getElementById('demoPrepNegUsed').textContent = '0:00 used';
+        document.getElementById('demoPrepNegBar').style.width = '100%';
+        document.getElementById('demoDebaterAffTime').textContent = fmt(prepAffRem);
+        document.getElementById('demoDebaterNegTime').textContent = fmt(f.prep * 1000);
+        document.getElementById('demoPrepAff').style.display = '';
+        document.getElementById('demoPrepNeg').style.display = '';
+        document.getElementById('demoDebaterPrepAff').parentElement.style.display = '';
+      } else {
+        document.getElementById('demoPrepAff').style.display = 'none';
+        document.getElementById('demoPrepNeg').style.display = 'none';
+      }
+
+      // loop after 75% of speech is done
+      if (elapsed > f.duration * 0.75) {
+        startedAt = Date.now();
+        prepAffUsed = 0;
+        prepAffStartedAt = f.prep > 0 ? Date.now() : null;
+      }
+
+      animFrame = requestAnimationFrame(tick);
+    }
+
+    window.demoSetFormat = function(el) {
+      document.querySelectorAll('.demo-format-tag').forEach(function(t) { t.classList.remove('active'); });
+      el.classList.add('active');
+      currentFmt = el.dataset.format;
+      var f = FORMATS[currentFmt];
+      startedAt = Date.now();
+      prepAffUsed = 0;
+      prepAffStartedAt = f.prep > 0 ? Date.now() : null;
+      document.getElementById('demoSpeechName').textContent = f.speech;
+      document.getElementById('demoSpeechSide').textContent = f.side.charAt(0) + f.side.slice(1).toLowerCase();
+      document.getElementById('demoDebaterSpeech').textContent = f.speech;
+    };
+
+    // Start demo — aff prep counts for LD
+    prepAffStartedAt = Date.now();
+    tick();
+  })();
+  </script>
+
+  <section class="formats">
   <div class="format-grid">
     <a href="/timer/lincoln-douglas/" class="format-card">
       <h3>Lincoln-Douglas</h3>

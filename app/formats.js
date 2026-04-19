@@ -134,6 +134,43 @@ export const FORMATS = {
       { id: 'ow',  label: 'Opposition Whip (CO)',             side: 'neg', duration: 300, isCX: false, poiStartSec: 30, poiEndSec: 270 },
     ],
   },
+
+  AsianParli: {
+    id: 'AsianParli',
+    name: 'Asian Parliamentary',
+    shortName: 'Asian',
+    prepPoolSeconds: { aff: 0, neg: 0 },
+    // POI window: minutes 1-6 of each 7-min constructive. Reply speeches: no POI.
+    speeches: [
+      { id: 'pm',    label: 'Prime Minister',          side: 'aff', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'lo',    label: 'Leader of Opposition',    side: 'neg', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'dpm',   label: 'Deputy Prime Minister',   side: 'aff', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'dlo',   label: 'Deputy Leader of Opp.',   side: 'neg', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'gw',    label: 'Government Whip',         side: 'aff', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'ow',    label: 'Opposition Whip',         side: 'neg', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'oreply',label: 'Opposition Reply',        side: 'neg', duration: 240, isCX: false },
+      { id: 'greply',label: 'Government Reply',        side: 'aff', duration: 240, isCX: false },
+    ],
+  },
+
+  CanadaParli: {
+    id: 'CanadaParli',
+    name: 'Canadian Parliamentary (CUSID)',
+    shortName: 'CUSID',
+    prepPoolSeconds: { aff: 0, neg: 0 },
+    // Same structure as Asian Parli. One preset covers the entire Canadian university circuit.
+    // POI window: minutes 1-6 of each 7-min speech.
+    speeches: [
+      { id: 'pm',    label: 'Prime Minister',              side: 'aff', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'lo',    label: 'Leader of Opposition',        side: 'neg', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'mg',    label: 'Member of Government',        side: 'aff', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'mo',    label: 'Member of Opposition',        side: 'neg', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'dpm',   label: 'Deputy Prime Minister',       side: 'aff', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'dlo',   label: 'Deputy Leader of Opposition', side: 'neg', duration: 420, isCX: false, poiStartSec: 60, poiEndSec: 360 },
+      { id: 'loreply',label: 'Leader of Opposition Reply', side: 'neg', duration: 240, isCX: false },
+      { id: 'pmreply',label: 'Prime Minister Reply',       side: 'aff', duration: 240, isCX: false },
+    ],
+  },
 };
 
 export const FORMAT_LIST = Object.values(FORMATS);

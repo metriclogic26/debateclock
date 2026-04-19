@@ -1,6 +1,9 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/app", "destination": "/app/", "permanent": false }
+  ],
   "rewrites": [
     { "source": "/j/:name", "destination": "/app/index.html" }
   ]

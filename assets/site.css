@@ -314,13 +314,13 @@ body {
   padding: 8px 10px;
   border-radius: 7px;
   font-size: 13px;
-  color: #8B90A0;
+  color: #C8CAD4;
   text-decoration: none;
   transition: background 0.12s, color 0.12s;
 }
 .nav-dropdown-menu a:hover {
-  background: rgba(255,255,255,0.05);
-  color: #E8EAF0;
+  background: rgba(255,255,255,0.08);
+  color: #FFFFFF;
 }
 .nav-dropdown-menu a .tag {
   font-size: 10px;

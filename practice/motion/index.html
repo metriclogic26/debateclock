@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motion Practice Timer — Free Debate Prep Timer | DebateClock</title>
+<meta name="description" content="Free debate motion practice timer. Set your prep time, type your motion, start the countdown. Auto-transitions to speech timer. LD, Policy, PF, WSDC, BP and more.">
+<link rel="canonical" href="https://debateclock.org/practice/motion/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta property="og:title" content="Motion Practice Timer — Free Debate Prep Timer">
+<meta property="og:description" content="Prep timer + speech timer in one flow. All debate formats. No signup.">
+<meta property="og:url" content="https://debateclock.org/practice/motion/">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+
+<style>
+  .practice-wrap {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  /* ── PHASE: SETUP ── */
+  .setup-card {
+    background: #111318;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .setup-card h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #E8EAF0;
+    margin: 0;
+  }
+  .setup-card h2 span { color: #22C55E; }
+
+  .field-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #5B6175;
+    margin-bottom: 8px;
+  }
+  .motion-input {
+    width: 100%;
+    background: #0A0C0F;
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: #E8EAF0;
+    line-height: 1.5;
+    resize: vertical;
+    min-height: 80px;
+    box-sizing: border-box;
+    transition: border-color 0.15s;
+  }
+  .motion-input::placeholder { color: #5B6175; }
+  .motion-input:focus { outline: none; border-color: #3B82F6; }
+
+  .recent-motions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .recent-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #5B6175;
+    margin-bottom: 4px;
+  }
+  .recent-motion-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 6px;
+    padding: 7px 12px;
+    color: #8B90A0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .recent-motion-btn:hover { border-color: rgba(255,255,255,0.14); color: #E8EAF0; }
+
+  /* format + prep row */
+  .setup-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .select-field {
+    width: 100%;
+    background: #0A0C0F;
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: #E8EAF0;
+    appearance: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: border-color 0.15s;
+  }
+  .select-field:focus { outline: none; border-color: #3B82F6; }
+
+  .prep-input-wrap {
+    position: relative;
+  }
+  .prep-input {
+    width: 100%;
+    background: #0A0C0F;
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    font-weight: 500;
+    color: #E8EAF0;
+    text-align: center;
+    box-sizing: border-box;
+    transition: border-color 0.15s;
+  }
+  .prep-input:focus { outline: none; border-color: #3B82F6; }
+  .prep-input-unit {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px;
+    color: #5B6175;
+    pointer-events: none;
+  }
+
+  .prep-presets {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .prep-preset-btn {
+    flex: 1;
+    background: #181C23;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 6px;
+    padding: 5px 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: #8B90A0;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .prep-preset-btn:hover { border-color: rgba(255,255,255,0.14); color: #E8EAF0; }
+  .prep-preset-btn.active { border-color: #3B82F6; color: #3B82F6; }
+
+  .start-btn {
+    width: 100%;
+    background: #22C55E;
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #04140a;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .start-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+  .start-btn:active { transform: translateY(0); }
+  .start-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* ── PHASE: RUNNING ── */
+  .running-card {
+    background: #0A0C0F;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    display: none;
+  }
+  .running-card.visible { display: block; }
+
+  .running-header {
+    background: #111318;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .running-phase-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(59,130,246,0.15);
+    color: #3B82F6;
+  }
+  .running-phase-badge.speech {
+    background: rgba(34,197,94,0.15);
+    color: #22C55E;
+  }
+  .running-phase-badge.done {
+    background: rgba(91,97,117,0.3);
+    color: #8B90A0;
+  }
+  .running-reset-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: #8B90A0;
+    cursor: pointer;
+  }
+  .running-reset-btn:hover { color: #E8EAF0; border-color: rgba(255,255,255,0.14); }
+
+  .motion-display {
+    padding: 16px 20px 0;
+    font-size: 13px;
+    color: #8B90A0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .motion-display.hidden { display: none; }
+
+  .clock-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px 24px;
+    gap: 8px;
+  }
+  .clock-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #5B6175;
+  }
+  .main-clock {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(80px, 22vw, 140px);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: #3B82F6;
+    text-align: center;
+  }
+  .main-clock.speech-go { color: #22C55E; }
+  .main-clock.speech-warn { color: #F59E0B; }
+  .main-clock.speech-critical { color: #EF4444; }
+  .main-clock.speech-done { color: #5B6175; }
+
+  .clock-sub {
+    font-size: 13px;
+    color: #5B6175;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .progress-bar-wrap {
+    padding: 0 20px;
+    margin-bottom: 4px;
+  }
+  .progress-bar {
+    height: 4px;
+    background: #1E232D;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.5s linear, background 0.4s;
+    background: #3B82F6;
+  }
+  .progress-bar-fill.speech-go { background: #22C55E; }
+  .progress-bar-fill.speech-warn { background: #F59E0B; }
+  .progress-bar-fill.speech-critical { background: #EF4444; }
+
+  .running-controls {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 8px;
+    padding: 16px 20px 20px;
+  }
+  .run-btn {
+    background: #181C23;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 12px 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #E8EAF0;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+  }
+  .run-btn:hover { border-color: rgba(255,255,255,0.14); background: #1E232D; }
+  .run-btn.primary { background: #22C55E; color: #04140a; border-color: #22C55E; }
+  .run-btn.primary:hover { opacity: 0.92; }
+  .run-btn.primary.paused { background: #3B82F6; border-color: #3B82F6; color: #fff; }
+  .run-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  /* done state */
+  .done-overlay {
+    text-align: center;
+    padding: 32px 20px;
+    display: none;
+  }
+  .done-overlay.visible { display: block; }
+  .done-overlay h3 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .done-overlay p { color: #8B90A0; font-size: 14px; margin-bottom: 24px; }
+  .done-again-btn {
+    background: #22C55E;
+    border: none;
+    border-radius: 10px;
+    padding: 14px 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #04140a;
+    cursor: pointer;
+    margin-right: 8px;
+  }
+  .done-new-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 14px 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #E8EAF0;
+    cursor: pointer;
+  }
+
+  @media (max-width: 480px) {
+    .setup-row { grid-template-columns: 1fr; }
+    .running-controls { grid-template-columns: 1fr 2fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="brand" href="/"><span class="brand-dot"></span>DebateClock</a>
+  <div class="nav-links">
+    <a href="/app/">Timer</a>
+    <a href="/practice/motion/" style="color:var(--text);">Practice</a>
+    <a href="/timer/lincoln-douglas/">LD</a>
+    <a href="/timer/world-schools/">WSDC</a>
+  </div>
+  <a class="nav-cta" href="/app/">Competition timer</a>
+</nav>
+
+<div class="practice-wrap">
+
+  <div style="margin-bottom:28px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#5B6175;margin-bottom:8px;">Practice Tool</div>
+    <h1 style="font-size:26px;font-weight:700;color:#E8EAF0;margin:0 0 8px;">Motion practice timer</h1>
+    <p style="font-size:14px;color:#8B90A0;margin:0;">Prep countdown → speech timer in one flow. Type your motion, set your format, go.</p>
+  </div>
+
+  <!-- SETUP CARD -->
+  <div class="setup-card" id="setupCard">
+    <div>
+      <div class="field-label">Motion</div>
+      <textarea class="motion-input" id="motionInput" placeholder="This House Would abolish standardised testing…" rows="3"></textarea>
+      <div id="recentMotionsWrap" style="display:none;margin-top:8px;">
+        <div class="recent-label">Recent</div>
+        <div class="recent-motions" id="recentMotionsList"></div>
+      </div>
+    </div>
+
+    <div class="setup-row">
+      <div>
+        <div class="field-label">Format</div>
+        <select class="select-field" id="formatSelect">
+          <option value="LD">Lincoln-Douglas (7 min)</option>
+          <option value="Policy">Policy (8 min)</option>
+          <option value="PF">Public Forum (4 min)</option>
+          <option value="Parli">Parliamentary (7 min)</option>
+          <option value="WSDC" selected>World Schools (8 min)</option>
+          <option value="BP">British Parliamentary (7 min)</option>
+          <option value="Asian">Asian Parliamentary (7 min)</option>
+          <option value="custom">Custom…</option>
+        </select>
+      </div>
+      <div>
+        <div class="field-label">Prep time</div>
+        <div class="prep-input-wrap">
+          <input class="prep-input" type="number" id="prepInput" value="15" min="1" max="60">
+          <span class="prep-input-unit">min</span>
+        </div>
+        <div class="prep-presets">
+          <button class="prep-preset-btn" onclick="setPrep(5)">5m</button>
+          <button class="prep-preset-btn" onclick="setPrep(10)">10m</button>
+          <button class="prep-preset-btn active" onclick="setPrep(15)">15m</button>
+          <button class="prep-preset-btn" onclick="setPrep(30)">30m</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom speech time (hidden unless custom selected) -->
+    <div id="customTimeWrap" style="display:none;">
+      <div class="field-label">Speech time (minutes)</div>
+      <input class="prep-input" type="number" id="customTimeInput" value="7" min="1" max="30" style="text-align:left;padding-left:14px;">
+    </div>
+
+    <button class="start-btn" id="startBtn" onclick="startSession()">Start prep — 15 min</button>
+  </div>
+
+  <!-- RUNNING CARD -->
+  <div class="running-card" id="runningCard">
+    <div class="running-header">
+      <div class="running-phase-badge" id="phaseBadge">Prep Time</div>
+      <button class="running-reset-btn" onclick="resetSession()">↺ Reset</button>
+    </div>
+
+    <div class="motion-display" id="motionDisplay"></div>
+
+    <div class="clock-area">
+      <div class="clock-label" id="clockLabel">PREP REMAINING</div>
+      <div class="main-clock" id="mainClock">15:00</div>
+      <div class="clock-sub" id="clockSub"></div>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-bar">
+        <div class="progress-bar-fill" id="progressFill" style="width:100%"></div>
+      </div>
+    </div>
+
+    <div class="running-controls" id="runningControls">
+      <button class="run-btn" id="skipBtn" onclick="skipToSpeech()">Skip →</button>
+      <button class="run-btn primary" id="playPauseBtn" onclick="togglePause()">⏸ Pause</button>
+      <button class="run-btn" id="adjBtn" onclick="adj30()" style="font-size:11px;">+30s</button>
+    </div>
+
+    <div class="done-overlay" id="doneOverlay">
+      <h3>Time's up ✓</h3>
+      <p id="doneMsg">Speech complete.</p>
+      <button class="done-again-btn" onclick="practiceAgain()">Same motion again</button>
+      <button class="done-new-btn" onclick="resetSession()">New motion</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="site-disclaimer">
+  Informational timing aid only &middot; Not affiliated with NSDA, WUDC, WSDC, CUSID, or Tabroom &middot; Always defer to the tournament director for timing disputes &middot; <a href="/terms/">Terms &amp; Privacy</a>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>Practice</h4>
+      <a href="/practice/motion/">Motion timer</a>
+    </div>
+    <div class="footer-col">
+      <h4>Competition</h4>
+      <a href="/app/">Two-device timer</a>
+      <a href="/setup/judge-paradigm/">Tabroom setup</a>
+    </div>
+    <div class="footer-col">
+      <h4>Formats</h4>
+      <a href="/timer/lincoln-douglas/">Lincoln-Douglas</a>
+      <a href="/timer/world-schools/">World Schools</a>
+      <a href="/timer/british-parliamentary/">British Parliamentary</a>
+    </div>
+  </div>
+  <div class="footer-row">
+    <div>
+      <a href="/" style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;">
+        <span style="width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);"></span>
+        DebateClock
+      </a>
+      <span style="margin-left:12px;">free browser debate timer</span>
+    </div>
+    <a href="https://tally.so/r/QKAMOX" target="_blank" rel="noopener" class="feedback-btn">★ Give feedback</a>
+  </div>
+</footer>
+
+<script>
+// ── Format speech times ──────────────────────────────────────
+var FORMAT_SPEECH = {
+  LD: 420, Policy: 480, PF: 240, Parli: 420,
+  WSDC: 480, BP: 420, Asian: 420, custom: 0
+};
+
+// ── State ────────────────────────────────────────────────────
+var phase = 'setup'; // setup | prep | speech | done
+var running = false;
+var startedAt = null;
+var pausedElapsed = 0;
+var totalPrepMs = 0;
+var totalSpeechMs = 0;
+var motionText = '';
+var raf;
+
+// ── Audio ────────────────────────────────────────────────────
+var audioCtx = null;
+function unlockAudio() {
+  if (audioCtx) return;
+  try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+}
+function beep(freq, dur, vol) {
+  if (!audioCtx) return;
+  var o = audioCtx.createOscillator();
+  var g = audioCtx.createGain();
+  o.type = 'sine'; o.frequency.value = freq;
+  g.gain.setValueAtTime(vol||0.2, audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+  o.connect(g); g.connect(audioCtx.destination);
+  o.start(); o.stop(audioCtx.currentTime + dur);
+}
+function ding() { beep(880,0.15,0.22); setTimeout(()=>beep(1320,0.25,0.18),120); }
+function prepEndBell() { beep(660,0.2,0.2); setTimeout(()=>beep(660,0.2,0.2),250); setTimeout(()=>beep(880,0.3,0.22),500); }
+
+// ── Recent motions (localStorage) ────────────────────────────
+var STORAGE_KEY = 'debateclock:motions';
+function loadRecent() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) { return []; }
+}
+function saveMotion(text) {
+  if (!text.trim()) return;
+  var list = loadRecent().filter(function(m){ return m !== text; });
+  list.unshift(text);
+  list = list.slice(0, 5);
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); } catch(e) {}
+}
+function renderRecent() {
+  var list = loadRecent();
+  var wrap = document.getElementById('recentMotionsWrap');
+  var container = document.getElementById('recentMotionsList');
+  if (!list.length) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  container.innerHTML = '';
+  list.forEach(function(m) {
+    var btn = document.createElement('button');
+    btn.className = 'recent-motion-btn';
+    btn.textContent = m;
+    btn.onclick = function() { document.getElementById('motionInput').value = m; };
+    container.appendChild(btn);
+  });
+}
+
+// ── Format select handler ─────────────────────────────────────
+document.getElementById('formatSelect').addEventListener('change', function() {
+  var isCustom = this.value === 'custom';
+  document.getElementById('customTimeWrap').style.display = isCustom ? 'block' : 'none';
+});
+
+// ── Prep presets ──────────────────────────────────────────────
+function setPrep(mins) {
+  document.getElementById('prepInput').value = mins;
+  document.querySelectorAll('.prep-preset-btn').forEach(function(b) {
+    b.classList.toggle('active', b.textContent === mins + 'm');
+  });
+  updateStartBtn();
+}
+
+// ── Sync start button label ───────────────────────────────────
+function updateStartBtn() {
+  var mins = parseInt(document.getElementById('prepInput').value) || 15;
+  document.getElementById('startBtn').textContent = 'Start prep — ' + mins + ' min';
+}
+document.getElementById('prepInput').addEventListener('input', updateStartBtn);
+
+// ── Elapsed ───────────────────────────────────────────────────
+function elapsed() {
+  if (!running || !startedAt) return pausedElapsed;
+  return pausedElapsed + (Date.now() - startedAt);
+}
+
+// ── Start session ─────────────────────────────────────────────
+function startSession() {
+  unlockAudio();
+  motionText = document.getElementById('motionInput').value.trim();
+  saveMotion(motionText);
+
+  var fmt = document.getElementById('formatSelect').value;
+  var speechSecs = fmt === 'custom'
+    ? (parseInt(document.getElementById('customTimeInput').value) || 7) * 60
+    : FORMAT_SPEECH[fmt] / 1;
+  var prepMins = parseInt(document.getElementById('prepInput').value) || 15;
+
+  totalPrepMs = prepMins * 60 * 1000;
+  totalSpeechMs = speechSecs * 1000;
+  pausedElapsed = 0;
+  startedAt = Date.now();
+  running = true;
+  phase = 'prep';
+
+  document.getElementById('setupCard').style.display = 'none';
+  document.getElementById('runningCard').classList.add('visible');
+  document.getElementById('motionDisplay').textContent = motionText || '';
+  document.getElementById('motionDisplay').classList.toggle('hidden', !motionText);
+  document.getElementById('skipBtn').style.display = '';
+  document.getElementById('adjBtn').textContent = '+30s';
+  document.getElementById('adjBtn').onclick = function(){ adj30(); };
+  document.getElementById('doneOverlay').classList.remove('visible');
+  document.getElementById('runningControls').style.display = '';
+
+  tick();
+}
+
+// ── Toggle pause ──────────────────────────────────────────────
+function togglePause() {
+  unlockAudio();
+  if (running) {
+    pausedElapsed = elapsed();
+    startedAt = null;
+    running = false;
+    document.getElementById('playPauseBtn').textContent = '▶ Resume';
+    document.getElementById('playPauseBtn').classList.add('paused');
+  } else {
+    startedAt = Date.now();
+    running = true;
+    document.getElementById('playPauseBtn').textContent = '⏸ Pause';
+    document.getElementById('playPauseBtn').classList.remove('paused');
+    tick();
+  }
+}
+
+// ── Skip to speech ────────────────────────────────────────────
+function skipToSpeech() {
+  unlockAudio();
+  transitionToSpeech();
+}
+
+function transitionToSpeech() {
+  phase = 'speech';
+  pausedElapsed = 0;
+  startedAt = running ? Date.now() : null;
+  prepEndBell();
+
+  document.getElementById('phaseBadge').textContent = 'Speech';
+  document.getElementById('phaseBadge').className = 'running-phase-badge speech';
+  document.getElementById('clockLabel').textContent = 'SPEECH REMAINING';
+  document.getElementById('skipBtn').style.display = 'none';
+  document.getElementById('adjBtn').textContent = '−30s';
+  document.getElementById('adjBtn').onclick = function(){ adjSpeech(-30000); };
+  if (running) {
+    document.getElementById('playPauseBtn').textContent = '⏸ Pause';
+    document.getElementById('playPauseBtn').classList.remove('paused');
+  }
+}
+
+// ── Adjust time ───────────────────────────────────────────────
+function adj30() {
+  // During prep: add 30s to prep total
+  totalPrepMs += 30000;
+}
+function adjSpeech(deltaMs) {
+  // deltaMs < 0 = subtract time (speed up speech expiry)
+  pausedElapsed = Math.max(0, elapsed() - deltaMs);
+  if (running) startedAt = Date.now();
+}
+
+// ── Main tick ─────────────────────────────────────────────────
+var bellFlags = { oneMin: false, thirtyS: false, zero: false };
+
+function tick() {
+  if (!running) return;
+
+  var el = elapsed();
+  var clockEl = document.getElementById('mainClock');
+  var fillEl = document.getElementById('progressFill');
+  var subEl = document.getElementById('clockSub');
+
+  if (phase === 'prep') {
+    var rem = Math.max(0, totalPrepMs - el);
+    clockEl.textContent = fmtMs(rem);
+    clockEl.className = 'main-clock';
+    fillEl.className = 'progress-bar-fill';
+    fillEl.style.width = (rem / totalPrepMs * 100) + '%';
+    subEl.textContent = fmtMs(el) + ' elapsed';
+
+    if (rem <= 0) {
+      transitionToSpeech();
+    }
+
+  } else if (phase === 'speech') {
+    var srem = Math.max(0, totalSpeechMs - el);
+    var spct = srem / totalSpeechMs * 100;
+    var sphase = srem > 60000 ? 'go' : srem > 30000 ? 'warn' : 'critical';
+    if (srem <= 0) sphase = 'done';
+
+    clockEl.textContent = fmtMs(srem);
+    clockEl.className = 'main-clock speech-' + sphase;
+    fillEl.className = 'progress-bar-fill speech-' + sphase;
+    fillEl.style.width = spct + '%';
+    subEl.textContent = srem > 0 ? fmtMs(el) + ' elapsed' : 'Overtime';
+
+    // Bells
+    if (audioCtx) {
+      if (!bellFlags.oneMin && srem <= 60000 && srem > 59000) { beep(660,0.2); bellFlags.oneMin = true; }
+      if (!bellFlags.thirtyS && srem <= 30000 && srem > 29000) { beep(660,0.12); setTimeout(()=>beep(660,0.12),180); bellFlags.thirtyS = true; }
+      if (!bellFlags.zero && srem <= 0) { ding(); bellFlags.zero = true; }
+    }
+
+    if (srem <= 0) {
+      // show done
+      running = false;
+      phase = 'done';
+      document.getElementById('phaseBadge').textContent = 'Done';
+      document.getElementById('phaseBadge').className = 'running-phase-badge done';
+      document.getElementById('runningControls').style.display = 'none';
+      document.getElementById('doneOverlay').classList.add('visible');
+      var fmt = document.getElementById('formatSelect').value;
+      document.getElementById('doneMsg').textContent =
+        (motionText ? '"' + motionText.slice(0,60) + (motionText.length>60?'…':'') + '"' : 'Speech complete.');
+      return;
+    }
+  }
+
+  raf = requestAnimationFrame(tick);
+}
+
+// ── Practice again (same motion) ─────────────────────────────
+function practiceAgain() {
+  unlockAudio();
+  bellFlags = { oneMin: false, thirtyS: false, zero: false };
+  pausedElapsed = 0;
+  startedAt = Date.now();
+  running = true;
+  phase = 'prep';
+
+  document.getElementById('phaseBadge').textContent = 'Prep Time';
+  document.getElementById('phaseBadge').className = 'running-phase-badge';
+  document.getElementById('clockLabel').textContent = 'PREP REMAINING';
+  document.getElementById('skipBtn').style.display = '';
+  document.getElementById('adjBtn').textContent = '+30s';
+  document.getElementById('adjBtn').onclick = function(){ adj30(); };
+  document.getElementById('playPauseBtn').textContent = '⏸ Pause';
+  document.getElementById('playPauseBtn').classList.remove('paused');
+  document.getElementById('doneOverlay').classList.remove('visible');
+  document.getElementById('runningControls').style.display = '';
+  tick();
+}
+
+// ── Reset ─────────────────────────────────────────────────────
+function resetSession() {
+  cancelAnimationFrame(raf);
+  running = false; phase = 'setup'; pausedElapsed = 0; startedAt = null;
+  bellFlags = { oneMin: false, thirtyS: false, zero: false };
+  document.getElementById('runningCard').classList.remove('visible');
+  document.getElementById('setupCard').style.display = 'flex';
+  document.getElementById('doneOverlay').classList.remove('visible');
+  renderRecent();
+}
+
+// ── Format clock ──────────────────────────────────────────────
+function fmtMs(ms) {
+  ms = Math.max(0, ms);
+  var s = Math.floor(ms / 1000);
+  return Math.floor(s/60) + ':' + ('0'+(s%60)).slice(-2);
+}
+
+// ── Init ──────────────────────────────────────────────────────
+document.addEventListener('click', unlockAudio, { once: true });
+renderRecent();
+updateStartBtn();
+</script>
+
+</body>
+</html>

@@ -97,7 +97,8 @@
     transition: border-color 0.2s;
   }
   .format-card:hover { border-color: rgba(255,255,255,0.14); }
-  .format-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .format-card { text-decoration: none; color: inherit; display: block; }
+  .format-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
   .format-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
   .format-card .prep { margin-top: 10px; font-family: 'DM Mono', monospace;
     font-size: 12px; color: var(--green); }
@@ -133,8 +134,24 @@
     <span class="brand-dot"></span>
     DebateClock
   </a>
+  <div class="nav-links-inline">
+    <a href="/timer/lincoln-douglas/">LD</a>
+    <a href="/timer/policy-debate/">Policy</a>
+    <a href="/timer/public-forum/">PF</a>
+    <a href="/timer/parliamentary/">Parli</a>
+    <a href="/blog/debate-timer-prep-time/">Blog</a>
+  </div>
   <a class="nav-cta" href="/app/">Open timer</a>
 </nav>
+<style>
+  .nav-links-inline { display: flex; gap: 20px; }
+  .nav-links-inline a {
+    color: var(--muted); text-decoration: none; font-size: 14px;
+    transition: color 0.15s;
+  }
+  .nav-links-inline a:hover { color: var(--text); }
+  @media (max-width: 720px) { .nav-links-inline { display: none; } }
+</style>
 
 <section class="hero">
   <div class="badge"><span class="badge-dot"></span>Free forever · no signup</div>
@@ -152,26 +169,26 @@
 
 <section class="formats">
   <div class="format-grid">
-    <div class="format-card">
+    <a href="/timer/lincoln-douglas/" class="format-card">
       <h3>Lincoln-Douglas</h3>
       <p>AC · NC · 1AR · NR · 2AR, with CX between constructives.</p>
       <div class="prep">4 min prep per debater</div>
-    </div>
-    <div class="format-card">
+    </a>
+    <a href="/timer/policy-debate/" class="format-card">
       <h3>Policy (CX)</h3>
       <p>1AC through 2AR with CX between each constructive.</p>
       <div class="prep">8 min prep per team</div>
-    </div>
-    <div class="format-card">
+    </a>
+    <a href="/timer/public-forum/" class="format-card">
       <h3>Public Forum</h3>
       <p>Constructives · Crossfires · Summaries · Grand Crossfire · Final Focus.</p>
       <div class="prep">3 min prep per team</div>
-    </div>
-    <div class="format-card">
+    </a>
+    <a href="/timer/parliamentary/" class="format-card">
       <h3>Parliamentary</h3>
       <p>PMC · LOC · MGC · MOC · LOR · PMR with POI windows.</p>
       <div class="prep">No prep time</div>
-    </div>
+    </a>
   </div>
 </section>
 

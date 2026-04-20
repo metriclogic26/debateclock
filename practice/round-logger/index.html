@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice Round Logger — Track Speech Times | DebateClock</title>
+<meta name="description" content="Free debate practice round logger. Track actual vs allowed speech times. Export a CSV summary for coach feedback. All formats supported.">
+<link rel="canonical" href="https://debateclock.org/practice/round-logger/">
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+  .logger-wrap { max-width: 760px; margin: 0 auto; padding: 28px 20px 80px; }
+
+  /* setup */
+  .setup-row {
+    display: flex; gap: 12px; align-items: flex-end;
+    flex-wrap: wrap; margin-bottom: 24px;
+  }
+  .setup-group { display: flex; flex-direction: column; gap: 5px; }
+  .setup-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #5B6175;
+  }
+  .setup-select {
+    background: #111318; border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 8px; padding: 9px 14px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; color: #E8EAF0;
+    cursor: pointer;
+  }
+  .setup-select:focus { outline: none; border-color: #3B82F6; }
+  .start-round-btn {
+    background: #22C55E; border: none; border-radius: 8px;
+    padding: 10px 24px; font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 700; color: #04140a;
+    cursor: pointer; transition: opacity 0.15s;
+  }
+  .start-round-btn:hover { opacity: 0.9; }
+
+  /* speech rows */
+  .speech-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+
+  .speech-row-item {
+    background: #111318;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: 28px 1fr auto auto auto;
+    align-items: center;
+    gap: 12px;
+    transition: border-color 0.2s;
+  }
+  .speech-row-item.active {
+    border-color: #3B82F6;
+    background: rgba(59,130,246,0.06);
+  }
+  .speech-row-item.done-ok   { border-color: rgba(34,197,94,0.3); }
+  .speech-row-item.done-warn { border-color: rgba(245,158,11,0.3); }
+  .speech-row-item.done-over { border-color: rgba(239,68,68,0.3); }
+
+  .row-num {
+    font-family: 'DM Mono', monospace; font-size: 12px;
+    color: #5B6175; font-weight: 500;
+  }
+  .row-label { font-size: 14px; font-weight: 600; color: #E8EAF0; }
+  .row-label .side-tag {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+    padding: 2px 6px; border-radius: 4px; margin-left: 6px;
+    text-transform: uppercase;
+  }
+  .side-tag.aff { background: rgba(34,197,94,0.12); color: #22C55E; }
+  .side-tag.neg { background: rgba(239,68,68,0.12); color: #EF4444; }
+  .side-tag.cx  { background: rgba(245,158,11,0.12); color: #F59E0B; }
+
+  .row-allowed {
+    font-family: 'DM Mono', monospace; font-size: 13px; color: #5B6175;
+    white-space: nowrap;
+  }
+  .row-actual {
+    font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 500;
+    color: #E8EAF0; min-width: 52px; text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .row-actual.running { color: #3B82F6; }
+  .row-actual.ok   { color: #22C55E; }
+  .row-actual.warn { color: #F59E0B; }
+  .row-actual.over { color: #EF4444; }
+
+  .row-btn {
+    background: #181C23; border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 7px; padding: 7px 14px;
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+    color: #E8EAF0; cursor: pointer; white-space: nowrap;
+    transition: all 0.15s; min-width: 72px; text-align: center;
+  }
+  .row-btn.start { background: #22C55E; color: #04140a; border-color: #22C55E; }
+  .row-btn.stop  { background: #EF4444; color: #fff; border-color: #EF4444; }
+  .row-btn.skip  { color: #5B6175; font-weight: 400; }
+  .row-btn:hover { opacity: 0.9; }
+  .row-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  /* diff badge */
+  .row-diff {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    padding: 2px 7px; border-radius: 4px; white-space: nowrap;
+  }
+  .row-diff.ok   { background: rgba(34,197,94,0.12); color: #22C55E; }
+  .row-diff.warn { background: rgba(245,158,11,0.12); color: #F59E0B; }
+  .row-diff.over { background: rgba(239,68,68,0.12); color: #EF4444; }
+  .row-diff.skip { background: rgba(91,97,117,0.15); color: #5B6175; }
+
+  /* summary */
+  .summary-card {
+    background: #111318; border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px; padding: 24px; display: none;
+  }
+  .summary-card.visible { display: block; }
+  .summary-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
+  }
+  .summary-header h2 { font-size: 18px; font-weight: 700; }
+  .summary-actions { display: flex; gap: 8px; }
+  .export-btn {
+    background: #3B82F6; border: none; border-radius: 8px;
+    padding: 8px 18px; font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 600; color: #fff;
+    cursor: pointer; transition: opacity 0.15s;
+  }
+  .export-btn:hover { opacity: 0.9; }
+  .new-round-btn {
+    background: transparent; border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px; padding: 8px 18px;
+    font-family: 'DM Sans', sans-serif; font-size: 13px;
+    font-weight: 600; color: #E8EAF0; cursor: pointer;
+  }
+
+  .summary-table {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+  }
+  .summary-table th {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #5B6175;
+    padding: 6px 10px; text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .summary-table td {
+    padding: 10px 10px; color: #E8EAF0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-family: 'DM Mono', monospace; font-size: 13px;
+  }
+  .summary-table td:first-child { font-family: 'DM Sans', sans-serif; }
+  .summary-table tr:last-child td { border-bottom: none; }
+
+  .stat-row {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; margin-top: 20px;
+  }
+  .stat-box {
+    background: #0A0C0F; border-radius: 10px; padding: 14px;
+    text-align: center;
+  }
+  .stat-box .stat-val {
+    font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .stat-box .stat-label { font-size: 11px; color: #5B6175; }
+
+  @media (max-width: 560px) {
+    .speech-row-item { grid-template-columns: 24px 1fr auto auto; }
+    .row-allowed { display: none; }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="brand" href="/"><span class="brand-dot"></span>DebateClock</a>
+  <div class="nav-links">
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-trigger">Competition ▾</button>
+      <div class="nav-dropdown-menu">
+        <div class="nav-dropdown-section">Timer</div>
+        <a href="/app/">Two-device timer <span class="tag">Live</span></a>
+        <a href="/setup/judge-paradigm/">Tabroom paradigm setup</a>
+        <div class="nav-dropdown-section">US Formats</div>
+        <a href="/timer/lincoln-douglas/">Lincoln-Douglas</a>
+        <a href="/timer/policy-debate/">Policy (CX)</a>
+        <a href="/timer/public-forum/">Public Forum</a>
+        <a href="/timer/parliamentary/">Parliamentary</a>
+        <div class="nav-dropdown-section">International</div>
+        <a href="/timer/world-schools/">World Schools (WSDC)</a>
+        <a href="/timer/british-parliamentary/">British Parliamentary</a>
+        <a href="/timer/asian-parliamentary/">Asian Parliamentary</a>
+        <a href="/timer/canadian-parliamentary/">Canadian (CUSID)</a>
+      </div>
+    </div>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-trigger">Practice ▾</button>
+      <div class="nav-dropdown-menu">
+        <div class="nav-dropdown-section">Practice Tools</div>
+        <a href="/practice/motion/">Motion practice timer <span class="tag">New</span></a>
+        <a href="/practice/extemp/">Extemp prep room clock <span class="tag">New</span></a>
+        <a href="/practice/round-logger/">Round logger <span class="tag">New</span></a>
+      </div>
+    </div>
+  </div>
+  <a class="nav-cta" href="/app/">Competition timer</a>
+</nav>
+
+<div class="logger-wrap">
+  <div style="margin-bottom:24px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#5B6175;margin-bottom:8px;">Practice Tool</div>
+    <h1 style="font-size:26px;font-weight:700;color:#E8EAF0;margin:0 0 8px;">Practice round logger</h1>
+    <p style="font-size:14px;color:#8B90A0;margin:0;">Track actual vs allowed speech times. Export a summary for coach feedback after the round.</p>
+  </div>
+
+  <!-- SETUP -->
+  <div class="setup-row" id="setupRow">
+    <div class="setup-group">
+      <div class="setup-label">Format</div>
+      <select class="setup-select" id="formatSelect">
+        <option value="LD">Lincoln-Douglas</option>
+        <option value="Policy">Policy (CX)</option>
+        <option value="PF">Public Forum</option>
+        <option value="Parli">Parliamentary</option>
+        <option value="WSDC">World Schools (WSDC)</option>
+        <option value="BP">British Parliamentary</option>
+        <option value="Asian">Asian Parliamentary</option>
+        <option value="CUSID">Canadian (CUSID)</option>
+      </select>
+    </div>
+    <button class="start-round-btn" onclick="startRound()">Start round</button>
+  </div>
+
+  <!-- SPEECH ROWS -->
+  <div class="speech-rows" id="speechRows" style="display:none;"></div>
+
+  <!-- SUMMARY -->
+  <div class="summary-card" id="summaryCard">
+    <div class="summary-header">
+      <h2>Round summary</h2>
+      <div class="summary-actions">
+        <button class="export-btn" onclick="exportCSV()">&#11015; Export CSV</button>
+        <button class="new-round-btn" onclick="newRound()">New round</button>
+      </div>
+    </div>
+    <table class="summary-table" id="summaryTable"></table>
+    <div class="stat-row" id="statRow"></div>
+  </div>
+</div>
+
+<div class="site-disclaimer">
+  Informational timing aid only &middot; Not affiliated with NSDA, WUDC, WSDC, CUSID, or Tabroom &middot; Always defer to the tournament director for timing disputes &middot; <a href="/terms/">Terms &amp; Privacy</a>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>Practice Tools</h4>
+      <a href="/practice/motion/">Motion timer</a>
+      <a href="/practice/extemp/">Extemp prep room</a>
+      <a href="/practice/round-logger/">Round logger</a>
+    </div>
+    <div class="footer-col">
+      <h4>Competition</h4>
+      <a href="/app/">Two-device timer</a>
+      <a href="/setup/judge-paradigm/">Tabroom setup</a>
+    </div>
+    <div class="footer-col">
+      <h4>Formats</h4>
+      <a href="/timer/lincoln-douglas/">Lincoln-Douglas</a>
+      <a href="/timer/world-schools/">World Schools</a>
+    </div>
+  </div>
+  <div class="footer-row">
+    <div>
+      <a href="/" style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;">
+        <span style="width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);"></span>
+        DebateClock
+      </a>
+      <span style="margin-left:12px;">free browser debate timer</span>
+    </div>
+    <a href="https://tally.so/r/QKAMOX" target="_blank" rel="noopener" class="feedback-btn">★ Give feedback</a>
+  </div>
+</footer>
+
+<script>
+var FORMATS = {
+  LD: { name:'Lincoln-Douglas', speeches:[
+    {label:'Affirmative Constructive (AC)',side:'aff',dur:360},
+    {label:'Neg CX of Aff',side:'cx',dur:180},
+    {label:'Negative Constructive (NC)',side:'neg',dur:420},
+    {label:'Aff CX of Neg',side:'cx',dur:180},
+    {label:'1st Affirmative Rebuttal (1AR)',side:'aff',dur:240},
+    {label:'Negative Rebuttal (NR)',side:'neg',dur:360},
+    {label:'2nd Affirmative Rebuttal (2AR)',side:'aff',dur:180},
+  ]},
+  Policy: { name:'Policy (CX)', speeches:[
+    {label:'1AC',side:'aff',dur:480},{label:'Neg CX',side:'cx',dur:180},
+    {label:'1NC',side:'neg',dur:480},{label:'Aff CX',side:'cx',dur:180},
+    {label:'2AC',side:'aff',dur:480},{label:'Neg CX',side:'cx',dur:180},
+    {label:'2NC',side:'neg',dur:480},{label:'Aff CX',side:'cx',dur:180},
+    {label:'1NR',side:'neg',dur:300},{label:'1AR',side:'aff',dur:300},
+    {label:'2NR',side:'neg',dur:300},{label:'2AR',side:'aff',dur:180},
+  ]},
+  PF: { name:'Public Forum', speeches:[
+    {label:'1st Speaker A',side:'aff',dur:240},{label:'1st Speaker B',side:'neg',dur:240},
+    {label:'Crossfire #1',side:'cx',dur:180},
+    {label:'2nd Speaker A',side:'aff',dur:240},{label:'2nd Speaker B',side:'neg',dur:240},
+    {label:'Crossfire #2',side:'cx',dur:180},
+    {label:'Summary A',side:'aff',dur:180},{label:'Summary B',side:'neg',dur:180},
+    {label:'Grand Crossfire',side:'cx',dur:180},
+    {label:'Final Focus A',side:'aff',dur:120},{label:'Final Focus B',side:'neg',dur:120},
+  ]},
+  Parli: { name:'Parliamentary', speeches:[
+    {label:'Prime Minister Constructive',side:'aff',dur:420},
+    {label:'Leader of Opposition Constructive',side:'neg',dur:420},
+    {label:'Member of Government',side:'aff',dur:420},
+    {label:'Member of Opposition',side:'neg',dur:420},
+    {label:'Leader of Opposition Rebuttal',side:'neg',dur:240},
+    {label:'Prime Minister Rebuttal',side:'aff',dur:240},
+  ]},
+  WSDC: { name:'World Schools', speeches:[
+    {label:'1st Proposition',side:'aff',dur:480},{label:'1st Opposition',side:'neg',dur:480},
+    {label:'2nd Proposition',side:'aff',dur:480},{label:'2nd Opposition',side:'neg',dur:480},
+    {label:'3rd Proposition',side:'aff',dur:480},{label:'3rd Opposition',side:'neg',dur:480},
+    {label:'Opposition Reply',side:'neg',dur:240},{label:'Proposition Reply',side:'aff',dur:240},
+  ]},
+  BP: { name:'British Parliamentary', speeches:[
+    {label:'Prime Minister (OG)',side:'aff',dur:420},{label:'Leader of Opposition (OO)',side:'neg',dur:420},
+    {label:'Deputy PM (OG)',side:'aff',dur:420},{label:'Deputy LO (OO)',side:'neg',dur:420},
+    {label:'Member for Gov (CG)',side:'aff',dur:420},{label:'Member for Opp (CO)',side:'neg',dur:420},
+    {label:'Gov Whip (CG)',side:'aff',dur:420},{label:'Opp Whip (CO)',side:'neg',dur:420},
+  ]},
+  Asian: { name:'Asian Parliamentary', speeches:[
+    {label:'Prime Minister',side:'aff',dur:420},{label:'Leader of Opposition',side:'neg',dur:420},
+    {label:'Deputy PM',side:'aff',dur:420},{label:'Deputy LO',side:'neg',dur:420},
+    {label:'Gov Whip',side:'aff',dur:420},{label:'Opp Whip',side:'neg',dur:420},
+    {label:'Opposition Reply',side:'neg',dur:240},{label:'Government Reply',side:'aff',dur:240},
+  ]},
+  CUSID: { name:'Canadian Parliamentary', speeches:[
+    {label:'Prime Minister',side:'aff',dur:420},{label:'Leader of Opposition',side:'neg',dur:420},
+    {label:'Member of Government',side:'aff',dur:420},{label:'Member of Opposition',side:'neg',dur:420},
+    {label:'Deputy PM',side:'aff',dur:420},{label:'Deputy LO',side:'neg',dur:420},
+    {label:'LO Reply',side:'neg',dur:240},{label:'PM Reply',side:'aff',dur:240},
+  ]},
+};
+
+var currentFormat = null;
+var speeches = [];
+var activeIdx = null;
+var activeStart = null;
+var raf;
+
+function fmt(sec) {
+  sec = Math.max(0, Math.floor(sec));
+  return Math.floor(sec/60) + ':' + ('0'+(sec%60)).slice(-2);
+}
+
+function diffClass(actual, allowed) {
+  var d = actual - allowed;
+  if (actual === null) return 'skip';
+  if (d <= 10) return 'ok';
+  if (d <= 30) return 'warn';
+  return 'over';
+}
+
+function diffLabel(actual, allowed) {
+  if (actual === null) return '—';
+  var d = actual - allowed;
+  if (d <= 0) return '-' + fmt(-d);
+  return '+' + fmt(d);
+}
+
+function startRound() {
+  var fid = document.getElementById('formatSelect').value;
+  currentFormat = FORMATS[fid];
+  speeches = currentFormat.speeches.map(function(s, i) {
+    return { idx: i, label: s.label, side: s.side, allowed: s.dur, actual: null, skipped: false };
+  });
+  activeIdx = null;
+  document.getElementById('setupRow').style.display = 'none';
+  document.getElementById('speechRows').style.display = 'flex';
+  document.getElementById('summaryCard').classList.remove('visible');
+  renderRows();
+  tick();
+}
+
+function renderRows() {
+  var container = document.getElementById('speechRows');
+  container.innerHTML = '';
+  speeches.forEach(function(s, i) {
+    var isActive = i === activeIdx;
+    var isDone = s.actual !== null || s.skipped;
+    var dc = isDone ? diffClass(s.actual, s.allowed) : '';
+    var rowClass = isActive ? 'active' : (isDone ? 'done-' + dc : '');
+
+    var sideTag = s.side === 'cx' ? '<span class="side-tag cx">CX</span>'
+      : s.side === 'aff' ? '<span class="side-tag aff">AFF</span>'
+      : '<span class="side-tag neg">NEG</span>';
+
+    var actualStr = s.skipped ? '—' : (s.actual !== null ? fmt(s.actual) : (isActive ? '0:00' : '—'));
+    var actualClass = isActive ? 'running' : dc;
+
+    var btnHTML = '';
+    if (isActive) {
+      btnHTML = '<button class="row-btn stop" onclick="stopSpeech(' + i + ')">Stop</button>';
+    } else if (!isDone) {
+      var isNext = (activeIdx === null && i === 0) || (activeIdx !== null && i === activeIdx + 1) || (activeIdx === null && speeches.slice(0, i).every(function(x){ return x.actual !== null || x.skipped; }));
+      btnHTML = '<button class="row-btn start" onclick="startSpeech(' + i + ')">Start</button>';
+    } else {
+      btnHTML = '<span class="row-diff ' + dc + '">' + diffLabel(s.actual, s.allowed) + '</span>';
+    }
+
+    var skipBtn = (!isActive && !isDone) ? '<button class="row-btn skip" onclick="skipSpeech(' + i + ')" style="font-size:11px;padding:7px 8px;">Skip</button>' : '';
+
+    var row = document.createElement('div');
+    row.className = 'speech-row-item ' + rowClass;
+    row.id = 'row-' + i;
+    row.innerHTML =
+      '<span class="row-num">' + String(i+1).padStart(2,'0') + '</span>' +
+      '<span class="row-label">' + s.label + sideTag + '</span>' +
+      '<span class="row-allowed">' + fmt(s.allowed) + '</span>' +
+      '<span class="row-actual ' + actualClass + '" id="actual-' + i + '">' + actualStr + '</span>' +
+      '<span style="display:flex;gap:5px;">' + btnHTML + skipBtn + '</span>';
+    container.appendChild(row);
+  });
+
+  // Check if all done
+  var allDone = speeches.every(function(s){ return s.actual !== null || s.skipped; });
+  if (allDone && speeches.length > 0) showSummary();
+}
+
+function startSpeech(i) {
+  if (activeIdx !== null) stopSpeech(activeIdx);
+  activeIdx = i;
+  activeStart = Date.now();
+  renderRows();
+}
+
+function stopSpeech(i) {
+  if (activeIdx !== i || activeStart === null) return;
+  speeches[i].actual = (Date.now() - activeStart) / 1000;
+  activeIdx = null;
+  activeStart = null;
+  // Auto-start next if exists
+  renderRows();
+}
+
+function skipSpeech(i) {
+  speeches[i].skipped = true;
+  speeches[i].actual = null;
+  if (activeIdx === i) { activeIdx = null; activeStart = null; }
+  renderRows();
+}
+
+function tick() {
+  if (activeIdx !== null && activeStart !== null) {
+    var el = document.getElementById('actual-' + activeIdx);
+    if (el) {
+      var secs = (Date.now() - activeStart) / 1000;
+      el.textContent = fmt(secs);
+      var allowed = speeches[activeIdx].allowed;
+      el.className = 'row-actual running';
+    }
+  }
+  raf = requestAnimationFrame(tick);
+}
+
+function showSummary() {
+  cancelAnimationFrame(raf);
+  var table = document.getElementById('summaryTable');
+  var html = '<tr><th>Speech</th><th>Side</th><th>Allowed</th><th>Actual</th><th>Diff</th></tr>';
+  var totalOver = 0, totalUnder = 0, counted = 0;
+
+  speeches.forEach(function(s) {
+    if (s.skipped) {
+      html += '<tr><td>' + s.label + '</td><td>' + s.side.toUpperCase() + '</td><td>' + fmt(s.allowed) + '</td><td>—</td><td>—</td></tr>';
+      return;
+    }
+    var dc = diffClass(s.actual, s.allowed);
+    var dl = diffLabel(s.actual, s.allowed);
+    var diff = s.actual - s.allowed;
+    if (diff > 0) totalOver += diff; else totalUnder += Math.abs(diff);
+    counted++;
+    html += '<tr><td>' + s.label + '</td><td>' + s.side.toUpperCase() + '</td><td>' + fmt(s.allowed) + '</td>' +
+      '<td>' + fmt(s.actual) + '</td>' +
+      '<td><span class="row-diff ' + dc + '">' + dl + '</span></td></tr>';
+  });
+  table.innerHTML = html;
+
+  var overCount = speeches.filter(function(s){ return !s.skipped && s.actual - s.allowed > 30; }).length;
+  var warnCount = speeches.filter(function(s){ return !s.skipped && s.actual - s.allowed > 10 && s.actual - s.allowed <= 30; }).length;
+  var okCount = speeches.filter(function(s){ return !s.skipped && s.actual - s.allowed <= 10; }).length;
+
+  document.getElementById('statRow').innerHTML =
+    '<div class="stat-box"><div class="stat-val" style="color:#22C55E">' + okCount + '</div><div class="stat-label">On time</div></div>' +
+    '<div class="stat-box"><div class="stat-val" style="color:#F59E0B">' + warnCount + '</div><div class="stat-label">10–30s over</div></div>' +
+    '<div class="stat-box"><div class="stat-val" style="color:#EF4444">' + overCount + '</div><div class="stat-label">30s+ over</div></div>';
+
+  document.getElementById('summaryCard').classList.add('visible');
+  document.getElementById('speechRows').style.display = 'none';
+}
+
+function exportCSV() {
+  var fid = document.getElementById('formatSelect') ? document.getElementById('formatSelect').value : 'round';
+  var rows = [['Speech','Side','Allowed (s)','Actual (s)','Diff (s)','Status']];
+  speeches.forEach(function(s) {
+    if (s.skipped) { rows.push([s.label, s.side, s.allowed, '', '', 'skipped']); return; }
+    var diff = Math.round(s.actual - s.allowed);
+    var status = diff <= 10 ? 'on time' : diff <= 30 ? 'warning' : 'over';
+    rows.push([s.label, s.side, s.allowed, Math.round(s.actual), diff, status]);
+  });
+  var csv = rows.map(function(r){ return r.map(function(c){ return '"'+c+'"'; }).join(','); }).join('\n');
+  var blob = new Blob([csv], { type: 'text/csv' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'round-log-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+}
+
+function newRound() {
+  cancelAnimationFrame(raf);
+  activeIdx = null; activeStart = null; speeches = [];
+  document.getElementById('setupRow').style.display = 'flex';
+  document.getElementById('speechRows').style.display = 'none';
+  document.getElementById('speechRows').innerHTML = '';
+  document.getElementById('summaryCard').classList.remove('visible');
+}
+</script>
+</body>
+</html>

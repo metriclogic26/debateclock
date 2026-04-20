@@ -142,22 +142,14 @@
         <option value="10">10</option><option value="11">11</option><option value="12">12</option>
       </select>
       <span style="color:#5B6175;font-size:22px;font-weight:700;">:</span>
-      <select class="time-input" id="roundMin"
-        style="width:80px;padding:12px 8px;font-size:16px;font-weight:600;text-align:center;">
-        <option value="00">00</option><option value="05">05</option><option value="10">10</option>
-        <option value="15">15</option><option value="20">20</option><option value="25">25</option>
-        <option value="30">30</option><option value="35">35</option><option value="40">40</option>
-        <option value="45">45</option><option value="50">50</option><option value="55">55</option>
-        <option value="custom">other…</option>
-      </select>
+      <input type="number" id="roundMin" class="time-input"
+        placeholder="00" min="0" max="59" value="0"
+        style="width:76px;padding:12px 8px;font-size:16px;font-weight:600;text-align:center;">
       <select class="time-input" id="roundAmPm"
         style="width:76px;padding:12px 8px;font-size:16px;font-weight:600;text-align:center;">
-        <option value="AM">AM</option>
+        <option value="AM">AM</optn>
         <option value="PM" selected>PM</option>
       </select>
-      <input type="number" id="customMinInput" class="time-input"
-        placeholder="min" min="0" max="59"
-        style="width:80px;padding:12px 8px;font-size:16px;display:none;text-align:center;">
     </div>
 
     <!-- Row 3: Add button -->
@@ -248,6 +240,8 @@ function addRound() {
   rounds.sort(function(a,b){ return a.timeMs - b.timeMs; });
   save();
   document.getElementById('roundName').value = '';
+  renderList();
+  updateCountdowns();
   document.getElementById('roundTime').value = '';
   renderList();
 }
@@ -391,7 +385,7 @@ function setDefaultTime() {
   var ampm = h >= 12 ? 'PM' : 'AM';
   var h12 = h % 12 || 12;
   document.getElementById('roundHour').value = h12;
-  document.getElementById('roundMin').value = '00';
+  document.getElementById('roundMin').value = 0;
   document.getElementById('roundAmPm').value = ampm;
 }
 

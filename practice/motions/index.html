@@ -150,7 +150,7 @@
 
   <div class="timer-cta">
     <p>Ready to practice? Open the motion timer with prep countdown.</p>
-    <a href="/practice/motion/">Open motion timer &rarr;</a>
+    <a href="/practice/motion/" id="timerLink">Open motion timer &rarr;</a>
   </div>
 </div>
 
@@ -377,6 +377,8 @@ function generate() {
   const copyBtn = document.getElementById('copyBtn');
   copyBtn.textContent = 'Copy';
   copyBtn.className = 'btn-copy';
+  const link = document.getElementById('timerLink');
+  if (link) link.href = '/practice/motion/?motion=' + encodeURIComponent(m.t) + '&format=' + encodeURIComponent(m.f);
 }
 
 function another() { generate(); }

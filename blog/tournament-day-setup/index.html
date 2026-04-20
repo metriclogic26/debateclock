@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Set Up a Debate Timer for Tournament Day | DebateClock</title>
+<meta name="description" content="Step-by-step guide to setting up DebateClock for tournament day. Judge setup, debater display, Tabroom paradigm link, and what to do when Wi-Fi fails.">
+<link rel="canonical" href="https://debateclock.org/blog/tournament-day-setup/">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"How to Set Up a Debate Timer for Tournament Day","description":"Step-by-step guide to setting up DebateClock for a debate tournament.","totalTime":"PT5M","step":[
+{"@type":"HowToStep","position":1,"name":"Open the timer on your phone","text":"Go to debateclock.org/app on your phone. A room code is generated instantly."},
+{"@type":"HowToStep","position":2,"name":"Share the display link with the debater","text":"Show the QR code or copy the display link. The debater opens it on their laptop or tablet."},
+{"@type":"HowToStep","position":3,"name":"Select your format","text":"Tap the format pill in the top bar and select your format. The correct speech order and prep pool load automatically."},
+{"@type":"HowToStep","position":4,"name":"Start timing","text":"Tap Start when the first speech begins. The prep pool tracks automatically across all speeches."}
+]}</script>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+  <style>
+    .content-wrap { max-width: 760px; margin: 0 auto; padding: 40px 24px 80px; }
+    .content-wrap h1 { font-size: 32px; font-weight: 700; margin-bottom: 12px; line-height: 1.2; }
+    .content-wrap h2 { font-size: 20px; font-weight: 700; margin: 36px 0 12px; }
+    .content-wrap h3 { font-size: 16px; font-weight: 600; margin: 24px 0 8px; }
+    .content-wrap p { font-size: 15px; color: var(--muted, #8B90A0); line-height: 1.75; margin-bottom: 16px; }
+    .content-wrap ul { margin: 0 0 16px 20px; }
+    .content-wrap ul li { font-size: 15px; color: var(--muted, #8B90A0); line-height: 1.75; margin-bottom: 6px; }
+    .content-wrap strong { color: #E8EAF0; }
+    .speech-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+    .speech-table th { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #5B6175; padding: 8px 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .speech-table td { padding: 10px 12px; color: #E8EAF0; border-bottom: 1px solid rgba(255,255,255,0.04); font-family: 'DM Mono', monospace; font-size: 13px; }
+    .speech-table td:first-child { font-family: 'DM Sans', sans-serif; font-size: 14px; }
+    .side-aff { background: rgba(34,197,94,0.12); color: #22C55E; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+    .side-neg { background: rgba(239,68,68,0.12); color: #EF4444; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+    .side-cx  { background: rgba(245,158,11,0.12); color: #F59E0B; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+    .cta-box { background: #111318; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 28px; margin: 36px 0; text-align: center; }
+    .cta-box h3 { font-size: 18px; margin-bottom: 8px; }
+    .cta-box p { margin-bottom: 20px; }
+    .cta-box a { display: inline-block; background: #22C55E; color: #04140a; font-weight: 700; padding: 12px 28px; border-radius: 10px; text-decoration: none; font-size: 15px; }
+    .faq details { background: #111318; border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 14px 18px; margin-bottom: 8px; }
+    .faq summary { font-size: 14px; font-weight: 600; color: #E8EAF0; cursor: pointer; list-style: none; }
+    .faq summary::after { content: ' +'; color: #5B6175; }
+    .faq details[open] summary::after { content: ' -'; }
+    .faq details div { font-size: 14px; color: #8B90A0; line-height: 1.7; margin-top: 10px; }
+  </style>
+</head>
+<body>
+<nav class="site-nav">
+  <a class="brand" href="/"><span class="brand-dot"></span>DebateClock</a>
+  <div class="nav-links">
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-trigger">Competition &#9662;</button>
+      <div class="nav-dropdown-menu">
+        <div class="nav-dropdown-section">Timer</div>
+        <a href="/app/">Two-device timer <span class="tag">Live</span></a>
+        <a href="/setup/judge-paradigm/">Tabroom paradigm setup</a>
+        <div class="nav-dropdown-section">US Formats</div>
+        <a href="/timer/lincoln-douglas/">Lincoln-Douglas</a>
+        <a href="/timer/policy-debate/">Policy (CX)</a>
+        <a href="/timer/public-forum/">Public Forum</a>
+        <a href="/timer/parliamentary/">Parliamentary</a>
+        <div class="nav-dropdown-section">International</div>
+        <a href="/timer/world-schools/">World Schools (WSDC)</a>
+        <a href="/timer/british-parliamentary/">British Parliamentary</a>
+        <a href="/timer/asian-parliamentary/">Asian Parliamentary</a>
+        <a href="/timer/canadian-parliamentary/">Canadian (CUSID)</a>
+      </div>
+    </div>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-trigger">Practice &#9662;</button>
+      <div class="nav-dropdown-menu">
+        <div class="nav-dropdown-section">Practice Tools</div>
+        <a href="/practice/motion/">Motion practice timer <span class="tag">New</span></a>
+        <a href="/practice/extemp/">Extemp prep room clock <span class="tag">New</span></a>
+        <a href="/practice/round-logger/">Round logger <span class="tag">New</span></a>
+        <a href="/practice/flow/">Flow timer <span class="tag">New</span></a>
+        <a href="/practice/tournament/">Tournament schedule <span class="tag">New</span></a>
+      </div>
+    </div>
+  </div>
+  <a class="nav-cta" href="/app/">Open timer</a>
+</nav>
+<div class="content-wrap">
+  <div style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#5B6175;margin-bottom:12px;">Guide</div>
+  <h1>How to set up a debate timer for tournament day</h1>
+  <p>Setting up DebateClock takes under 2 minutes. This guide covers everything from opening the timer before your first round to what to do if Wi-Fi drops mid-speech.</p>
+
+  <h2>Before the tournament — 2 minutes of setup</h2>
+  <p>The best time to set up DebateClock is the night before or in the car on the way to the tournament, not in the tab bay 30 seconds before your round.</p>
+  <ul>
+    <li><strong>Judges:</strong> Add your paradigm link to Tabroom. Your link is <code style="font-family:'DM Mono',monospace;color:#3B82F6;">debateclock.org/j/your-name</code>. Paste it at the top of your paradigm. Debaters will click it before every round. See the <a href="/setup/judge-paradigm/">full setup guide</a>.</li>
+    <li><strong>Coaches:</strong> Bookmark <a href="/practice/tournament/">debateclock.org/practice/tournament/</a> and add the day's round schedule the night before.</li>
+    <li><strong>Debaters:</strong> Bookmark <a href="/app/">debateclock.org/app/</a> on your phone and test that the display link opens on your laptop.</li>
+  </ul>
+
+  <h2>Step-by-step: judge setup for a round</h2>
+  <table class="speech-table">
+    <thead><tr><th>Step</th><th>Action</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Open debateclock.org/app on your phone. Room code appears instantly — no signup.</td></tr>
+      <tr><td>2</td><td>Tap the format pill (top left) and select your format. Speech order and prep pool load automatically.</td></tr>
+      <tr><td>3</td><td>Show the QR code to the debater or copy the display link. They open it on their laptop.</td></tr>
+      <tr><td>4</td><td>Both screens should show the same format and "waiting to start." Tap Start when the first speech begins.</td></tr>
+      <tr><td>5</td><td>Prep time: tap "Start Prep — Aff" or "Start Prep — Neg" when a debater calls prep. It stops automatically when you tap again.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>What to do when Wi-Fi fails</h2>
+  <p>Tournament venues often have unreliable Wi-Fi. DebateClock handles this gracefully:</p>
+  <ul>
+    <li>The timer continues running on both devices even if the connection drops — it uses the local clock, not a server.</li>
+    <li>When Wi-Fi reconnects, both devices automatically re-sync.</li>
+    <li>If sync fails entirely, the judge's phone is the authoritative timer. The debater display is supplementary.</li>
+    <li>You can also use DebateClock in single-device mode — the judge controller works fully standalone without a debater display connected.</li>
+  </ul>
+
+  <h2>Format-specific tips</h2>
+  <h3>Lincoln-Douglas</h3>
+  <p>LD prep pools are per-debater (4 min each). Tap "Start Prep — Aff" when the Aff calls prep, "Start Prep — Neg" when Neg calls prep. The pools are independent and each saves state between uses.</p>
+
+  <h3>Policy (CX)</h3>
+  <p>Policy has 8-minute speeches and 8-minute prep pools per team. With 12 speeches and frequent prep calls, keeping the prep pool accurate is the most important job. DebateClock tracks this automatically.</p>
+
+  <h3>Public Forum</h3>
+  <p>PF has 3-minute prep pools per team. The pools are smaller but used more frequently. Grand Crossfire is the 9th speech — tap the row in the speech list to jump to it.</p>
+
+  <h3>WSDC / BP</h3>
+  <p>No prep pool — speeches run back-to-back. The POI badge appears automatically on the debater display at the correct time. No manual intervention needed.</p>
+
+  <h2>The Tabroom paradigm link — your best tool</h2>
+  <p>The single highest-leverage thing a judge can do is add their paradigm link to Tabroom. Debaters read paradigms in the tab bay before rounds. When your link is there, debaters click it, open the display on their laptop, and the timer is already running when you walk in. No QR code scanning, no room code sharing, no setup time.</p>
+  <p>Your permanent link: <code style="font-family:'DM Mono',monospace;color:#3B82F6;">debateclock.org/j/your-name</code></p>
+  <p><a href="/setup/judge-paradigm/">Full Tabroom setup guide &rarr;</a></p>
+
+  <h2>Frequently asked questions</h2>
+  <div class="faq">
+    <details><summary>Does DebateClock work without internet?</summary><div>The timer itself works without internet once the page loads. Two-device sync requires a connection, but the judge controller works fully standalone. The page loads from cache on repeat visits.</div></details>
+    <details><summary>What if the debater's laptop can't open the display link?</summary><div>The judge controller works as a standalone timer — the debater display is supplementary. The judge can show their phone screen to the debater if needed, or the debater can open the display on their phone instead.</div></details>
+    <details><summary>Can multiple debaters join the same room?</summary><div>Yes — any number of devices can open the display link. Multiple debaters can watch the countdown on their own devices simultaneously.</div></details>
+    <details><summary>How do I switch formats mid-tournament?</summary><div>Tap the format pill in the top bar, select the new format, and confirm. The round resets with the new speech order and prep pool.</div></details>
+  </div>
+</div>
+<div class="site-disclaimer">
+  Informational timing aid only &middot; Not affiliated with NSDA, WUDC, WSDC, CUSID, or Tabroom &middot; Always defer to the tournament director for timing disputes &middot; <a href="/terms/">Terms &amp; Privacy</a>
+</div>
+<footer class="site-footer">
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>US Formats</h4>
+      <a href="/timer/lincoln-douglas/">Lincoln-Douglas</a>
+      <a href="/timer/policy-debate/">Policy (CX)</a>
+      <a href="/timer/public-forum/">Public Forum</a>
+      <a href="/timer/parliamentary/">Parliamentary</a>
+    </div>
+    <div class="footer-col">
+      <h4>International</h4>
+      <a href="/timer/world-schools/">World Schools (WSDC)</a>
+      <a href="/timer/british-parliamentary/">British Parliamentary</a>
+      <a href="/timer/asian-parliamentary/">Asian Parliamentary</a>
+      <a href="/timer/canadian-parliamentary/">Canadian (CUSID)</a>
+    </div>
+    <div class="footer-col">
+      <h4>Practice Tools</h4>
+      <a href="/practice/motion/">Motion timer</a>
+      <a href="/practice/extemp/">Extemp prep room</a>
+      <a href="/practice/round-logger/">Round logger</a>
+      <a href="/practice/flow/">Flow timer</a>
+      <a href="/practice/tournament/">Tournament schedule</a>
+    </div>
+  </div>
+  <div class="footer-row">
+    <div><a href="/" style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;"><span style="width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);"></span>DebateClock</a><span style="margin-left:12px;">free browser debate timer</span></div>
+    <a href="https://tally.so/r/QKAMOX" target="_blank" rel="noopener" class="feedback-btn">&#9733; Give feedback</a>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,441 @@
+#!/usr/bin/env python3
+import pathlib
+
+NAV = """<nav class="site-nav">
+  <a class="brand" href="/"><span class="brand-dot"></span>DebateClock</a>
+  <div class="nav-links">
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-trigger">Competition &#9662;</button>
+      <div class="nav-dropdown-menu">
+        <div class="nav-dropdown-section">Timer</div>
+        <a href="/app/">Two-device timer <span class="tag">Live</span></a>
+        <a href="/setup/judge-paradigm/">Tabroom paradigm setup</a>
+        <div class="nav-dropdown-section">US Formats</div>
+        <a href="/timer/lincoln-douglas/">Lincoln-Douglas</a>
+        <a href="/timer/policy-debate/">Policy (CX)</a>
+        <a href="/timer/public-forum/">Public Forum</a>
+        <a href="/timer/parliamentary/">Parliamentary</a>
+        <div class="nav-dropdown-section">International</div>
+        <a href="/timer/world-schools/">World Schools (WSDC)</a>
+        <a href="/timer/british-parliamentary/">British Parliamentary</a>
+        <a href="/timer/asian-parliamentary/">Asian Parliamentary</a>
+        <a href="/timer/canadian-parliamentary/">Canadian (CUSID)</a>
+      </div>
+    </div>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-trigger">Practice &#9662;</button>
+      <div class="nav-dropdown-menu">
+        <div class="nav-dropdown-section">Practice Tools</div>
+        <a href="/practice/motion/">Motion timer <span class="tag">New</span></a>
+        <a href="/practice/motions/">Motion generator <span class="tag">New</span></a>
+        <a href="/practice/extemp/">Extemp prep room <span class="tag">New</span></a>
+        <a href="/practice/round-logger/">Round logger <span class="tag">New</span></a>
+        <a href="/practice/flow/">Flow timer <span class="tag">New</span></a>
+        <a href="/practice/tournament/">Tournament schedule <span class="tag">New</span></a>
+        <div class="nav-dropdown-section">Resources</div>
+        <a href="/blog/">Blog &amp; guides</a>
+        <a href="/formats/lincoln-douglas/">Format guides</a>
+      </div>
+    </div>
+  </div>
+  <a class="nav-cta" href="/app/">Open timer</a>
+</nav>"""
+
+DISCLAIMER = """<div class="site-disclaimer">
+  Informational timing aid only &middot; Not affiliated with NSDA, WUDC, WSDC, CUSID, or Tabroom &middot; Always defer to the tournament director for timing disputes &middot; <a href="/terms/">Terms &amp; Privacy</a>
+</div>"""
+
+FOOTER = """<footer class="site-footer">
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>Competition</h4>
+      <a href="/app/">Two-device timer</a>
+      <a href="/setup/judge-paradigm/">Tabroom paradigm setup</a>
+      <a href="/timer/lincoln-douglas/">Lincoln-Douglas</a>
+      <a href="/timer/policy-debate/">Policy (CX)</a>
+      <a href="/timer/public-forum/">Public Forum</a>
+      <a href="/timer/world-schools/">World Schools (WSDC)</a>
+      <a href="/timer/british-parliamentary/">British Parliamentary</a>
+    </div>
+    <div class="footer-col">
+      <h4>Practice Tools</h4>
+      <a href="/practice/motion/">Motion timer</a>
+      <a href="/practice/motions/">Motion generator</a>
+      <a href="/practice/extemp/">Extemp prep room</a>
+      <a href="/practice/round-logger/">Round logger</a>
+      <a href="/practice/flow/">Flow timer</a>
+      <a href="/practice/tournament/">Tournament schedule</a>
+    </div>
+    <div class="footer-col">
+      <h4>Guides &amp; Blog</h4>
+      <a href="/blog/">All guides</a>
+      <a href="/formats/lincoln-douglas/">LD format guide</a>
+      <a href="/formats/public-forum/">PF format guide</a>
+      <a href="/formats/world-schools/">WSDC format guide</a>
+      <a href="/formats/british-parliamentary/">BP format guide</a>
+      <a href="/blog/debate-timer-prep-time/">Prep time explained</a>
+    </div>
+  </div>
+  <div class="footer-row">
+    <div><a href="/" style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;"><span style="width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);"></span>DebateClock</a><span style="margin-left:12px;">free browser debate timer</span></div>
+    <a href="https://tally.so/r/QKAMOX" target="_blank" rel="noopener" class="feedback-btn">&#9733; Give feedback</a>
+  </div>
+</footer>"""
+
+HTML = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Debate Motion Generator | DebateClock</title>
+<meta name="description" content="Free random debate motion generator. 200+ real motions from LD, PF, BP, and WSDC archives. Filter by format and topic area. No signup.">
+<link rel="canonical" href="https://debateclock.org/practice/motions/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+  .page { max-width: 720px; margin: 0 auto; padding: 40px 24px 80px; }
+  .page-label { font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #5B6175; margin-bottom: 12px; }
+  .page-title { font-size: 32px; font-weight: 700; color: #E8EAF0; margin-bottom: 8px; }
+  .page-sub { font-size: 15px; color: #8B90A0; margin-bottom: 32px; }
+
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+  .filter-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 140px; }
+  .filter-label { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #5B6175; }
+  .filter-select { background: #111318; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 9px 12px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: #E8EAF0; cursor: pointer; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235B6175' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+  .filter-select:focus { outline: none; border-color: rgba(255,255,255,0.25); }
+
+  .motion-card { background: #111318; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 32px; margin-bottom: 20px; min-height: 160px; display: flex; flex-direction: column; justify-content: space-between; }
+  .motion-resolved { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #5B6175; margin-bottom: 14px; }
+  .motion-text { font-size: 20px; font-weight: 600; color: #E8EAF0; line-height: 1.45; flex: 1; }
+  .motion-text.empty { color: #5B6175; font-weight: 400; font-size: 16px; font-style: italic; }
+  .motion-meta { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
+  .motion-tag { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 6px; }
+  .tag-ld    { background: rgba(34,197,94,0.12);  color: #22C55E; }
+  .tag-pf    { background: rgba(59,130,246,0.12); color: #3B82F6; }
+  .tag-bp    { background: rgba(168,85,247,0.12); color: #A855F7; }
+  .tag-wsdc  { background: rgba(245,158,11,0.12); color: #F59E0B; }
+  .tag-parli { background: rgba(239,68,68,0.12);  color: #EF4444; }
+  .tag-topic { background: rgba(255,255,255,0.06); color: #8B90A0; }
+
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .btn-generate { background: #22C55E; color: #04140a; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 700; padding: 13px 28px; border: none; border-radius: 10px; cursor: pointer; flex: 1; transition: opacity .15s; }
+  .btn-generate:hover { opacity: .88; }
+  .btn-another { background: #111318; border: 1px solid rgba(255,255,255,0.12); color: #E8EAF0; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; padding: 13px 24px; border-radius: 10px; cursor: pointer; transition: border-color .15s; }
+  .btn-another:hover { border-color: rgba(255,255,255,0.25); }
+  .btn-copy { background: #111318; border: 1px solid rgba(255,255,255,0.12); color: #8B90A0; font-family: 'DM Mono', monospace; font-size: 12px; padding: 13px 18px; border-radius: 10px; cursor: pointer; transition: all .15s; white-space: nowrap; }
+  .btn-copy:hover { border-color: rgba(255,255,255,0.25); color: #E8EAF0; }
+  .btn-copy.copied { border-color: #22C55E; color: #22C55E; }
+
+  .count-badge { font-size: 13px; color: #5B6175; margin-top: 12px; text-align: center; }
+
+  .timer-cta { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); border-radius: 12px; padding: 16px 20px; margin-top: 28px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .timer-cta p { font-size: 14px; color: #8B90A0; margin: 0; }
+  .timer-cta a { background: #22C55E; color: #04140a; font-weight: 700; font-size: 13px; padding: 8px 18px; border-radius: 8px; text-decoration: none; white-space: nowrap; }
+</style>
+</head>
+<body>
+""" + NAV + """
+<div class="page">
+  <div class="page-label">Practice Tool</div>
+  <h1 class="page-title">Random motion generator</h1>
+  <p class="page-sub">200+ real motions from LD, PF, BP, and WSDC archives. Filter by format or topic, then generate.</p>
+
+  <div class="filters">
+    <div class="filter-group">
+      <div class="filter-label">Format</div>
+      <select class="filter-select" id="filterFormat" onchange="render()">
+        <option value="all">All formats</option>
+        <option value="LD">Lincoln-Douglas (LD)</option>
+        <option value="PF">Public Forum (PF)</option>
+        <option value="BP">British Parliamentary (BP)</option>
+        <option value="WSDC">World Schools (WSDC)</option>
+        <option value="Parli">Parliamentary</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Topic area</div>
+      <select class="filter-select" id="filterTopic" onchange="render()">
+        <option value="all">All topics</option>
+        <option value="Ethics">Ethics &amp; philosophy</option>
+        <option value="Politics">Politics &amp; governance</option>
+        <option value="Economics">Economics &amp; trade</option>
+        <option value="Science">Science &amp; technology</option>
+        <option value="Justice">Criminal justice</option>
+        <option value="International">International relations</option>
+        <option value="Social">Social policy</option>
+        <option value="Environment">Environment</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Level</div>
+      <select class="filter-select" id="filterLevel" onchange="render()">
+        <option value="all">All levels</option>
+        <option value="Novice">Novice</option>
+        <option value="Varsity">Varsity</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="motion-card" id="motionCard">
+    <div>
+      <div class="motion-resolved">Resolved:</div>
+      <div class="motion-text empty" id="motionText">Press &ldquo;Generate motion&rdquo; to get started.</div>
+    </div>
+    <div class="motion-meta" id="motionMeta"></div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-generate" onclick="generate()">Generate motion</button>
+    <button class="btn-another" onclick="another()">Another &rarr;</button>
+    <button class="btn-copy" id="copyBtn" onclick="copyMotion()">Copy</button>
+  </div>
+  <div class="count-badge" id="countBadge"></div>
+
+  <div class="timer-cta">
+    <p>Ready to practice? Open the motion timer with prep countdown.</p>
+    <a href="/practice/motion/">Open motion timer &rarr;</a>
+  </div>
+</div>
+
+""" + DISCLAIMER + """
+""" + FOOTER + """
+
+<script>
+const MOTIONS = [
+  {t:"The benefits of economic globalization outweigh the harms.",f:"LD",topic:"Economics",level:"Varsity"},
+  {t:"Prioritizing economic development over environmental protection is wrong.",f:"LD",topic:"Environment",level:"Varsity"},
+  {t:"The United States ought to abolish the death penalty.",f:"LD",topic:"Justice",level:"Novice"},
+  {t:"Civil disobedience in a democracy is morally justified.",f:"LD",topic:"Ethics",level:"Varsity"},
+  {t:"Individuals have a moral obligation to obey unjust laws.",f:"LD",topic:"Ethics",level:"Varsity"},
+  {t:"A just society ought not use the death penalty as a form of punishment.",f:"LD",topic:"Justice",level:"Varsity"},
+  {t:"The right to a speedy trial ought to be valued above the right to an adequate defense.",f:"LD",topic:"Justice",level:"Varsity"},
+  {t:"The United States federal government should substantially increase funding for mental health services.",f:"LD",topic:"Social",level:"Novice"},
+  {t:"When in conflict, a nation's obligation to its own citizens ought to outweigh its obligation to citizens of other nations.",f:"LD",topic:"International",level:"Varsity"},
+  {t:"Rehabilitation ought to be valued above punishment in the criminal justice system.",f:"LD",topic:"Justice",level:"Novice"},
+  {t:"In matters of criminal justice, the demands of justice ought to take precedence over the interests of the individual.",f:"LD",topic:"Justice",level:"Varsity"},
+  {t:"The United States ought to guarantee the right to housing.",f:"LD",topic:"Social",level:"Novice"},
+  {t:"A just government ought to prioritize the needs of future generations over the needs of its current citizens.",f:"LD",topic:"Politics",level:"Varsity"},
+  {t:"Democracies ought to require compulsory voting.",f:"LD",topic:"Politics",level:"Novice"},
+  {t:"Moral obligations to non-human animals are as strong as moral obligations to humans.",f:"LD",topic:"Ethics",level:"Varsity"},
+  {t:"States ought not possess nuclear weapons.",f:"LD",topic:"International",level:"Varsity"},
+  {t:"It is morally permissible to lie to protect another person.",f:"LD",topic:"Ethics",level:"Novice"},
+  {t:"Freedom of the press ought to be valued above national security.",f:"LD",topic:"Politics",level:"Varsity"},
+  {t:"The right to privacy ought to take precedence over the right to the free flow of information.",f:"LD",topic:"Politics",level:"Varsity"},
+  {t:"Developed countries have a moral obligation to address climate change.",f:"LD",topic:"Environment",level:"Novice"},
+  {t:"Individuals have a moral obligation to engage in political activism.",f:"LD",topic:"Politics",level:"Varsity"},
+  {t:"Capitalism is a just economic system.",f:"LD",topic:"Economics",level:"Varsity"},
+  {t:"The United States ought to implement universal basic income.",f:"LD",topic:"Economics",level:"Novice"},
+  {t:"Free trade is preferable to fair trade.",f:"LD",topic:"Economics",level:"Varsity"},
+  {t:"Violent revolution is a just response to oppression.",f:"LD",topic:"Ethics",level:"Varsity"},
+
+  {t:"The United States should substantially reduce military aid to Israel.",f:"PF",topic:"International",level:"Varsity"},
+  {t:"The United States federal government should substantially reduce its military presence in the Asia-Pacific region.",f:"PF",topic:"International",level:"Varsity"},
+  {t:"NATO expansion into Eastern Europe has done more harm than good.",f:"PF",topic:"International",level:"Varsity"},
+  {t:"The United States should eliminate subsidies for fossil fuel companies.",f:"PF",topic:"Environment",level:"Novice"},
+  {t:"The United States federal government should substantially increase investment in nuclear energy.",f:"PF",topic:"Environment",level:"Varsity"},
+  {t:"Artificial intelligence will do more harm than good to the economy.",f:"PF",topic:"Science",level:"Novice"},
+  {t:"The United States should adopt ranked choice voting.",f:"PF",topic:"Politics",level:"Novice"},
+  {t:"Universal healthcare in the United States would do more good than harm.",f:"PF",topic:"Social",level:"Novice"},
+  {t:"The United States should provide reparations for the descendants of slaves.",f:"PF",topic:"Social",level:"Varsity"},
+  {t:"Affirmative action in college admissions does more harm than good.",f:"PF",topic:"Social",level:"Varsity"},
+  {t:"The United States should substantially increase funding for space exploration.",f:"PF",topic:"Science",level:"Novice"},
+  {t:"Economic sanctions are an effective tool of foreign policy.",f:"PF",topic:"International",level:"Varsity"},
+  {t:"The United States should implement a carbon tax.",f:"PF",topic:"Environment",level:"Novice"},
+  {t:"Social media companies should be held legally liable for content posted on their platforms.",f:"PF",topic:"Science",level:"Novice"},
+  {t:"Stricter gun control measures in the United States would do more good than harm.",f:"PF",topic:"Politics",level:"Novice"},
+  {t:"The International Monetary Fund does more harm than good.",f:"PF",topic:"Economics",level:"Varsity"},
+  {t:"The United States should end the trade embargo on Cuba.",f:"PF",topic:"International",level:"Novice"},
+  {t:"Developed nations should open their borders to climate refugees.",f:"PF",topic:"International",level:"Varsity"},
+  {t:"The United States federal government should substantially increase its use of economic incentives to address climate change.",f:"PF",topic:"Environment",level:"Varsity"},
+  {t:"The benefits of the United States' use of targeted killing outweigh the harms.",f:"PF",topic:"International",level:"Varsity"},
+  {t:"The World Trade Organization does more harm than good.",f:"PF",topic:"Economics",level:"Varsity"},
+  {t:"The United States should substantially reduce its defense budget.",f:"PF",topic:"Politics",level:"Novice"},
+  {t:"Cryptocurrency will do more harm than good to the global economy.",f:"PF",topic:"Economics",level:"Novice"},
+  {t:"Universal pre-K education would do more good than harm in the United States.",f:"PF",topic:"Social",level:"Novice"},
+  {t:"The United States should provide universal access to broadband internet.",f:"PF",topic:"Social",level:"Novice"},
+
+  {t:"This house would abolish the death penalty worldwide.",f:"BP",topic:"Justice",level:"Novice"},
+  {t:"This house believes that social media has done more harm than good.",f:"BP",topic:"Science",level:"Novice"},
+  {t:"This house would legalize the sale of human organs.",f:"BP",topic:"Ethics",level:"Varsity"},
+  {t:"This house would implement a global carbon tax.",f:"BP",topic:"Environment",level:"Novice"},
+  {t:"This house believes that universal basic income is good policy.",f:"BP",topic:"Economics",level:"Novice"},
+  {t:"This house would ban political advertising on social media.",f:"BP",topic:"Politics",level:"Novice"},
+  {t:"This house would require all citizens to vote.",f:"BP",topic:"Politics",level:"Novice"},
+  {t:"This house believes that free trade does more harm than good.",f:"BP",topic:"Economics",level:"Varsity"},
+  {t:"This house would decriminalize all drugs.",f:"BP",topic:"Justice",level:"Varsity"},
+  {t:"This house believes that AI poses an existential threat to humanity.",f:"BP",topic:"Science",level:"Novice"},
+  {t:"This house would allow euthanasia.",f:"BP",topic:"Ethics",level:"Novice"},
+  {t:"This house believes that the Internet has done more harm than good.",f:"BP",topic:"Science",level:"Novice"},
+  {t:"This house would abolish nuclear weapons.",f:"BP",topic:"International",level:"Novice"},
+  {t:"This house believes that capitalism is incompatible with environmental sustainability.",f:"BP",topic:"Economics",level:"Varsity"},
+  {t:"This house would implement open borders.",f:"BP",topic:"International",level:"Varsity"},
+  {t:"This house believes that democracy is overrated.",f:"BP",topic:"Politics",level:"Varsity"},
+  {t:"This house would make voting compulsory.",f:"BP",topic:"Politics",level:"Novice"},
+  {t:"This house believes that whistleblowers should be protected by law.",f:"BP",topic:"Politics",level:"Novice"},
+  {t:"This house would ban private schools.",f:"BP",topic:"Social",level:"Varsity"},
+  {t:"This house believes that richer nations owe a debt to former colonies.",f:"BP",topic:"International",level:"Varsity"},
+  {t:"This house would introduce a maximum wage.",f:"BP",topic:"Economics",level:"Varsity"},
+  {t:"This house believes that targeted killing does more harm than good.",f:"BP",topic:"International",level:"Varsity"},
+  {t:"This house would require technology companies to provide backdoor access to encrypted communications.",f:"BP",topic:"Science",level:"Varsity"},
+  {t:"This house believes that animal agriculture should be abolished.",f:"BP",topic:"Ethics",level:"Varsity"},
+  {t:"This house would give the United Nations the power to enforce its resolutions.",f:"BP",topic:"International",level:"Varsity"},
+  {t:"This house believes that nationalism does more harm than good.",f:"BP",topic:"Politics",level:"Varsity"},
+  {t:"This house would ban the use of autonomous weapons.",f:"BP",topic:"International",level:"Novice"},
+  {t:"This house believes that universal healthcare is a human right.",f:"BP",topic:"Social",level:"Novice"},
+  {t:"This house would abolish prisons.",f:"BP",topic:"Justice",level:"Varsity"},
+  {t:"This house believes that economic growth should no longer be a primary policy goal.",f:"BP",topic:"Economics",level:"Varsity"},
+  {t:"This house would make higher education free.",f:"BP",topic:"Social",level:"Novice"},
+  {t:"This house believes that the war on drugs has failed.",f:"BP",topic:"Justice",level:"Novice"},
+  {t:"This house would prohibit the use of performance enhancing drugs in professional sports.",f:"BP",topic:"Ethics",level:"Novice"},
+  {t:"This house believes the permanent members of the UN Security Council should lose their veto powers.",f:"BP",topic:"International",level:"Varsity"},
+  {t:"This house would tax wealth, not income.",f:"BP",topic:"Economics",level:"Varsity"},
+
+  {t:"This house believes that the free market is the best solution to climate change.",f:"WSDC",topic:"Environment",level:"Varsity"},
+  {t:"This house would allow citizens to carry arms.",f:"WSDC",topic:"Politics",level:"Novice"},
+  {t:"This house believes that affirmative action does more harm than good.",f:"WSDC",topic:"Social",level:"Varsity"},
+  {t:"This house would forgive all developing world debt.",f:"WSDC",topic:"Economics",level:"Varsity"},
+  {t:"This house believes that the United Nations has failed.",f:"WSDC",topic:"International",level:"Novice"},
+  {t:"This house would ban the burkha.",f:"WSDC",topic:"Social",level:"Varsity"},
+  {t:"This house believes that economic sanctions do more harm than good.",f:"WSDC",topic:"International",level:"Varsity"},
+  {t:"This house would introduce a Robin Hood tax.",f:"WSDC",topic:"Economics",level:"Novice"},
+  {t:"This house believes that the Internet should be a human right.",f:"WSDC",topic:"Science",level:"Novice"},
+  {t:"This house would allow organ selling.",f:"WSDC",topic:"Ethics",level:"Varsity"},
+  {t:"This house believes that the US embargo on Cuba should be lifted.",f:"WSDC",topic:"International",level:"Novice"},
+  {t:"This house would ban fossil fuel advertising.",f:"WSDC",topic:"Environment",level:"Novice"},
+  {t:"This house believes that mass surveillance is justified in the fight against terrorism.",f:"WSDC",topic:"Politics",level:"Varsity"},
+  {t:"This house would criminalise climate change denial.",f:"WSDC",topic:"Environment",level:"Varsity"},
+  {t:"This house believes that democracy is not suitable for all societies.",f:"WSDC",topic:"Politics",level:"Varsity"},
+  {t:"This house would give children the right to vote.",f:"WSDC",topic:"Politics",level:"Novice"},
+  {t:"This house believes that foreign aid does more harm than good.",f:"WSDC",topic:"International",level:"Novice"},
+  {t:"This house would make voting compulsory.",f:"WSDC",topic:"Politics",level:"Novice"},
+  {t:"This house believes that private companies should not be involved in space exploration.",f:"WSDC",topic:"Science",level:"Novice"},
+  {t:"This house believes that religion does more harm than good.",f:"WSDC",topic:"Ethics",level:"Varsity"},
+  {t:"This house would legalise all performance-enhancing drugs in sport.",f:"WSDC",topic:"Ethics",level:"Novice"},
+  {t:"This house would implement open borders globally.",f:"WSDC",topic:"International",level:"Varsity"},
+  {t:"This house believes that the world would be better without intellectual property rights.",f:"WSDC",topic:"Economics",level:"Varsity"},
+  {t:"This house would introduce a universal basic income.",f:"WSDC",topic:"Economics",level:"Novice"},
+  {t:"This house believes that animals should have legal rights.",f:"WSDC",topic:"Ethics",level:"Novice"},
+
+  {t:"This house believes that free speech should have limits.",f:"Parli",topic:"Politics",level:"Novice"},
+  {t:"This house would implement a four-day working week.",f:"Parli",topic:"Economics",level:"Novice"},
+  {t:"This house believes that social media influencers should be regulated.",f:"Parli",topic:"Science",level:"Novice"},
+  {t:"This house would ban fast fashion.",f:"Parli",topic:"Environment",level:"Novice"},
+  {t:"This house would legalise assisted dying.",f:"Parli",topic:"Ethics",level:"Novice"},
+  {t:"This house believes that zoos should be abolished.",f:"Parli",topic:"Ethics",level:"Novice"},
+  {t:"This house would make internet access a public utility.",f:"Parli",topic:"Science",level:"Novice"},
+  {t:"This house believes that jury trials should be abolished.",f:"Parli",topic:"Justice",level:"Varsity"},
+  {t:"This house would ban single-use plastics.",f:"Parli",topic:"Environment",level:"Novice"},
+  {t:"This house believes that private healthcare does more harm than good.",f:"Parli",topic:"Social",level:"Novice"},
+  {t:"This house would introduce a sugar tax.",f:"Parli",topic:"Social",level:"Novice"},
+  {t:"This house believes that celebrities have a responsibility to be role models.",f:"Parli",topic:"Ethics",level:"Novice"},
+  {t:"This house would decriminalize recreational drug use.",f:"Parli",topic:"Justice",level:"Novice"},
+  {t:"This house believes that online anonymity does more harm than good.",f:"Parli",topic:"Science",level:"Novice"},
+  {t:"This house would ban beauty pageants.",f:"Parli",topic:"Social",level:"Novice"},
+];
+
+let pool = [...MOTIONS];
+let last = null;
+
+function getPool() {
+  const fmt = document.getElementById('filterFormat').value;
+  const topic = document.getElementById('filterTopic').value;
+  const level = document.getElementById('filterLevel').value;
+  return MOTIONS.filter(m =>
+    (fmt === 'all' || m.f === fmt) &&
+    (topic === 'all' || m.topic === topic) &&
+    (level === 'all' || m.level === level)
+  );
+}
+
+function fmtTag(f) {
+  const map = {LD:'tag-ld',PF:'tag-pf',BP:'tag-bp',WSDC:'tag-wsdc',Parli:'tag-parli'};
+  const labels = {LD:'Lincoln-Douglas',PF:'Public Forum',BP:'British Parliamentary',WSDC:'World Schools',Parli:'Parliamentary'};
+  return `<span class="motion-tag ${map[f]||''}">${labels[f]||f}</span>`;
+}
+
+function render() {
+  const p = getPool();
+  const badge = document.getElementById('countBadge');
+  badge.textContent = p.length + ' motion' + (p.length===1?'':'s') + ' match your filters';
+}
+
+function generate() {
+  const p = getPool();
+  if (!p.length) {
+    document.getElementById('motionText').textContent = 'No motions match your filters. Try broadening them.';
+    document.getElementById('motionText').className = 'motion-text empty';
+    document.getElementById('motionMeta').innerHTML = '';
+    return;
+  }
+  let m;
+  if (p.length === 1) { m = p[0]; }
+  else {
+    do { m = p[Math.floor(Math.random() * p.length)]; } while (m === last && p.length > 1);
+  }
+  last = m;
+  const el = document.getElementById('motionText');
+  el.textContent = m.t;
+  el.className = 'motion-text';
+  document.getElementById('motionMeta').innerHTML =
+    fmtTag(m.f) +
+    `<span class="motion-tag tag-topic">${m.topic}</span>` +
+    `<span class="motion-tag tag-topic">${m.level}</span>`;
+  const copyBtn = document.getElementById('copyBtn');
+  copyBtn.textContent = 'Copy';
+  copyBtn.className = 'btn-copy';
+}
+
+function another() { generate(); }
+
+function copyMotion() {
+  const text = document.getElementById('motionText').textContent;
+  if (!text || document.getElementById('motionText').classList.contains('empty')) return;
+  const resolved = text.startsWith('This house') ? text : 'Resolved: ' + text;
+  navigator.clipboard.writeText(resolved).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    btn.className = 'btn-copy copied';
+    setTimeout(() => { btn.textContent = 'Copy'; btn.className = 'btn-copy'; }, 2000);
+  });
+}
+
+render();
+</script>
+</body>
+</html>"""
+
+p = pathlib.Path("practice/motions/index.html")
+p.parent.mkdir(parents=True, exist_ok=True)
+p.write_text(HTML)
+print(f"ok: {p} — {len([l for l in HTML.split(chr(10)) if '{t:' in l])} motions embedded")
+
+# Update nav on all pages to include motion generator
+import re
+all_pages = list(pathlib.Path(".").rglob("index.html"))
+all_pages = [pg for pg in all_pages if 'node_modules' not in str(pg)]
+updated = 0
+for pg in all_pages:
+    if str(pg) == "practice/motions/index.html":
+        continue
+    src = pg.read_text()
+    if '/practice/motion/' in src and '/practice/motions/' not in src:
+        src = src.replace(
+            '<a href="/practice/motion/">Motion timer <span class="tag">New</span></a>',
+            '<a href="/practice/motion/">Motion timer <span class="tag">New</span></a>\n        <a href="/practice/motions/">Motion generator <span class="tag">New</span></a>'
+        )
+        pg.write_text(src)
+        updated += 1
+print(f"ok: nav updated on {updated} pages")
+
+# Add to sitemap
+sm = pathlib.Path("sitemap.xml").read_text()
+url = "https://debateclock.org/practice/motions/"
+if url not in sm:
+    sm = sm.replace('</urlset>',
+        f'  <url><loc>{url}</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>\n</urlset>')
+    pathlib.Path("sitemap.xml").write_text(sm)
+print(f"ok: sitemap — {sm.count('<url>')} URLs")
+print("done.")

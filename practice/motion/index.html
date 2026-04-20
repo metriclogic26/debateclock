@@ -826,6 +826,22 @@ function fmtMs(ms) {
 }
 
 // ── Init ──────────────────────────────────────────────────────
+
+// Pre-fill from motion generator URL params
+window.addEventListener('DOMContentLoaded', function() {
+  var params = new URLSearchParams(location.search);
+  var motion = params.get('motion');
+  var fmt = params.get('format');
+  var fmtMap = {LD:'LD',PF:'PF',BP:'BPUni',WSDC:'WSDC',Parli:'Parli'};
+  if (motion) {
+    var el = document.getElementById('motionInput');
+    if (el) { el.value = motion; el.dispatchEvent(new Event('input')); }
+  }
+  if (fmt && fmtMap[fmt]) {
+    var sel = document.getElementById('formatSelect');
+    if (sel) { sel.value = fmtMap[fmt]; sel.dispatchEvent(new Event('change')); }
+  }
+});
 document.addEventListener('click', unlockAudio, { once: true });
 renderRecent();
 updateStartBtn();

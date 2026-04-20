@@ -47,6 +47,20 @@
 
   .count-badge { font-size: 13px; color: #5B6175; margin-top: 12px; text-align: center; }
 
+  .custom-section { margin-top: 32px; background: #111318; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 20px; }
+  .custom-title { font-size: 13px; font-weight: 600; color: #E8EAF0; margin-bottom: 12px; }
+  .custom-row { display: flex; gap: 8px; }
+  .custom-input { flex: 1; background: #0A0C0F; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 12px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: #E8EAF0; }
+  .custom-input::placeholder { color: #5B6175; }
+  .custom-input:focus { outline: none; border-color: rgba(255,255,255,0.25); }
+  .btn-add { background: #111318; border: 1px solid rgba(255,255,255,0.15); color: #E8EAF0; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; padding: 10px 16px; border-radius: 8px; cursor: pointer; white-space: nowrap; }
+  .btn-add:hover { border-color: #22C55E; color: #22C55E; }
+  .custom-list { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; max-height: 160px; overflow-y: auto; }
+  .custom-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: #0A0C0F; border-radius: 8px; padding: 8px 12px; font-size: 13px; color: #8B90A0; }
+  .custom-item span { flex: 1; line-height: 1.4; }
+  .btn-remove { background: none; border: none; color: #5B6175; font-size: 16px; cursor: pointer; padding: 0 2px; line-height: 1; }
+  .btn-remove:hover { color: #EF4444; }
+  .custom-empty { font-size: 13px; color: #5B6175; font-style: italic; padding: 4px 0; }
   .timer-cta { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); border-radius: 12px; padding: 16px 20px; margin-top: 28px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
   .timer-cta p { font-size: 14px; color: #8B90A0; margin: 0; }
   .timer-cta a { background: #22C55E; color: #04140a; font-weight: 700; font-size: 13px; padding: 8px 18px; border-radius: 8px; text-decoration: none; white-space: nowrap; }
@@ -147,6 +161,15 @@
     <button class="btn-copy" id="copyBtn" onclick="copyMotion()">Copy</button>
   </div>
   <div class="count-badge" id="countBadge"></div>
+
+  <div class="custom-section">
+    <div class="custom-title">Your motions</div>
+    <div class="custom-row">
+      <input class="custom-input" id="customInput" placeholder="Type your own motion and press Add&hellip;" onkeydown="if(event.key==='Enter')addCustom()">
+      <button class="btn-add" onclick="addCustom()">+ Add</button>
+    </div>
+    <div class="custom-list" id="customList"></div>
+  </div>
 
   <div class="timer-cta">
     <p>Ready to practice? Open the motion timer with prep countdown.</p>
@@ -323,17 +346,50 @@ const MOTIONS = [
 ];
 
 let pool = [...MOTIONS];
+let customMotions = JSON.parse(localStorage.getItem('dc_custom_motions') || '[]');
+
+function saveCustom() { localStorage.setItem('dc_custom_motions', JSON.stringify(customMotions)); }
+
+function renderCustomList() {
+  const el = document.getElementById('customList');
+  if (!customMotions.length) { el.innerHTML = '<div class="custom-empty">No custom motions yet.</div>'; return; }
+  el.innerHTML = customMotions.map((m,i) =>
+    `<div class="custom-item"><span>${m}</span><button class="btn-remove" onclick="removeCustom(${i})" title="Remove">&times;</button></div>`
+  ).join('');
+}
+
+function addCustom() {
+  const inp = document.getElementById('customInput');
+  const val = inp.value.trim();
+  if (!val) return;
+  customMotions.unshift(val);
+  saveCustom();
+  renderCustomList();
+  inp.value = '';
+  render();
+renderCustomList();
+}
+
+function removeCustom(i) {
+  customMotions.splice(i, 1);
+  saveCustom();
+  renderCustomList();
+  render();
+renderCustomList();
+}
 let last = null;
 
 function getPool() {
   const fmt = document.getElementById('filterFormat').value;
   const topic = document.getElementById('filterTopic').value;
   const level = document.getElementById('filterLevel').value;
-  return MOTIONS.filter(m =>
+  const base = MOTIONS.filter(m =>
     (fmt === 'all' || m.f === fmt) &&
     (topic === 'all' || m.topic === topic) &&
     (level === 'all' || m.level === level)
   );
+  const custom = customMotions.map(t => ({t, f:'Custom', topic:'Custom', level:'Custom'}));
+  return [...base, ...custom];
 }
 
 function fmtTag(f) {
@@ -391,6 +447,7 @@ function copyMotion() {
 }
 
 render();
+renderCustomList();
 </script>
 </body>
 </html>

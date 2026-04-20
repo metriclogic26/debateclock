@@ -715,6 +715,17 @@ document.getElementById('roomCode').textContent = ROOM;
 let state = initialStateForFormat('LD');
 let isEchoing = false;
 
+// Preload format from URL param e.g. ?format=WSDC
+(function() {
+  var params = new URLSearchParams(location.search);
+  var fmt = params.get('format');
+  var valid = ['LD','Policy','PF','Parli','WSDC','BPUni','BPHS','AsianParli','CanadaParli'];
+  if (fmt && valid.indexOf(fmt) !== -1) {
+    state = initialStateForFormat(fmt);
+  }
+})();
+
+
 const sock = new DebateClockSocket({
   room: ROOM,
   role: 'controller',

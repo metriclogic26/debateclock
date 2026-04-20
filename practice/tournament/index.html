@@ -126,22 +126,27 @@
     <div class="add-card-title">Add a round or event</div>
     <div class="add-row">
       <input class="round-name-input" type="text" id="roundName" placeholder="Round 1, Lunch, Awards…">
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;">
-        <select class="time-input" id="roundHour" style="padding:10px 6px;text-align:center;font-size:13px;">
+      <div style="display:flex;gap:6px;align-items:center;">
+        <select class="time-input" id="roundHour" style="width:64px;padding:10px 8px;font-size:15px;text-align:center;font-weight:600;">
           <option value="1">1</option><option value="2">2</option><option value="3">3</option>
           <option value="4">4</option><option value="5">5</option><option value="6">6</option>
           <option value="7">7</option><option value="8">8</option><option value="9">9</option>
           <option value="10">10</option><option value="11">11</option><option value="12">12</option>
         </select>
-        <select class="time-input" id="roundMin" style="padding:10px 6px;text-align:center;font-size:13px;">
-          <option value="00">:00</option><option value="05">:05</option><option value="10">:10</option>
-          <option value="15">:15</option><option value="20">:20</option><option value="25">:25</option>
-          <option value="30">:30</option><option value="35">:35</option><option value="40">:40</option>
-          <option value="45">:45</option><option value="50">:50</option><option value="55">:55</option>
+        <span style="color:#5B6175;font-size:20px;font-weight:700;margin:0 -2px;">:</span>
+        <select class="time-input" id="roundMin" style="width:72px;padding:10px 8px;font-size:15px;text-align:center;font-weight:600;">
+          <option value="00">00</option><option value="05">05</option><option value="10">10</option>
+          <option value="15">15</option><option value="20">20</option><option value="25">25</option>
+          <option value="30">30</option><option value="35">35</option><option value="40">40</option>
+          <option value="45">45</option><option value="50">50</option><option value="55">55</option>
+          <option value="custom">other…</option>
         </select>
-        <select class="time-input" id="roundAmPm" style="padding:10px 6px;text-align:center;font-size:13px;">
-          <option value="AM">AM</option><option value="PM" selected>PM</option>
+        <select class="time-input" id="roundAmPm" style="width:68px;padding:10px 8px;font-size:15px;text-align:center;font-weight:600;">
+          <option value="AM">A/option><option value="PM" selected>PM</option>
         </select>
+      </div>
+      <div id="customMinWrap" style="display:none;margin-top:6px;">
+        <input type="number" id="customMinInput" class="round-name-input" placeholder="Enter minutes (0-59)" min="0" max="59" style="width:200px;font-family:'DM Mono',monospace;">
       </div>
       <button class="add-btn" onclick="addRound()">Add</button>
     </div>
@@ -217,10 +222,11 @@ function load() {
 function addRound() {
   var name = document.getElementById('roundName').value.trim() || 'Round';
   var h = parseInt(document.getElementById('roundHour').value);
-  var m = document.getElementById('roundMin').value;
+  var mSel = document.getElementById('roundMin').value;
+  var m = mSel === 'custom' ? parseInt(document.getElementById('customMinInput').value) || 0 : parseInt(mSel);
   var ampm = document.getElementById('roundAmPm').value;
   var h24 = ampm === 'PM' ? (h === 12 ? 12 : h + 12) : (h === 12 ? 0 : h);
-  var ms = (h24 * 3600 + parseInt(m) * 60) * 1000;
+  var ms = (h24 * 3600 + m * 60) * 1000;
   rounds.push({ id: Date.now(), name: name, timeMs: ms });
   rounds.sort(function(a,b){ return a.timeMs - b.timeMs; });
   save();
@@ -380,6 +386,12 @@ updateCountdowns();
 setInterval(updateCountdowns, 1000);
 
 // Enter key on name input
+document.getElementById('roundMin').addEventListener('change', function() {
+  var wrap = document.getElementById('customMinWrap');
+  wrap.style.display = this.value === 'custom' ? 'block' : 'none';
+  if (this.value === 'custom') document.getElementById('customMinInput').focus();
+});
+
 document.getElementById('roundName').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') document.getElementById('roundTime').focus();
 });

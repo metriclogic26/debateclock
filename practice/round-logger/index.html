@@ -15,6 +15,40 @@
 <style>
   .logger-wrap { max-width: 760px; margin: 0 auto; padding: 28px 20px 80px; }
 
+  /* active header */
+  .active-header {
+    background: #111318;
+    border: 1px solid #3B82F6;
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .active-header.visible { display: flex; }
+  .active-header-left { display: flex; flex-direction: column; gap: 4px; }
+  .active-header-num {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
+    text-transform: uppercase; color: #3B82F6;
+  }
+  .active-header-name {
+    font-size: 18px; font-weight: 700; color: #E8EAF0;
+  }
+  .active-header-allowed {
+    font-size: 13px; color: #8B90A0; font-family: 'DM Mono', monospace;
+  }
+  .active-header-clock {
+    font-family: 'DM Mono', monospace;
+    font-size: 56px; font-weight: 500;
+    letter-spacing: -0.03em; line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: #3B82F6;
+  }
+  .active-header-clock.warn { color: #F59E0B; }
+  .active-header-clock.over { color: #EF4444; }
+
   /* setup */
   .setup-row {
     display: flex; gap: 12px; align-items: flex-end;
@@ -238,6 +272,16 @@
     <button class="start-round-btn" onclick="startRound()">Start round</button>
   </div>
 
+  <!-- ACTIVE HEADER -->
+  <div class="active-header" id="activeHeader">
+    <div class="active-header-left">
+      <div class="active-header-num" id="activeNum">Speech 01</div>
+      <div class="active-header-name" id="activeName">—</div>
+      <div class="active-header-lowed" id="activeAllowed">Allowed: 0:00</div>
+    </div>
+    <div class="active-header-clock" id="activeHeaderClock">0:00</div>
+  </div>
+
   <!-- SPEECH ROWS -->
   <div class="speech-rows" id="speechRows" style="display:none;"></div>
 
@@ -441,6 +485,14 @@ function startSpeech(i) {
   if (activeIdx !== null) stopSpeech(activeIdx);
   activeIdx = i;
   activeStart = Date.now();
+  // Show active header
+  var s = speeches[i];
+  document.getElementById('activeNum').textContent = 'Speech ' + String(i+1).padStart(2,'0') + ' of ' + speeches.length;
+  document.getElementById('activeName').textContent = s.label;
+  document.getElementById('activeAllowed').textContent = 'Allowed: ' + fmt(s.allowed);
+  document.getElementById('activeHeaderClock').textContent = '0:00';
+  document.getElementById('activeHeaderClock').className = 'active-header-clock';
+  document.getElementById('activeHeader').classList.add('visible');
   renderRows();
 }
 
@@ -449,7 +501,7 @@ function stopSpeech(i) {
   speeches[i].actual = (Date.now() - activeStart) / 1000;
   activeIdx = null;
   activeStart = null;
-  // Auto-start next if exists
+  document.getElementById('activeHeader').classList.remove('visible');
   renderRows();
 }
 
@@ -462,12 +514,17 @@ function skipSpeech(i) {
 
 function tick() {
   if (activeIdx !== null && activeStart !== null) {
+    var secs = (Date.now() - activeStart) / 1000;
+    // Update row clock
     var el = document.getElementById('actual-' + activeIdx);
-    if (el) {
-      var secs = (Date.now() - activeStart) / 1000;
-      el.textContent = fmt(secs);
+    if (el) { el.textContent = fmt(secs); el.className = 'row-actual running'; }
+    // Update header clock
+    var hdr = document.getElementById('activeHeaderClock');
+    if (hdr) {
+      hdr.textContent = fmt(secs);
       var allowed = speeches[activeIdx].allowed;
-      el.className = 'row-actual running';
+      var diff = secs - allowed;
+      hdr.className = 'active-header-clock' + (diff > 30 ? ' over' : diff > 10 ? ' warn' : '');
     }
   }
   raf = requestAnimationFrame(tick);

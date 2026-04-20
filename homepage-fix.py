@@ -1,0 +1,359 @@
+#!/usr/bin/env python3
+"""
+Fixes:
+1. Homepage practice tiles — add Round Logger, Flow Timer, Tournament Schedule
+2. Homepage nav dropdown — update to include all practice tools
+3. Homepage footer — add full links
+4. Create /blog/ dashboard page
+5. Update nav on all pages to be consistent
+
+Run from project root: python3 homepage-fix.py
+"""
+import pathlib, re
+
+# ── Correct nav HTML ──────────────────────────────────────────────────────────
+CORRECT_NAV = """<nav class="site-nav">
+  <a class="brand" href="/"><span class="brand-dot"></span>DebateClock</a>
+  <div class="nav-links">
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-trigger">Competition &#9662;</button>
+      <div class="nav-dropdown-menu">
+        <div class="nav-dropdown-section">Timer</div>
+        <a href="/app/">Two-device timer <span class="tag">Live</span></a>
+        <a href="/setup/judge-paradigm/">Tabroom paradigm setup</a>
+        <div class="nav-dropdown-section">US Formats</div>
+        <a href="/timer/lincoln-douglas/">Lincoln-Douglas</a>
+        <a href="/timer/policy-debate/">Policy (CX)</a>
+        <a href="/timer/public-forum/">Public Forum</a>
+        <a href="/timer/parliamentary/">Parliamentary</a>
+        <div class="nav-dropdown-section">International</div>
+        <a href="/timer/world-schools/">World Schools (WSDC)</a>
+        <a href="/timer/british-parliamentary/">British Parliamentary</a>
+        <a href="/timer/asian-parliamentary/">Asian Parliamentary</a>
+        <a href="/timer/canadian-parliamentary/">Canadian (CUSID)</a>
+      </div>
+    </div>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-trigger">Practice &#9662;</button>
+      <div class="nav-dropdown-menu">
+        <div class="nav-dropdown-section">Practice Tools</div>
+        <a href="/practice/motion/">Motion timer <span class="tag">New</span></a>
+        <a href="/practice/extemp/">Extemp prep room <span class="tag">New</span></a>
+        <a href="/practice/round-logger/">Round logger <span class="tag">New</span></a>
+        <a href="/practice/flow/">Flow timer <span class="tag">New</span></a>
+        <a href="/practice/tournament/">Tournament schedule <span class="tag">New</span></a>
+        <div class="nav-dropdown-section">Resources</div>
+        <a href="/blog/">Blog &amp; guides</a>
+        <a href="/formats/lincoln-douglas/">Format guides</a>
+      </div>
+    </div>
+  </div>
+  <a class="nav-cta" href="/app/">Open timer</a>
+</nav>"""
+
+# ── Correct footer HTML ───────────────────────────────────────────────────────
+CORRECT_FOOTER = """<footer class="site-footer">
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>Competition</h4>
+      <a href="/app/">Two-device timer</a>
+      <a href="/setup/judge-paradigm/">Tabroom paradigm setup</a>
+      <a href="/timer/lincoln-douglas/">Lincoln-Douglas</a>
+      <a href="/timer/policy-debate/">Policy (CX)</a>
+      <a href="/timer/public-forum/">Public Forum</a>
+      <a href="/timer/world-schools/">World Schools (WSDC)</a>
+      <a href="/timer/british-parliamentary/">British Parliamentary</a>
+    </div>
+    <div class="footer-col">
+      <h4>Practice Tools</h4>
+      <a href="/practice/motion/">Motion timer</a>
+      <a href="/practice/extemp/">Extemp prep room</a>
+      <a href="/practice/round-logger/">Round logger</a>
+      <a href="/practice/flow/">Flow timer</a>
+      <a href="/practice/tournament/">Tournament schedule</a>
+    </div>
+    <div class="footer-col">
+      <h4>Guides &amp; Blog</h4>
+      <a href="/blog/">All guides</a>
+      <a href="/formats/lincoln-douglas/">LD format guide</a>
+      <a href="/formats/public-forum/">PF format guide</a>
+      <a href="/formats/world-schools/">WSDC format guide</a>
+      <a href="/formats/british-parliamentary/">BP format guide</a>
+      <a href="/blog/debate-timer-prep-time/">Prep time explained</a>
+      <a href="/blog/wsdc-vs-british-parliamentary/">WSDC vs BP</a>
+      <a href="/blog/tournament-day-setup/">Tournament day setup</a>
+    </div>
+  </div>
+  <div class="footer-row">
+    <div>
+      <a href="/" style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;">
+        <span style="width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);"></span>
+        DebateClock
+      </a>
+      <span style="margin-left:12px;">free browser debate timer</span>
+    </div>
+    <a href="https://tally.so/r/QKAMOX" target="_blank" rel="noopener" class="feedback-btn">&#9733; Give feedback</a>
+  </div>
+</footer>"""
+
+DISCLAIMER = """<div class="site-disclaimer">
+  Informational timing aid only &middot; Not affiliated with NSDA, WUDC, WSDC, CUSID, or Tabroom &middot; Always defer to the tournament director for timing disputes &middot; <a href="/terms/">Terms &amp; Privacy</a>
+</div>"""
+
+# ── 1. Update nav + footer on ALL pages ──────────────────────────────────────
+all_pages = list(pathlib.Path(".").rglob("index.html"))
+all_pages = [p for p in all_pages if 'node_modules' not in str(p)]
+
+nav_updated = 0
+footer_updated = 0
+
+for page in all_pages:
+    src = page.read_text()
+    changed = False
+
+    # Update nav
+    new_src = re.sub(r'<nav class="site-nav">.*?</nav>', CORRECT_NAV, src, flags=re.DOTALL, count=1)
+    if new_src != src:
+        src = new_src
+        nav_updated += 1
+        changed = True
+
+    # Update footer
+    new_src = re.sub(r'<footer class="site-footer">.*?</footer>', CORRECT_FOOTER, src, flags=re.DOTALL, count=1)
+    if new_src != src:
+        src = new_src
+        footer_updated += 1
+        changed = True
+
+    if changed:
+        page.write_text(src)
+
+print(f"ok: nav updated on {nav_updated} pages")
+print(f"ok: footer updated on {footer_updated} pages")
+
+# ── 2. Fix homepage practice tiles ───────────────────────────────────────────
+f = pathlib.Path("index.html")
+src = f.read_text()
+
+OLD_SPEECH_SECTION = re.search(
+    r'<div class="formats-region-label"[^>]*>.*?Speech Events.*?</div>\s*<div class="format-grid">.*?</div>\s*</section>',
+    src, re.DOTALL
+)
+
+if OLD_SPEECH_SECTION:
+    NEW_SPEECH = """<div class="formats-region-label" style="margin-top:20px;">&#127908; Practice Tools</div>
+    <div class="format-grid">
+      <a href="/practice/motion/" class="format-card">
+        <h3>Motion Practice Timer</h3>
+        <p>Individual &middot; All formats</p>
+        <div class="prep">Prep countdown + speech timer</div>
+      </a>
+      <a href="/practice/extemp/" class="format-card">
+        <h3>Extemp Prep Room</h3>
+        <p>Coach &middot; Up to 10 students</p>
+        <div class="prep">10 individual countdowns</div>
+      </a>
+      <a href="/practice/round-logger/" class="format-card">
+        <h3>Round Logger</h3>
+        <p>Coach &middot; All formats</p>
+        <div class="prep">Track actual vs allowed times</div>
+      </a>
+      <a href="/practice/flow/" class="format-card">
+        <h3>Flow Timer</h3>
+        <p>Debater &middot; Work/break intervals</p>
+        <div class="prep">Structured practice sessions</div>
+      </a>
+      <a href="/practice/tournament/" class="format-card">
+        <h3>Tournament Schedule</h3>
+        <p>Coach &middot; All day</p>
+        <div class="prep">Live countdown to each round</div>
+      </a>
+    </div>
+  </section>"""
+    src = src[:OLD_SPEECH_SECTION.start()] + NEW_SPEECH
+    f.write_text(src)
+    print("ok: homepage practice tiles updated (5 tools)")
+else:
+    # Try simpler replacement
+    src = src.replace(
+        """      <a href="/practice/motion/" class="format-card">
+        <h3>Motion Practice Timer</h3>
+        <p>Individual &middot; All formats</p>
+        <div class="prep">Prep countdown + speech timer</div>
+      </a>
+      <a href="/practice/extemp/" class="format-card">
+        <h3>Extemp Prep Room</h3>
+        <p>Coach &middot; Up to 10 students</p>
+        <div class="prep">Motion timer &amp; prep room</div>
+      </a>
+    </div>
+  </section>""",
+        """      <a href="/practice/motion/" class="format-card">
+        <h3>Motion Practice Timer</h3>
+        <p>Individual &middot; All formats</p>
+        <div class="prep">Prep countdown + speech timer</div>
+      </a>
+      <a href="/practice/extemp/" class="format-card">
+        <h3>Extemp Prep Room</h3>
+        <p>Coach &middot; Up to 10 students</p>
+        <div class="prep">10 individual countdowns</div>
+      </a>
+      <a href="/practice/round-logger/" class="format-card">
+        <h3>Round Logger</h3>
+        <p>Coach &middot; All formats</p>
+        <div class="prep">Track actual vs allowed times</div>
+      </a>
+      <a href="/practice/flow/" class="format-card">
+        <h3>Flow Timer</h3>
+        <p>Debater &middot; Work/break intervals</p>
+        <div class="prep">Structured practice sessions</div>
+      </a>
+      <a href="/practice/tournament/" class="format-card">
+        <h3>Tournament Schedule</h3>
+        <p>Coach &middot; All day</p>
+        <div class="prep">Live countdown to each round</div>
+      </a>
+    </div>
+  </section>"""
+    )
+    f.write_text(src)
+    print("ok: homepage practice tiles updated via fallback")
+
+# ── 3. Create /blog/ dashboard page ──────────────────────────────────────────
+BLOG_INDEX = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Debate Timer Guides &amp; Blog | DebateClock</title>
+<meta name="description" content="Free debate timer guides. Format explainers, prep time rules, tournament day setup, and more. LD, PF, WSDC, BP formats covered.">
+<link rel="canonical" href="https://debateclock.org/blog/">
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+  .blog-wrap {{ max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }}
+  .blog-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 28px; }}
+  .blog-card {{
+    background: #111318; border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px; padding: 22px; text-decoration: none;
+    display: flex; flex-direction: column; gap: 10px;
+    transition: border-color 0.15s;
+  }}
+  .blog-card:hover {{ border-color: rgba(255,255,255,0.18); }}
+  .blog-card-tag {{
+    font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; padding: 3px 8px; border-radius: 4px;
+    display: inline-block; align-self: flex-start;
+  }}
+  .tag-guide {{ background: rgba(59,130,246,0.15); color: #3B82F6; }}
+  .tag-format {{ background: rgba(34,197,94,0.15); color: #22C55E; }}
+  .tag-blog {{ background: rgba(245,158,11,0.15); color: #F59E0B; }}
+  .blog-card h3 {{ font-size: 16px; font-weight: 600; color: #E8EAF0; line-height: 1.3; margin: 0; }}
+  .blog-card p {{ font-size: 13px; color: #8B90A0; line-height: 1.6; margin: 0; }}
+  .blog-card .read-more {{ font-size: 12px; color: #3B82F6; margin-top: auto; }}
+  .section-label {{
+    font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
+    text-transform: uppercase; color: #5B6175; margin: 36px 0 14px;
+  }}
+</style>
+</head>
+<body>
+{CORRECT_NAV}
+<div class="blog-wrap">
+  <h1 style="font-size:32px;font-weight:700;color:#E8EAF0;margin:0 0 10px;">Guides &amp; blog</h1>
+  <p style="font-size:15px;color:#8B90A0;margin:0;">Format guides, timing rules, and debate resources. All free.</p>
+
+  <div class="section-label">Format guides</div>
+  <div class="blog-grid">
+    <a href="/formats/lincoln-douglas/" class="blog-card">
+      <span class="blog-card-tag tag-format">Format guide</span>
+      <h3>Lincoln-Douglas debate: speech order &amp; prep time</h3>
+      <p>Complete LD format guide. All 7 speeches, 4-minute prep pool, cross-examination rules.</p>
+      <span class="read-more">Read guide &rarr;</span>
+    </a>
+    <a href="/formats/public-forum/" class="blog-card">
+      <span class="blog-card-tag tag-format">Format guide</span>
+      <h3>Public Forum debate: speech order &amp; crossfire</h3>
+      <p>Complete PF format guide. All 11 speeches, crossfire structure, 3-minute prep pool per team.</p>
+      <span class="read-more">Read guide &rarr;</span>
+    </a>
+    <a href="/formats/world-schools/" class="blog-card">
+      <span class="blog-card-tag tag-format">Format guide</span>
+      <h3>World Schools debate (WSDC): speech order &amp; POI rules</h3>
+      <p>Complete WSDC guide. 8-minute speeches, POI window 1&ndash;7 minutes, reply speeches.</p>
+      <span class="read-more">Read guide &rarr;</span>
+    </a>
+    <a href="/formats/british-parliamentary/" class="blog-card">
+      <span class="blog-card-tag tag-format">Format guide</span>
+      <h3>British Parliamentary (BP/WUDC): complete format guide</h3>
+      <p>Four-team format, 7-minute speeches, POI rules, the closing half challenge explained.</p>
+      <span class="read-more">Read guide &rarr;</span>
+    </a>
+  </div>
+
+  <div class="section-label">Blog posts</div>
+  <div class="blog-grid">
+    <a href="/blog/debate-timer-prep-time/" class="blog-card">
+      <span class="blog-card-tag tag-blog">Blog</span>
+      <h3>Shared prep time pool: how it really works</h3>
+      <p>Why most timer apps get prep time wrong — and how a shared pool actually works in LD, Policy, and PF.</p>
+      <span class="read-more">Read post &rarr;</span>
+    </a>
+    <a href="/blog/wsdc-vs-british-parliamentary/" class="blog-card">
+      <span class="blog-card-tag tag-blog">Blog</span>
+      <h3>WSDC vs British Parliamentary: which should your school run?</h3>
+      <p>Side-by-side comparison of team structure, speech length, POIs, and difficulty for school programs.</p>
+      <span class="read-more">Read post &rarr;</span>
+    </a>
+    <a href="/blog/tournament-day-setup/" class="blog-card">
+      <span class="blog-card-tag tag-guide">Guide</span>
+      <h3>How to set up a debate timer for tournament day</h3>
+      <p>Step-by-step: judge setup, debater display, Tabroom paradigm link, and what to do when Wi-Fi fails.</p>
+      <span class="read-more">Read guide &rarr;</span>
+    </a>
+    <a href="/blog/judge-debater-sync/" class="blog-card">
+      <span class="blog-card-tag tag-guide">Guide</span>
+      <h3>Two-device sync: judge controller + debater display</h3>
+      <p>How real-time sync works between the judge&rsquo;s phone and the debater&rsquo;s screen.</p>
+      <span class="read-more">Read guide &rarr;</span>
+    </a>
+  </div>
+
+  <div class="section-label">Setup guides</div>
+  <div class="blog-grid">
+    <a href="/setup/judge-paradigm/" class="blog-card">
+      <span class="blog-card-tag tag-guide">Setup</span>
+      <h3>Add DebateClock to your Tabroom paradigm</h3>
+      <p>Paste one link. Debaters click it before every round — same timer, every tournament, forever.</p>
+      <span class="read-more">Read guide &rarr;</span>
+    </a>
+  </div>
+</div>
+{DISCLAIMER}
+{CORRECT_FOOTER}
+</body>
+</html>"""
+
+pathlib.Path("blog/index.html").write_text(BLOG_INDEX)
+print("ok: blog/index.html dashboard created")
+
+# ── 4. Update sitemap ─────────────────────────────────────────────────────────
+sm = pathlib.Path("sitemap.xml").read_text()
+new_urls = [
+    "https://debateclock.org/blog/",
+    "https://debateclock.org/formats/lincoln-douglas/",
+    "https://debateclock.org/formats/public-forum/",
+    "https://debateclock.org/formats/world-schools/",
+    "https://debateclock.org/formats/british-parliamentary/",
+]
+for url in new_urls:
+    if url not in sm:
+        sm = sm.replace('</urlset>',
+            f'  <url><loc>{url}</loc><lastmod>2026-04-19</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>\n</urlset>')
+pathlib.Path("sitemap.xml").write_text(sm)
+print(f"ok: sitemap — {sm.count('<url>')} URLs")
+print("done.")

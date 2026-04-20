@@ -124,33 +124,50 @@
   <!-- ADD ROUND -->
   <div class="add-card">
     <div class="add-card-title">Add a round or event</div>
-    <div class="add-row">
-      <input class="round-name-input" type="text" id="roundName" placeholder="Round 1, Lunch, Awards…">
-      <div style="display:flex;gap:6px;align-items:center;">
-        <select class="time-input" id="roundHour" style="width:64px;padding:10px 8px;font-size:15px;text-align:center;font-weight:600;">
-          <option value="1">1</option><option value="2">2</option><option value="3">3</option>
-          <option value="4">4</option><option value="5">5</option><option value="6">6</option>
-          <option value="7">7</option><option value="8">8</option><option value="9">9</option>
-          <option value="10">10</option><option value="11">11</option><option value="12">12</option>
-        </select>
-        <span style="color:#5B6175;font-size:20px;font-weight:700;margin:0 -2px;">:</span>
-        <select class="time-input" id="roundMin" style="width:72px;padding:10px 8px;font-size:15px;text-align:center;font-weight:600;">
-          <option value="00">00</option><option value="05">05</option><option value="10">10</option>
-          <option value="15">15</option><option value="20">20</option><option value="25">25</option>
-          <option value="30">30</option><option value="35">35</option><option value="40">40</option>
-          <option value="45">45</option><option value="50">50</option><option value="55">55</option>
-          <option value="custom">other…</option>
-        </select>
-        <select class="time-input" id="roundAmPm" style="width:68px;padding:10px 8px;font-size:15px;text-align:center;font-weight:600;">
-          <option value="AM">A/option><option value="PM" selected>PM</option>
-        </select>
-      </div>
-      <div id="customMinWrap" style="display:none;margin-top:6px;">
-        <input type="number" id="customMinInput" class="round-name-input" placeholder="Enter minutes (0-59)" min="0" max="59" style="width:200px;font-family:'DM Mono',monospace;">
-      </div>
-      <button class="add-btn" onclick="addRound()">Add</button>
+
+    <!-- Row 1: Name -->
+    <div style="margin-bottom:10px;">
+      <input class="round-name-input" type="text" id="roundName"
+        placeholder="Round 1, Lunch, Awards…"
+        style="width:100%;box-sizing:border-box;font-size:15px;padding:12px 14px;">
     </div>
-    <div class="quick-presets">
+
+    <!-- Row 2: Time selects -->
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap;">
+      <select class="time-input" id="roundHour"
+        style="width:70px;padding:12px 8px;font-size:16px;font-weight:600;text-align:center;">
+        <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+        <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+        <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+        <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+      </select>
+      <span style="color:#5B6175;font-size:22px;font-weight:700;">:</span>
+      <select class="time-input" id="roundMin"
+        style="width:80px;padding:12px 8px;font-size:16px;font-weight:600;text-align:center;">
+        <option value="00">00</option><option value="05">05</option><option value="10">10</option>
+        <option value="15">15</option><option value="20">20</option><option value="25">25</option>
+        <option value="30">30</option><option value="35">35</option><option value="40">40</option>
+        <option value="45">45</option><option value="50">50</option><option value="55">55</option>
+        <option value="custom">other…</option>
+      </select>
+      <select class="time-input" id="roundAmPm"
+        style="width:76px;padding:12px 8px;font-size:16px;font-weight:600;text-align:center;">
+        <option value="AM">AM</option>
+        <option value="PM" selected>PM</option>
+      </select>
+      <input type="number" id="customMinInput" class="time-input"
+        placeholder="min" min="0" max="59"
+        style="width:80px;padding:12px 8px;font-size:16px;display:none;text-align:center;">
+    </div>
+
+    <!-- Row 3: Add button -->
+    <button class="add-btn" onclick="addRound()"
+      style="width:100%;padding:14px;font-size:15px;border-radius:10px;">
+      + Add to schedule
+    </button>
+
+    <!-- Quick presets -->
+    <div class="quick-presets" style="margin-top:12px;">
       <span style="font-size:10px;color:#5B6175;letter-spacing:.1em;text-transform:uppercase;margin-right:4px;">Quick:</span>
       <button class="quick-btn" onclick="quickAdd('Round 1')">Round 1</button>
       <button class="quick-btn" onclick="quickAdd('Round 2')">Round 2</button>

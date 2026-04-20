@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tournament Schedule Countdown — Debate Round Timer | DebateClock</title>
+<meta name="description" content="Free tournament day schedule. Add your round times, get live countdowns to each round all day. Works on any phone. No signup.">
+<link rel="canonical" href="https://debateclock.org/practice/tournament/">
+<meta name="robots" content="index, follow">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+  .tourn-wrap { max-width: 600px; margin: 0 auto; padding: 28px 20px 80px; }
+
+  .next-hero {
+    background: #111318; border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px; padding: 28px 24px; margin-bottom: 20px;
+    display: none;
+  }
+  .next-hero.visible { display: block; }
+  .next-hero-label { font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #5B6175; margin-bottom: 10px; }
+  .next-hero-name { font-size: 20px; font-weight: 700; color: #E8EAF0; margin-bottom: 4px; }
+  .next-hero-time { font-size: 12px; color: #8B90A0; font-family: 'DM Mono', monospace; margin-bottom: 20px; }
+  .next-countdown { font-family: 'DM Mono', monospace; font-size: clamp(48px,14vw,80px); font-weight: 500; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; color: #22C55E; }
+  .next-countdown.warn { color: #F59E0B; }
+  .next-countdown.critical { color: #EF4444; animation: pulse-cd 1s ease-in-out infinite; }
+  .next-countdown.started { color: #5B6175; }
+  @keyframes pulse-cd { 0%,100%{opacity:1} 50%{opacity:0.45} }
+  .next-hero-sub { font-size: 12px; color: #5B6175; margin-top: 8px; font-family: 'DM Mono', monospace; }
+
+  .add-card { background: #111318; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
+  .add-card-title { font-size: 13px; font-weight: 600; color: #E8EAF0; margin-bottom: 14px; }
+  .add-row { display: grid; grid-template-columns: 1fr 100px auto; gap: 8px; align-items: center; }
+  .round-name-input { background: #0A0C0F; border: 1px solid rgba(255,255,255,0.10); border-radius: 8px; padding: 10px 12px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: #E8EAF0; width: 100%; box-sizing: border-box; }
+  .round-name-input:focus { outline: none; border-color: #3B82F6; }
+  .round-name-input::placeholder { color: #5B6175; }
+  .time-input { background: #0A0C0F; border: 1px solid rgba(255,255,255,0.10); border-radius: 8px; padding: 10px 12px; font-family: 'DM Mono', monospace; font-size: 14px; color: #E8EAF0; width: 100%; box-sizing: border-box; }
+  .time-input:focus { outline: none; border-color: #3B82F6; }
+  .add-btn { background: #3B82F6; border: none; border-radius: 8px; padding: 10px 18px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700; color: #fff; cursor: pointer; white-space: nowrap; }
+  .add-btn:hover { opacity: 0.9; }
+
+  .quick-presets { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .quick-btn { background: transparent; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 4px 10px; font-family: 'DM Mono', monospace; font-size: 11px; color: #8B90A0; cursor: pointer; transition: all 0.15s; }
+  .quick-btn:hover { border-color: rgba(255,255,255,0.16); color: #E8EAF0; }
+
+  .round-list { display: flex; flex-direction: column; gap: 8px; }
+  .round-item { background: #111318; border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 14px 16px; display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 12px; }
+  .round-item.is-next { border-color: #22C55E; background: rgba(34,197,94,0.05); }
+  .round-item.is-started { opacity: 0.4; }
+  .round-item-name { font-size: 14px; font-weight: 600; color: #E8EAF0; }
+  .round-item-time { font-size: 12px; color: #8B90A0; font-family: 'DM Mono', monospace; margin-top: 2px; }
+  .round-cd { font-family: 'DM Mono', monospace; font-size: 18px; font-weight: 500; font-variant-numeric: tabular-nums; min-width: 68px; text-align: right; color: #5B6175; }
+  .round-cd.is-next { color: #22C55E; }
+  .round-cd.warn { color: #F59E0B; }
+  .round-cd.critical { color: #EF4444; }
+  .round-cd.started { color: #5B6175; }
+  .remove-btn { background: transparent; border: none; color: #5B6175; font-size: 16px; cursor: pointer; padding: 4px; line-height: 1; transition: color 0.15s; }
+  .remove-btn:hover { color: #EF4444; }
+
+  .empty-state { text-align: center; padding: 40px 20px; color: #5B6175; font-size: 14px; }
+  .empty-state .icon { font-size: 32px; margin-bottom: 12px; }
+
+  .clear-btn { background: transparent; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 16px; font-family: 'DM Sans', sans-serif; font-size: 12px; color: #8B90A0; cursor: pointer; margin-top: 16px; }
+  .clear-btn:hover { color: #EF4444; border-color: rgba(239,68,68,0.3); }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a class="brand" href="/"><span class="brand-dot"></span>DebateClock</a>
+  <div class="nav-links">
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-trigger">Competition ▾</button>
+      <div class="nav-dropdown-menu">
+        <div class="nav-dropdown-section">Timer</div>
+        <a href="/app/">Two-device timer <span class="tag">Live</span></a>
+        <a href="/setup/judge-paradigm/">Tabroom paradigm setup</a>
+        <div class="nav-dropdown-section">US Formats</div>
+        <a href="/timer/lincoln-douglas/">Lincoln-Douglas</a>
+        <a href="/timer/policy-debate/">Policy (CX)</a>
+        <a href="/timer/public-forum/">Public Forum</a>
+        <a href="/timer/parliamentary/">Parliamentary</a>
+        <div class="nav-dropdown-section">International</div>
+        <a href="/timer/world-schools/">World Schools (WSDC)</a>
+        <a href="/timer/british-parliamentary/">British Parliamentary</a>
+        <a href="/timer/asian-parliamentary/">Asian Parliamentary</a>
+        <a href="/timer/canadian-parliamentary/">Canadian (CUSID)</a>
+      </div>
+    </div>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-trigger">Practice ▾</button>
+      <div class="nav-dropdown-menu">
+        <div class="nav-dropdown-section">Practice Tools</div>
+        <a href="/practice/motion/">Motion practice timer <span class="tag">New</span></a>
+        <a href="/practice/extemp/">Extemp prep room clock <span class="tag">New</span></a>
+        <a href="/practice/round-logger/">Round logger <span class="tag">New</span></a>
+        <a href="/practice/flow/">Flow timer <span class="tag">New</span></a>
+        <a href="/practice/tournament/">Tournament schedule <span class="tag">New</span></a>
+      </div>
+    </div>
+  </div>
+  <a class="nav-cta" href="/app/">Competition timer</a>
+</nav>
+
+<div class="tourn-wrap">
+  <div style="margin-bottom:24px;">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#5B6175;margin-bottom:8px;">Practice Tool</div>
+    <h1 style="font-size:26px;font-weight:700;color:#E8EAF0;margin:0 0 8px;">Tournament schedule</h1>
+    <p style="font-size:14px;color:#8B90A0;margin:0;">Add your round times. Live countdowns keep you on schedule all day.</p>
+  </div>
+
+  <!-- NEXT ROUND HERO -->
+  <div class="next-hero" id="nextHero">
+    <div class="next-hero-label" id="nextLabel">Next round</div>
+    <div class="next-hero-name" id="nextName">—</div>
+    <div class="next-hero-time" id="nextTime">—</div>
+    <div class="next-countdown" id="nextCountdown">—</div>
+    <div class="next-hero-sub" id="nextSub"></div>
+  </div>
+
+  <!-- ADD ROUND -->
+  <div class="add-card">
+    <div class="add-card-title">Add a round or event</div>
+    <div class="add-row">
+      <input class="round-name-input" type="text" id="roundName" placeholder="Round 1, Lunch, Awards…">
+      <input class="time-input" type="time" id="roundTime">
+      <button class="add-btn" onclick="addRound()">Add</button>
+    </div>
+    <div class="quick-presets">
+      <span style="font-size:10px;color:#5B6175;letter-spacing:.1em;text-transform:uppercase;margin-right:4px;">Quick:</span>
+      <button class="quick-btn" onclick="quickAdd('Round 1')">Round 1</button>
+      <button class="quick-btn" onclick="quickAdd('Round 2')">Round 2</button>
+      <button class="quick-btn" onclick="quickAdd('Round 3')">Round 3</button>
+      <button class="quick-btn" onclick="quickAdd('Round 4')">Round 4</button>
+      <button class="quick-btn" onclick="quickAdd('Lunch')">Lunch</button>
+      <button class="quick-btn" onclick="quickAdd('Awards')">Awards</button>
+    </div>
+  </div>
+
+  <!-- ROUND LIST -->
+  <div class="round-list" id="roundList"></div>
+
+  <div style="text-align:center;" id="clearWrap" style="display:none;">
+    <button class="clear-btn" onclick="clearAll()">Clear all rounds</button>
+  </div>
+</div>
+
+<div class="site-disclaimer">
+  Informational timing aid only &middot; Not affiliated with NSDA, WUDC, WSDC, CUSID, or Tabroom &middot; Always defer to the tournament director for timing disputes &middot; <a href="/terms/">Terms &amp; Privacy</a>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>Practice Tools</h4>
+      <a href="/practice/motion/">Motion timer</a>
+      <a href="/practice/extemp/">Extemp prep room</a>
+      <a href="/practice/round-logger/">Round logger</a>
+      <a href="/practice/flow/">Flow timer</a>
+      <a href="/practice/tournament/">Tournament schedule</a>
+    </div>
+    <div class="footer-col">
+      <h4>Competition</h4>
+      <a href="/app/">Two-device timer</a>
+      <a href="/setup/judge-paradigm/">Tabroom setup</a>
+    </div>
+    <div class="footer-col">
+      <h4>Formats</h4>
+      <a href="/timer/lincoln-douglas/">Lincoln-Douglas</a>
+      <a href="/timer/world-schools/">World Schools</a>
+    </div>
+  </div>
+  <div class="footer-row">
+    <div>
+      <a href="/" style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);text-decoration:none;">
+        <span style="width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);"></span>
+        DebateClock
+      </a>
+      <span style="margin-left:12px;">free browser debate timer</span>
+    </div>
+    <a href="https://tally.so/r/QKAMOX" target="_blank" rel="noopener" class="feedback-btn">★ Give feedback</a>
+  </div>
+</footer>
+
+<script>
+var STORAGE_KEY = 'debateclock:tournament';
+var rounds = [];
+
+// ── Persist ───────────────────────────────────────────────────
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(rounds)); } catch(e) {}
+}
+function load() {
+  try { rounds = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) { rounds = []; }
+}
+
+// ── Add round ─────────────────────────────────────────────────
+function addRound() {
+  var name = document.getElementById('roundName').value.trim() || 'Round';
+  var time = document.getElementById('roundTime').value;
+  if (!time) { document.getElementById('roundTime').focus(); return; }
+  var ms = timeToMs(time);
+  rounds.push({ id: Date.now(), name: name, timeMs: ms });
+  rounds.sort(function(a,b){ return a.timeMs - b.timeMs; });
+  save();
+  document.getElementById('roundName').value = '';
+  document.getElementById('roundTime').value = '';
+  renderList();
+}
+
+function quickAdd(name) {
+  document.getElementById('roundName').value = name;
+  document.getElementById('roundTime').focus();
+}
+
+function removeRound(id) {
+  rounds = rounds.filter(function(r){ return r.id !== id; });
+  save();
+  renderList();
+}
+
+function clearAll() {
+  if (!confirm('Clear all rounds?')) return;
+  rounds = []; save(); renderList();
+}
+
+// ── Time helpers ──────────────────────────────────────────────
+function timeToMs(timeStr) {
+  var parts = timeStr.split(':');
+  return (parseInt(parts[0])*3600 + parseInt(parts[1])*60) * 1000;
+}
+
+function nowMs() {
+  var d = new Date();
+  return (d.getHours()*3600 + d.getMinutes()*60 + d.getSeconds()) * 1000 + d.getMilliseconds();
+}
+
+function fmtTime(ms) {
+  var totalSec = Math.floor(ms / 1000);
+  var h = Math.floor(totalSec / 3600);
+  var m = Math.floor((totalSec % 3600) / 60);
+  var ampm = h >= 12 ? 'PM' : 'AM';
+  var h12 = h % 12 || 12;
+  return h12 + ':' + ('0'+m).slice(-2) + ' ' + ampm;
+}
+
+function fmtCountdown(ms) {
+  ms = Math.abs(ms);
+  var s = Math.floor(ms / 1000);
+  var h = Math.floor(s / 3600);
+  var m = Math.floor((s % 3600) / 60);
+  var sec = s % 60;
+  if (h > 0) return h + ':' + ('0'+m).slice(-2) + ':' + ('0'+sec).slice(-2);
+  return m + ':' + ('0'+sec).slice(-2);
+}
+
+// ── Render ────────────────────────────────────────────────────
+function renderList() {
+  var list = document.getElementById('roundList');
+  var clearWrap = document.getElementById('clearWrap');
+  list.innerHTML = '';
+
+  if (rounds.length === 0) {
+    list.innerHTML = '<div class="empty-state"><div class="icon">📋</div>No rounds added yet.<br>Add your first round above.</div>';
+    document.getElementById('nextHero').classList.remove('visible');
+    clearWrap.style.display = 'none';
+    return;
+  }
+
+  clearWrap.style.display = 'block';
+  var now = nowMs();
+
+  rounds.forEach(function(r) {
+    var diff = r.timeMs - now;
+    var isStarted = diff < -300000; // more than 5 min past = started
+    var isNext = !isStarted && rounds.filter(function(x){ return x.timeMs - now > -300000; })[0] === r;
+
+    var cdClass = isStarted ? 'started' : isNext ? (diff < 300000 ? (diff < 60000 ? 'critical' : 'warn') : 'is-next') : '';
+    var cdText = isStarted ? 'Started' : fmtCountdown(diff);
+
+    var item = document.createElement('div');
+    item.className = 'round-item' + (isNext ? ' is-next' : '') + (isStarted ? ' is-started' : '');
+    item.id = 'ri-' + r.id;
+    item.innerHTML =
+      '<div><div class="round-item-name">' + esc(r.name) + '</div><div class="round-item-time">' + fmtTime(r.timeMs) + '</div></div>' +
+      '<div class="round-cd ' + cdClass + '" id="rcd-' + r.id + '">' + cdText + '</div>' +
+      '<button class="remove-btn" onclick="removeRound(' + r.id + ')" title="Remove">×</button>';
+    list.appendChild(item);
+  });
+}
+
+function updateCountdowns() {
+  var now = nowMs();
+  var nextRound = null;
+
+  rounds.forEach(function(r) {
+    var diff = r.timeMs - now;
+    var isStarted = diff < -300000;
+    var el = document.getElementById('rcd-' + r.id);
+    var item = document.getElementById('ri-' + r.id);
+    if (!el) return;
+
+    if (isStarted) {
+      el.textContent = 'Started';
+      el.className = 'round-cd started';
+      if (item) { item.className = 'round-item is-started'; }
+      return;
+    }
+
+    if (!nextRound) nextRound = r;
+
+    var phase = diff < 60000 ? 'critical' : diff < 300000 ? 'warn' : 'is-next';
+    el.textContent = fmtCountdown(diff);
+    el.className = 'round-cd ' + phase;
+    if (item) item.className = 'round-item' + (nextRound === r ? ' is-next' : '');
+  });
+
+  // Update hero
+  var hero = document.getElementById('nextHero');
+  if (nextRound) {
+    var diff = nextRound.timeMs - now;
+    hero.classList.add('visible');
+    document.getElementById('nextLabel').textContent = diff < 0 ? 'In progress' : 'Next';
+    document.getElementById('nextName').textContent = nextRound.name;
+    document.getElementById('nextTime').textContent = fmtTime(nextRound.timeMs);
+    var cd = document.getElementById('nextCountdown');
+    cd.textContent = diff < 0 ? 'Started' : fmtCountdown(diff);
+    cd.className = 'next-countdown' + (diff < 0 ? ' started' : diff < 60000 ? ' critical' : diff < 300000 ? ' warn' : '');
+    document.getElementById('nextSub').textContent = diff > 0
+      ? (Math.ceil(diff/60000)) + ' min until round'
+      : 'Round has started';
+  } else {
+    hero.classList.remove('visible');
+  }
+}
+
+function esc(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+}
+
+// ── Set default time to next round hour ───────────────────────
+function setDefaultTime() {
+  var d = new Date();
+  d.setMinutes(0); d.setSeconds(0);
+  d.setHours(d.getHours() + 1);
+  var h = ('0'+d.getHours()).slice(-2);
+  var m = ('0'+d.getMinutes()).slice(-2);
+  document.getElementById('roundTime').value = h + ':' + m;
+}
+
+// ── Init ──────────────────────────────────────────────────────
+load();
+setDefaultTime();
+renderList();
+updateCountdowns();
+setInterval(updateCountdowns, 1000);
+
+// Enter key on name input
+document.getElementById('roundName').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('roundTime').focus();
+});
+document.getElementById('roundTime').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') addRound();
+});
+</script>
+</body>
+</html>

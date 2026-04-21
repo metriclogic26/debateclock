@@ -241,6 +241,15 @@
     </div>
   </div>
 
+
+    <!-- CSV Import -->
+    <div class="csv-row">
+      <span class="csv-label">Import from spreadsheet:</span>
+      <button class="csv-btn" onclick="document.getElementById('csvFileInput').click()">&#8679; Import CSV</button>
+      <input type="file" id="csvFileInput" accept=".csv" onchange="importCSV(this)">
+      <a class="csv-btn" href="/practice/tournament/sample.csv" download style="text-decoration:none;">&#8681; Sample CSV</a>
+    </div>
+
   <!-- ROUND LIST -->
   <div class="round-list" id="roundList"></div>
 

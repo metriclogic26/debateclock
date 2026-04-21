@@ -645,8 +645,8 @@
       </div>
 
       <div class="qr-card">
-        <div class="qr-canvas" id="qrCanvas" title="Click to download QR code" onclick="downloadQR()" style="cursor:pointer;" title="Click to download"></div>
-        <div style="font-size:10px;color:#5B6175;text-align:center;margin-top:4px;cursor:pointer;" onclick="downloadQR()">&#8681; Download QR</div>
+        <div class="qr-canvas" id="qrCanvas"></div>
+        <div style="font-size:10px;color:#5B6175;text-align:center;margin-top:6px;cursor:pointer;text-decoration:underline;" id="qrDownloadBtn">&#8681; Save QR</div>
         <div class="qr-text">
           <h3>Debater display</h3>
           <p>Scan QR or open this link on a tablet/laptop for the big countdown.</p>
@@ -731,6 +731,16 @@ document.getElementById('roomCode').textContent = ROOM;
 
 let state = initialStateForFormat('LD');
 let isEchoing = false;
+
+document.addEventListener('DOMContentLoaded', function() {
+  var btn = document.getElementById('qrDownloadBtn');
+  if (btn) btn.addEventListener('click', function() {
+    var url = 'https://api.qrserver.com/v1/create-qr-code/?size=400x400&data='
+      + encodeURIComponent(window.location.origin + '/app/display?room=' + (currentRoom||''))
+      + '&margin=10';
+    window.open(url, '_blank');
+  });
+});
 
 var stopAtZero = false;
 function syncToggle() {

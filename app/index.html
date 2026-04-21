@@ -646,7 +646,7 @@
 
             <div class="stop-toggle" style="margin:8px 0 4px;">
         <label class="toggle-switch">
-          <input type="checkbox" id="stopAtZeroToggle" onchange="syncToggle()" />
+          <input type="checkbox" id="stopAtZeroToggle" />
           <span class="toggle-slider"></span>
         </label>
         <span>Stop timer at 0:00</span>
@@ -745,6 +745,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 var stopAtZero = false;
+document.getElementById('stopAtZeroToggle').addEventListener('change', function() {
+  stopAtZero = this.checked;
+  localStorage.setItem('dc_stop_at_zero', stopAtZero ? '1' : '0');
+  console.log('stopAtZero set to', stopAtZero);
+});
+
 function syncToggle() {
   stopAtZero = document.getElementById('stopAtZeroToggle').checked;
   localStorage.setItem('dc_stop_at_zero', stopAtZero ? '1' : '0');

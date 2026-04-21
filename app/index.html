@@ -1154,11 +1154,15 @@ function tick(t) {
     lastRenderTime = t;
     // Stop at zero — pause before render so display never shows negative
     if (stopAtZero && state.speechRunning) {
-      const rem = speechRemainingMs(state, Date.now());
-      if (rem <= 0) {
-        state = pauseSpeech(state, Date.now());
-        const dur = currentSpeechDurationMs(state);
-        state = Object.assign({}, state, { speechPausedElapsedMs: dur });
+      const _now = Date.now();
+      const _rem = speechRemainingMs(state, _now);
+      if (_rem <= 0) {
+        const _dur = currentSpeechDurationMs(state);
+        state = Object.assign({}, state, {
+          speechRunning: false,
+          speechPausedElapsedMs: _dur,
+          speechStartedAt: null
+        });
         sock.sendState(state);
       }
     }

@@ -1055,6 +1055,12 @@ function render() {
   const displayPhase = (stopAtZero && remaining < 0) ? 'critical' : phase;
   clockEl.textContent = formatClock(displayRem);
   clockEl.className = 'preview-clock mono ' + displayPhase;
+  // Auto-pause at zero if toggle is on
+  if (stopAtZero && remaining < 0 && state.speechRunning) {
+    state = pauseSpeech(state, now);
+    state = Object.assign({}, state, { speechPausedElapsedMs: currentSpeechDurationMs(state) });
+    sock.send({ type: 'state', state: state });
+  }
 
   const pct = total > 0 ? Math.max(0, Math.min(100, (remaining / total) * 100)) : 0;
   const fillEl = document.getElementById('previewProgressFill');

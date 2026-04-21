@@ -748,10 +748,17 @@ function syncToggle() {
 function downloadQR() {
   var img = document.querySelector('#qrCanvas img');
   if (!img) return;
-  var a = document.createElement('a');
-  a.href = img.src;
-  a.download = 'debateclock-room-' + (currentRoom || 'qr') + '.png';
-  a.click();
+  fetch(img.src)
+    .then(function(r){ return r.blob(); })
+    .then(function(blob){
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'debateclock-room-' + (currentRoom || 'qr') + '.png';
+      a.click();
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+    })
+    .catch(function(){ alert('Could not download QR. Try right-clicking the QR image and selecting Save Image.'); });
 }
 
 // Preload format from URL param e.g. ?format=WSDC

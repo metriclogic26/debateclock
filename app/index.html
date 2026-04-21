@@ -1051,8 +1051,10 @@ function render() {
   const phase = speechPhase(state, now);
 
   const clockEl = document.getElementById('previewClock');
-  clockEl.textContent = formatClock(remaining);
-  clockEl.className = 'preview-clock mono ' + phase;
+  const displayRem = (stopAtZero && remaining < 0) ? 0 : remaining;
+  const displayPhase = (stopAtZero && remaining < 0) ? 'critical' : phase;
+  clockEl.textContent = formatClock(displayRem);
+  clockEl.className = 'preview-clock mono ' + displayPhase;
 
   const pct = total > 0 ? Math.max(0, Math.min(100, (remaining / total) * 100)) : 0;
   const fillEl = document.getElementById('previewProgressFill');

@@ -1059,7 +1059,7 @@ function render() {
   if (stopAtZero && remaining < 0 && state.speechRunning) {
     state = pauseSpeech(state, now);
     state = Object.assign({}, state, { speechPausedElapsedMs: currentSpeechDurationMs(state) });
-    sock.send({ type: 'state', state: state });
+    sock.sendState(state);
   }
 
   const pct = total > 0 ? Math.max(0, Math.min(100, (remaining / total) * 100)) : 0;
@@ -1112,9 +1112,6 @@ function render() {
 
   // Disable quick-set buttons for no-prep formats
   const hasAnyPrep = state.prepPoolTotalMs.aff > 0 || state.prepPoolTotalMs.neg > 0 ||
-    (FORMATS[state.format] && FORMATS[state.format].prepPoolSeconds.aff > 0);
-  document.querySelectorAll('.prep-quick-btn').forEach(b => b.disabled = false);
-
     (FORMATS[state.format] && FORMATS[state.format].prepPoolSeconds.aff > 0);
   document.querySelectorAll('.prep-quick-btn').forEach(b => b.disabled = false);
 

@@ -1055,12 +1055,7 @@ function render() {
   const displayPhase = (stopAtZero && remaining < 0) ? 'critical' : phase;
   clockEl.textContent = formatClock(displayRem);
   clockEl.className = 'preview-clock mono ' + displayPhase;
-  // Auto-pause at zero if toggle is on
-  if (stopAtZero && remaining < 0 && state.speechRunning) {
-    state = pauseSpeech(state, now);
-    state = Object.assign({}, state, { speechPausedElapsedMs: currentSpeechDurationMs(state) });
-    sock.sendState(state);
-  }
+
 
   const pct = total > 0 ? Math.max(0, Math.min(100, (remaining / total) * 100)) : 0;
   const fillEl = document.getElementById('previewProgressFill');
@@ -1157,6 +1152,16 @@ let lastRenderTime = 0;
 function tick(t) {
   if (t - lastRenderTime > 100) {
     lastRenderTime = t;
+    // Stop at zero — pause before render so display never shows negative
+    if (stopAtZero && state.speechRunning) {
+      const rem = speechRemainingMs(state, Date.now());
+      if (rem <= 0) {
+        state = pauseSpeech(state, Date.now());
+        const du= currentSpeechDurationMs(state);
+        state = Object.assign({}, state, { speechPausedElapsedMs: dur });
+        sock.sendState(state);
+      }
+    }
     render();
     renderDelib();
   }

@@ -1157,7 +1157,7 @@ function tick(t) {
       const rem = speechRemainingMs(state, Date.now());
       if (rem <= 0) {
         state = pauseSpeech(state, Date.now());
-        const du= currentSpeechDurationMs(state);
+        const dur = currentSpeechDurationMs(state);
         state = Object.assign({}, state, { speechPausedElapsedMs: dur });
         sock.sendState(state);
       }

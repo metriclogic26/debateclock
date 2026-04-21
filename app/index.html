@@ -562,7 +562,6 @@
     .speech-list-header .hint { display: none; }
   }
 </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
@@ -1017,15 +1016,7 @@ function displayUrl() {
 
 function renderQR(text) {
   const canvas = document.getElementById('qrCanvas');
-  canvas.innerHTML = '';
-  new QRCode(canvas, {
-    text: text,
-    width: 180,
-    height: 180,
-    colorDark: '#000000',
-    colorLight: '#ffffff',
-    correctLevel: QRCode.CorrectLevel.M
-  });
+  canvas.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(text)}&margin=0" alt="QR code" crossorigin="anonymous" />`;
 }
 
 function render() {

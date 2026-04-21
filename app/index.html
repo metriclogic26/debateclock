@@ -1016,7 +1016,7 @@ function displayUrl() {
 
 function renderQR(text) {
   const canvas = document.getElementById('qrCanvas');
-  canvas.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(text)}&margin=0" alt="QR code" crossorigin="anonymous" />`;
+  canvas.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(text)}&margin=0" alt="QR code" />`;
 }
 
 function render() {

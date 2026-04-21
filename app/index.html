@@ -1159,7 +1159,7 @@ function tick(t) {
   if (t - lastRenderTime > 100) {
     lastRenderTime = t;
     // Stop at zero — pause before render so display never shows negative
-    if (stopAtZero && state.speechRunning) { console.log('stopAtZero check', stopAtZero, speechRemainingMs(state, Date.now()));
+    if (stopAtZero && state.speechRunning) {
       const _now = Date.now();
       const _rem = speechRemainingMs(state, _now);
       if (_rem <= 0) {

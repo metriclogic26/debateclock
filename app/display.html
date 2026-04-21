@@ -97,7 +97,8 @@
   }
   .top-bar .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
 
-  .speech-label {
+  .speech-label { font-size: 22px !important; font-weight: 600; letter-spacing: 0.02em; color: #E8EAF0 !important; margin-bottom: 16px; text-align: center; padding: 0 16px; /* override below */ display: block; }
+  .speech-label-ORIG {
     font-size: clamp(18px, 3vw, 28px);
     font-weight: 600;
     color: var(--text);
@@ -134,6 +135,12 @@
   .phase-warn .clock     { color: var(--amber); }
   .phase-critical .clock { color: var(--red); }
   .phase-overtime .clock { color: var(--red); animation: flash-clock 0.6s ease-in-out infinite; }
+
+  .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; display: inline-block; margin-right: 5px; animation: hb-pulse 2s ease-in-out infinite; }
+  .sync-dot.offline { background: #EF4444; animation: none; }
+  .sync-bar { position: fixed; top: 0; left: 0; right: 0; padding: 6px 14px; background: rgba(10,12,15,0.85); backdrop-filter: blur(8px); display: flex; align-items: center; font-size: 11px; color: #5B6175; font-family: 'DM Mono', monospace; z-index: 50; }
+  @keyframes hb-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.85)} }
+
   @keyframes flash-clock { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }
 
   .prep-bar {
@@ -196,7 +203,8 @@
   @media (max-width: 480px) {
     .top-bar { font-size: 11px; }
     .prep-bar { gap: 16px; font-size: 12px; bottom: 20px; }
-    .speech-label { font-size: 16px; margin-bottom: 10px; }
+    .speech-label { font-size: 22px !important; font-weight: 600; letter-spacing: 0.02em; color: #E8EAF0 !important; margin-bottom: 16px; text-align: center; padding: 0 16px; /* override below */ display: block; }
+  .speech-label-ORIG { font-size: 16px; margin-bottom: 10px; }
     .speech-side { margin-bottom: 20px; }
   }
 </style>
@@ -227,6 +235,7 @@
 
   <div class="poi-cue" id="poiCue">POI Window</div>
 
+  <div class="sync-bar"><span class="sync-dot" id="syncDot"></span><span id="syncLabel">Connecting&hellip;</span></div>
   <div class="speech-label" id="speechLabel">—</div>
   <div class="speech-side" id="speechSide"></div>
   <div class="clock" id="clock">0:00</div>
@@ -279,13 +288,18 @@ let prevSpeechIdx = null;
 
 function connect() {
   document.getElementById('roomLabel').textContent = `ROOM ${room}`;
+  document.getElementById('syncLabel').textContent = 'Connecting…';
 
   const sock = new DebateClockSocket({
     room,
     role: 'display',
     onState(newState) {
       state = newState;
+      if (newState.stopAtZero && newState.speechPhase === 'overtime') { /* freeze display at 0:00 */ }
       render();
+      var dot = document.getElementById('syncDot');
+      var lbl = document.getElementById('syncLabel');
+      if (dot) { dot.className = 'sync-dot'; lbl.textContent = 'Synced · debateclock.org'; }
     },
     onStatus(status) {
       const dot = document.getElementById('connDot');

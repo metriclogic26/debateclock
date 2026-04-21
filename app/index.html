@@ -178,6 +178,15 @@
   .preview-clock.warn     { color: var(--amber); }
   .preview-clock.critical { color: var(--red); }
   .preview-clock.overtime { color: var(--red); animation: flash-red 0.8s ease-in-out infinite; }
+
+  .stop-toggle { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #8B90A0; margin-top: 8px; }
+  .toggle-switch { position: relative; width: 32px; height: 18px; flex-shrink: 0; }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider { position: absolute; inset: 0; background: #1E232D; border-radius: 18px; cursor: pointer; transition: background .2s; }
+  .toggle-slider::before { content:''; position: absolute; width: 12px; height: 12px; left: 3px; top: 3px; background: #5B6175; border-radius: 50%; transition: transform .2s, background .2s; }
+  .toggle-switch input:checked + .toggle-slider { background: rgba(34,197,94,0.25); }
+  .toggle-switch input:checked + .toggle-slider::before { transform: translateX(14px); background: #22C55E; }
+
   @keyframes flash-red { 0%,100%{opacity:1} 50%{opacity:0.55} }
 
   .preview-progress {
@@ -636,7 +645,8 @@
       </div>
 
       <div class="qr-card">
-        <div class="qr-canvas" id="qrCanvas"></div>
+        <div class="qr-canvas" id="qrCanvas" title="Click to download QR code" onclick="downloadQR()" style="cursor:pointer;" title="Click to download"></div>
+        <div style="font-size:10px;color:#5B6175;text-align:center;margin-top:4px;cursor:pointer;" onclick="downloadQR()">&#8681; Download QR</div>
         <div class="qr-text">
           <h3>Debater display</h3>
           <p>Scan QR or open this link on a tablet/laptop for the big countdown.</p>
@@ -666,6 +676,13 @@
         <h2>Speech order</h2>
         <div class="hint">Tap a row to jump · Space = start/pause · R = reset · A / N = prep</div>
       </div>
+              <div class="stop-toggle">
+          <label class="toggle-switch">
+            <input type="checkbox" id="stopAtZeroToggle" onchange="syncToggle()" />
+            <span class="toggle-slider"></span>
+          </label>
+          <span>Stop timer at 0:00</span>
+        </div>
       <div class="speech-list" id="speechList"></div>
     </section>
   </div>
@@ -714,6 +731,28 @@ document.getElementById('roomCode').textContent = ROOM;
 
 let state = initialStateForFormat('LD');
 let isEchoing = false;
+
+var stopAtZero = false;
+function syncToggle() {
+  stopAtZero = document.getElementById('stopAtZeroToggle').checked;
+  localStorage.setItem('dc_stop_at_zero', stopAtZero ? '1' : '0');
+}
+// Load preference
+(function() {
+  stopAtZero = localStorage.getItem('dc_stop_at_zero') === '1';
+  var el = document.getElementById('stopAtZeroToggle');
+  if (el) el.checked = stopAtZero;
+})();
+
+
+function downloadQR() {
+  var img = document.querySelector('#qrCanvas img');
+  if (!img) return;
+  var a = document.createElement('a');
+  a.href = img.src;
+  a.download = 'debateclock-room-' + (currentRoom || 'qr') + '.png';
+  a.click();
+}
 
 // Preload format from URL param e.g. ?format=WSDC
 (function() {

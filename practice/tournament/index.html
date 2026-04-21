@@ -31,6 +31,13 @@
   @keyframes pulse-cd { 0%,100%{opacity:1} 50%{opacity:0.45} }
   .next-hero-sub { font-size: 12px; color: #5B6175; margin-top: 8px; font-family: 'DM Mono', monospace; }
 
+
+  .csv-row { margin-top: 12px; display: flex; align-items: center; gap: 10px; }
+  .csv-label { font-size: 12px; color: #5B6175; }
+  .csv-btn { background: #0A0C0F; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 8px 14px; font-family: 'DM Sans', sans-serif; font-size: 12px; color: #8B90A0; cursor: pointer; transition: all .15s; }
+  .csv-btn:hover { border-color: rgba(255,255,255,0.25); color: #E8EAF0; }
+  #csvFileInput { display: none; }
+
   .add-card { background: #111318; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 20px; margin-bottom: 16px; }
   .add-card-title { font-size: 13px; font-weight: 600; color: #E8EAF0; margin-bottom: 14px; }
   .add-row { display: grid; grid-template-columns: 1fr 100px auto; gap: 8px; align-items: center; }
@@ -298,6 +305,42 @@ function load() {
 }
 
 // ── Add round ─────────────────────────────────────────────────
+
+function importCSV(input) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var lines = e.target.result.split(/\r?\n/).filter(function(l){ return l.trim(); });
+    var added = 0;
+    lines.forEach(function(line, idx) {
+      if (idx === 0 && line.toLowerCase().includes('name')) return; // skip header
+      var parts = line.split(',');
+      if (parts.length < 2) return;
+      var name = parts[0].trim().replace(/^"|"$/g,'');
+      var timeStr = parts[1].trim().replace(/^"|"$/g,'');
+      // parse time: "8:00 AM", "14:30", "2:30 PM"
+      var m = timeStr.match(/(\d+):(\d+)\s*(AM|PM)?/i);
+      if (!m) return;
+      var h = parseInt(m[1]);
+      var min = parseInt(m[2]);
+      var ampm = (m[3]||'').toUpperCase();
+      if (ampm === 'PM' && h < 12) h += 12;
+      if (ampm === 'AM' && h === 12) h = 0;
+      var ms = (h * 3600 + min * 60) * 1000;
+      rounds.push({ id: Date.now() + Math.random(), name: name || 'Round', timeMs: ms });
+      added++;
+    });
+    rounds.sort(function(a,b){ return a.timeMs - b.timeMs; });
+    save();
+    renderList();
+    updateCountdowns();
+    alert('Imported ' + added + ' round' + (added===1?'':'s') + '.');
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+
 function addRound() {
   var name = document.getElementById('roundName').value.trim() || 'Round';
   var h = parseInt(document.getElementById('roundHour').value);

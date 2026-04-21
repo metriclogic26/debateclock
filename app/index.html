@@ -747,21 +747,35 @@ function syncToggle() {
 
 
 function downloadQR() {
+  // QRCode.js renders a canvas + img — try canvas first
   var cvs = document.querySelector('#qrCanvas canvas');
   if (cvs) {
-    var a = document.createElement('a');
-    a.download = 'debateclock-room-' + (currentRoom || 'qr') + '.png';
-    a.href = cvs.toDataURL('image/png');
-    a.click();
-    return;
+    try {
+      var dataUrl = cvs.toDataURL('image/png');
+      var a = document.createElement('a');
+      a.download = 'debateclock-room-' + (currentRoom || 'qr') + '.png';
+      a.href = dataUrl;
+      document.body.appendChild);
+      a.click();
+      document.body.removeChild(a);
+      return;
+    } catch(e) { console.warn('canvas toDataURL failed', e); }
   }
+  // Fallback: img src (works if same-origin or data URI)
   var img = document.querySelector('#qrCanvas img');
-  if (img) {
-    var a = document.createElement('a');
-    a.download = 'debateclock-room-' + (currentRoom || 'qr') + '.png';
-    a.href = img.src;
-    a.click();
+  if (img && img.src) {
+    if (img.src.startsWith('data:')) {
+      var a = document.createElement('a');
+      a.download = 'debateclock-room-' + (currentRoom || 'qr') + '.png';
+      a.href = img.src;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      return;
+    }
   }
+  // Last resort: open in new tab for manual save
+  window.open('https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=' + encodeURIComponent(window.location.origin + '/app/display?room=' + (currentRoom||'')) + '&margin=10', '_blank');
 }
 
 // Preload format from URL param e.g. ?format=WSDC

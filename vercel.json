@@ -2,6 +2,22 @@
   "cleanUrls": true,
   "trailingSlash": true,
   "rewrites": [
-    { "source": "/j/:name", "destination": "/app/index.html" }
+    {
+      "source": "/j/:name",
+      "destination": "/app/index.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.debateclock.org"
+        }
+      ],
+      "destination": "https://debateclock.org/:path*",
+      "permanent": true
+    }
   ]
 }

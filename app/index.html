@@ -556,10 +556,25 @@
     .main { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
     .left-panel { border-right: none; border-bottom: 1px solid var(--border); }
     .preview-clock { font-size: 44px; }
-    .topbar { padding: 0 12px; }
-    .room-chip { font-size: 11px; padding: 4px 8px; }
-    .brand { font-size: 14px; }
+    .topbar { padding: 0 10px; gap: 6px; flex-wrap: nowrap; }
+    .topbar-left { gap: 6px; min-width: 0; flex-shrink: 1; }
+    .topbar-right { gap: 4px; flex-shrink: 0; }
+    .brand { font-size: 13px; gap: 6px; }
+    .brand-dot { width: 8px; height: 8px; }
+    .format-pill { padding: 4px 8px; font-size: 11px; }
+    .format-pill span:first-child { display: none; }
+    .room-chip { font-size: 10px; padding: 3px 6px; gap: 4px; }
+    .room-chip > span:first-child { display: none; }
+    .room-chip-code { font-size: 11px; letter-spacing: 0.08em; }
+    .connection-status { display: none; }
+    .icon-btn { width: 28px; height: 28px; font-size: 13px; }
     .speech-list-header .hint { display: none; }
+    .prep-quick-row { grid-template-columns: repeat(4, 1fr); gap: 4px; }
+    .preview-controls { grid-template-columns: 1fr 1fr 2fr 1fr; gap: 4px; }
+    .preview-controls-row2 { grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+    .ctrl-btn { padding: 9px 4px; font-size: 12px; }
+    .prep-sides { gap: 6px; }
+    .left-panel { padding: 14px; gap: 14px; }
   }
 </style>
 </head>

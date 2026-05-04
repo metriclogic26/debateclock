@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /app/display
+Disallow: /app/display/
 
-Sitemap: https://debateclock.org/sitemap.xml
+Sitemap: https://www.debateclock.org/sitemap.xml

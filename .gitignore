@@ -7,3 +7,4 @@ node_modules/
 .partykit/
 dist/
 generate-format-pages.py
+ld-seo-fix.py

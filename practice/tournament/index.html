@@ -6,6 +6,9 @@
 <title>Tournament Schedule Countdown — Debate Round Timer | DebateClock</title>
 <meta name="description" content="Free tournament day schedule. Add your round times, get live countdowns to each round all day. Works on any phone. No signup.">
 <link rel="canonical" href="https://www.debateclock.org/practice/tournament/">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is this for?","acceptedAnswer":{"@type":"Answer","text":"Tournament days have a tight schedule with multiple debate rounds, breaks, and ceremonies spread across many hours. Without a schedule tracker, debaters constantly check their phone for the time and ask their teammates when the next round is. This page replaces that — you enter your round times once at the start of the day, and live countdowns to the next round update every second."}},{"@type":"Question","name":"Do my rounds save if I close the browser?","acceptedAnswer":{"@type":"Answer","text":"Yes. Your tournament schedule is saved to your browser's local storage and persists across tabs, refreshes, and browser restarts on the same device. It will not sync to other devices and will be lost if you clear browser data. Nothing uploads to a server."}},{"@type":"Question","name":"Can I import my schedule from a spreadsheet?","acceptedAnswer":{"@type":"Answer","text":"Yes. The Import CSV button accepts a two-column CSV (name, time). Time can be in 12-hour format with AM/PM ('8:00 AM', '2:30 PM') or 24-hour format ('14:30'). The Sample CSV download link gives you a starting template you can edit and re-import."}},{"@type":"Question","name":"When does a round show as 'Started' vs counting down?","acceptedAnswer":{"@type":"Answer","text":"Rounds count down up to and slightly past their scheduled start time. A round is marked Started once it is more than 5 minutes past its scheduled time — this prevents the page from prematurely greying out a round you have not actually got to yet because the tournament is running a few minutes late."}},{"@type":"Question","name":"What do the colour-coded countdowns mean?","acceptedAnswer":{"@type":"Answer","text":"Green for the next round when it is more than 5 minutes away — plenty of time. Yellow at under 5 minutes — start wrapping up whatever you are doing. Red and pulsing at under 1 minute — get to your room now. Grey once the round has Started (more than 5 minutes past scheduled time)."}},{"@type":"Question","name":"Can I add things other than debate rounds?","acceptedAnswer":{"@type":"Answer","text":"Yes. Add anything with a name and a time — lunch break, awards ceremony, team meeting, your bus departure. The quick presets include Round 1-4, Lunch, and Awards for the most common items, but you can type any name in the field."}},{"@type":"Question","name":"Does the page work offline?","acceptedAnswer":{"@type":"Answer","text":"Once loaded, yes. The clock runs entirely from your device's local time, no server connection needed. If you lose Wi-Fi at the tournament venue, the countdowns keep working as long as the page is open."}},{"@type":"Question","name":"Will the page notify me when a round is starting?","acceptedAnswer":{"@type":"Answer","text":"No — there are no push notifications or alarms (browsers block notifications without a server backend, and we do not run one). The page is a visual reference: leave it open in a phone tab and glance at it. For round-time alerts, set a separate phone alarm for each round."}}]}
+</script>
 <meta name="robots" content="index, follow">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -72,6 +75,21 @@
 
   .clear-btn { background: transparent; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 16px; font-family: 'DM Sans', sans-serif; font-size: 12px; color: #8B90A0; cursor: pointer; margin-top: 16px; }
   .clear-btn:hover { color: #EF4444; border-color: rgba(239,68,68,0.3); }
+
+  /* ── Tool content sections (added for SEO / page depth) ── */
+  .tool-content { max-width: 760px; margin: 40px auto 0; padding: 0 24px; }
+  .tool-section { margin-bottom: 32px; }
+  .tool-section h2 { font-size: 20px; font-weight: 700; color: #E8EAF0; margin: 0 0 12px; line-height: 1.3; }
+  .tool-section p { font-size: 15px; color: #8B90A0; line-height: 1.75; margin: 0 0 14px; }
+  .tool-section ul, .tool-section ol { margin: 0 0 14px 20px; padding: 0; }
+  .tool-section li { font-size: 15px; color: #8B90A0; line-height: 1.75; margin-bottom: 8px; }
+  .tool-section strong { color: #E8EAF0; }
+  .tool-section a { color: #3B82F6; }
+  .tool-faq details { background: #111318; border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 14px 18px; margin-bottom: 8px; }
+  .tool-faq summary { font-size: 14px; font-weight: 600; color: #E8EAF0; cursor: pointer; list-style: none; outline: none; }
+  .tool-faq summary::after { content: " +"; color: #5B6175; float: right; }
+  .tool-faq details[open] summary::after { content: " −"; }
+  .tool-faq details div { font-size: 14px; color: #8B90A0; line-height: 1.7; margin-top: 10px; }
 </style>
   <script defer src="https://cloud.umami.is/script.js" data-website-id="983c91be-28ac-4280-b541-aa45730b0d7e"></script>
 </head>
@@ -257,6 +275,80 @@
   <div style="text-align:center;" id="clearWrap" style="display:none;">
     <button class="clear-btn" onclick="clearAll()">Clear all rounds</button>
   </div>
+</div>
+
+<div class="tool-content">
+
+  <section class="tool-section">
+    <h2>What the tournament schedule is for</h2>
+    <p>Tournament days are a sequence of fixed start times stretched across many hours, with rounds, breaks, lunch, and awards spaced unpredictably. Without a tracker, debaters constantly check the time, ask each other when the next round is, and occasionally miss a round entirely because they lost track during a long break.</p>
+    <p>This page replaces all of that. Enter your round times once at the start of the day, and you get a live countdown to the next round at the top of the screen, plus a full schedule list below with per-round countdowns. The page persists in your browser, so close the tab between rounds and reopen it later — your schedule is still there.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>How to use it</h2>
+    <ol>
+      <li>Pick a name (Round 1, Lunch, Awards, etc.) or use one of the quick-preset buttons.</li>
+      <li>Set the time (hour, minutes, AM / PM).</li>
+      <li>Click <strong>+ Add to schedule</strong>. The round appears in the list below, sorted by time.</li>
+      <li>Repeat for every round and event in the day.</li>
+      <li>Leave the page open on your phone (or close it and reopen later — your schedule is saved).</li>
+      <li>The hero at the top shows the next round with a large live countdown. The full list below shows every round with its own countdown.</li>
+    </ol>
+  </section>
+
+  <section class="tool-section">
+    <h2>Importing a schedule from a spreadsheet</h2>
+    <p>If your tournament publishes a schedule (typically via Tabroom, a coach's email, or a tournament packet), you can copy it into a two-column spreadsheet (name in column A, time in column B), save as CSV, and click <strong>Import CSV</strong> to load the whole day at once.</p>
+    <p>Times accept either 12-hour format ("8:00 AM", "2:30 PM") or 24-hour format ("14:30"). The <strong>Sample CSV</strong> link downloads a starter template you can edit in Excel, Numbers, or Google Sheets. Each import adds to the existing schedule, so you can mix imported rounds with manually-added events like lunch or your bus departure.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>How the countdown colours work</h2>
+    <ul>
+      <li><strong>Green.</strong> Next round is more than 5 minutes away. Plenty of time for water, restroom, or settling at your flow paper.</li>
+      <li><strong>Yellow.</strong> Under 5 minutes. Start wrapping up whatever you are doing and move toward your room.</li>
+      <li><strong>Red and pulsing.</strong> Under 1 minute. Get to your room now — judges start expecting you the moment the scheduled time hits.</li>
+      <li><strong>Grey ("Started").</strong> The round is more than 5 minutes past its scheduled time. If you are seeing grey when you have not yet been to the round, the tournament is running late and you should still check your room.</li>
+    </ul>
+  </section>
+
+  <section class="tool-section">
+    <h2>Common use cases</h2>
+    <ul>
+      <li><strong>Full-day tournament tracking.</strong> Enter all 4-6 rounds plus lunch and awards in the morning. Leave the page open on your phone. Glance at the top to know exactly when your next round is.</li>
+      <li><strong>Coach managing a team.</strong> Open the same page on your laptop or tablet. Glance at it to know which round is next without checking the official schedule each time.</li>
+      <li><strong>Long days with awkward break lengths.</strong> A 90-minute break is too long to sit and wait but too short to leave the venue. A live countdown makes it easier to plan: 35 minutes of food, 25 minutes of prep review, then start walking back.</li>
+      <li><strong>Tournament with non-standard breaks.</strong> Add lunch, awards, judge calibration meetings, or anything else with a fixed time. The page does not care what the event is, only when it starts.</li>
+    </ul>
+  </section>
+
+  <section class="tool-section">
+    <h2>What this is not</h2>
+    <p>The page is a visual reference, not a notification system. There are no alarms, no push notifications, no audible alerts — browsers cannot reliably deliver background notifications without a server backend, and this page does not have one. Use the page to know when your next round is, but set a separate phone alarm if you want an audible warning.</p>
+    <p>There is also no integration with Tabroom or any tournament software. You manually enter your rounds (or import a CSV). The page does not know which judges you have, which room you are in, or what your record is — for that, check Tabroom directly.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>Other tournament-day tools</h2>
+    <p>For the actual round timing once you are in the room, the <a href="/app/">two-device timer</a> handles all major formats with correct speech order, prep pools, and judge sync. For practice the night before a tournament, the <a href="/practice/motion/">motion timer</a> handles prep plus speech timing for a single speech, and the <a href="/practice/round-logger/">round logger</a> tracks actual vs allowed times across a full practice round. The <a href="/blog/tournament-day-setup/">tournament day setup guide</a> covers the broader logistics — gear, judge paradigm prep, paradigm pulls.</p>
+    <p>For format-specific timing rules, see the format guides: <a href="/formats/lincoln-douglas/">Lincoln-Douglas</a>, <a href="/formats/policy-debate/">Policy</a>, <a href="/formats/public-forum/">Public Forum</a>, <a href="/formats/world-schools/">World Schools</a>, and <a href="/formats/british-parliamentary/">British Parliamentary</a>.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>Frequently asked questions</h2>
+    <div class="tool-faq">
+      <details><summary>What is this for?</summary><div>Tournament days have a tight schedule with multiple debate rounds, breaks, and ceremonies spread across many hours. Without a schedule tracker, debaters constantly check their phone for the time and ask their teammates when the next round is. This page replaces that — you enter your round times once at the start of the day, and live countdowns to the next round update every second.</div></details>
+      <details><summary>Do my rounds save if I close the browser?</summary><div>Yes. Your tournament schedule is saved to your browser's local storage and persists across tabs, refreshes, and browser restarts on the same device. It will not sync to other devices and will be lost if you clear browser data. Nothing uploads to a server.</div></details>
+      <details><summary>Can I import my schedule from a spreadsheet?</summary><div>Yes. The Import CSV button accepts a two-column CSV (name, time). Time can be in 12-hour format with AM/PM ('8:00 AM', '2:30 PM') or 24-hour format ('14:30'). The Sample CSV download link gives you a starting template you can edit and re-import.</div></details>
+      <details><summary>When does a round show as 'Started' vs counting down?</summary><div>Rounds count down up to and slightly past their scheduled start time. A round is marked Started once it is more than 5 minutes past its scheduled time — this prevents the page from prematurely greying out a round you have not actually got to yet because the tournament is running a few minutes late.</div></details>
+      <details><summary>What do the colour-coded countdowns mean?</summary><div>Green for the next round when it is more than 5 minutes away — plenty of time. Yellow at under 5 minutes — start wrapping up whatever you are doing. Red and pulsing at under 1 minute — get to your room now. Grey once the round has Started (more than 5 minutes past scheduled time).</div></details>
+      <details><summary>Can I add things other than debate rounds?</summary><div>Yes. Add anything with a name and a time — lunch break, awards ceremony, team meeting, your bus departure. The quick presets include Round 1-4, Lunch, and Awards for the most common items, but you can type any name in the field.</div></details>
+      <details><summary>Does the page work offline?</summary><div>Once loaded, yes. The clock runs entirely from your device's local time, no server connection needed. If you lose Wi-Fi at the tournament venue, the countdowns keep working as long as the page is open.</div></details>
+      <details><summary>Will the page notify me when a round is starting?</summary><div>No — there are no push notifications or alarms (browsers block notifications without a server backend, and we do not run one). The page is a visual reference: leave it open in a phone tab and glance at it. For round-time alerts, set a separate phone alarm for each round.</div></details>
+    </div>
+  </section>
+
 </div>
 
 <div class="site-disclaimer">

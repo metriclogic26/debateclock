@@ -6,6 +6,9 @@
 <title>Practice Round Logger — Track Speech Times | DebateClock</title>
 <meta name="description" content="Free debate practice round logger. Track actual vs allowed speech times. Export a CSV summary for coach feedback. All formats supported.">
 <link rel="canonical" href="https://www.debateclock.org/practice/round-logger/">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does the round logger track?","acceptedAnswer":{"@type":"Answer","text":"For every speech in a round, the logger records the speech name, side (affirmative, negative, or cross-examination), the allowed time for that speech position, the actual time you spoke, and the difference between actual and allowed. At the end of the round it produces a summary table plus stats (how many speeches were on time, 10 to 30 seconds over, or 30 seconds or more over)."}},{"@type":"Question","name":"Which debate formats does it support?","acceptedAnswer":{"@type":"Answer","text":"Eight formats are built in with the correct speech order and allowed times for each position: Lincoln-Douglas, Policy (CX), Public Forum, Parliamentary, World Schools (WSDC), British Parliamentary, Asian Parliamentary, and Canadian Parliamentary (CUSID). Pick a format from the dropdown and the speech list loads automatically."}},{"@type":"Question","name":"How is the diff colour-coded?","acceptedAnswer":{"@type":"Answer","text":"Green for on-time speeches (within 10 seconds of allowed). Yellow for 10 to 30 seconds over — within typical judge grace. Red for 30+ seconds over — past most judges' tolerance and likely affecting speaker points. The colour applies to both individual rows and the round-summary stats."}},{"@type":"Question","name":"Can I skip a speech if it was not given?","acceptedAnswer":{"@type":"Answer","text":"Yes. Each speech row has a Skip button next to Start. Skipped speeches appear in the summary as a dash rather than a number, so they do not pollute the round average."}},{"@type":"Question","name":"What does the CSV export include?","acceptedAnswer":{"@type":"Answer","text":"A row per speech with columns for Speech, Side, Allowed (s), Actual (s), Diff (s), and Status (on time / warning / over). Filename is round-log-YYYY-MM-DD.csv so multiple rounds in the same day will appear in your downloads folder in order."}},{"@type":"Question","name":"Does the data save between sessions?","acceptedAnswer":{"@type":"Answer","text":"No — round data is held in memory only during the active session. Once you click New round or close the tab, that round's data is gone unless you exported the CSV. This is intentional: a coach using the same browser to log multiple rounds in a day should not see one round's data carry into the next."}},{"@type":"Question","name":"Can I edit a speech's time after I stopped it?","acceptedAnswer":{"@type":"Answer","text":"Not in the current version. If you misclicked Stop, you can use Skip on that speech to remove it from the summary stats, but the actual recorded time cannot be edited. Best practice: stop a speech only when you are confident the speaker has actually finished."}},{"@type":"Question","name":"Is this useful during a real round or only practice?","acceptedAnswer":{"@type":"Answer","text":"Both. Designed for practice rounds where the goal is timing feedback, but coaches can also use it to track speeches in actual competition rounds — the CSV export makes a useful artifact for post-round conversations with the team."}}]}
+</script>
 <meta name="robots" content="index, follow">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -209,6 +212,21 @@
     .row-allowed { display: none; }
     .stat-row { grid-template-columns: 1fr 1fr; }
   }
+
+  /* ── Tool content sections (added for SEO / page depth) ── */
+  .tool-content { max-width: 760px; margin: 40px auto 0; padding: 0 24px; }
+  .tool-section { margin-bottom: 32px; }
+  .tool-section h2 { font-size: 20px; font-weight: 700; color: #E8EAF0; margin: 0 0 12px; line-height: 1.3; }
+  .tool-section p { font-size: 15px; color: #8B90A0; line-height: 1.75; margin: 0 0 14px; }
+  .tool-section ul, .tool-section ol { margin: 0 0 14px 20px; padding: 0; }
+  .tool-section li { font-size: 15px; color: #8B90A0; line-height: 1.75; margin-bottom: 8px; }
+  .tool-section strong { color: #E8EAF0; }
+  .tool-section a { color: #3B82F6; }
+  .tool-faq details { background: #111318; border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 14px 18px; margin-bottom: 8px; }
+  .tool-faq summary { font-size: 14px; font-weight: 600; color: #E8EAF0; cursor: pointer; list-style: none; outline: none; }
+  .tool-faq summary::after { content: " +"; color: #5B6175; float: right; }
+  .tool-faq details[open] summary::after { content: " −"; }
+  .tool-faq details div { font-size: 14px; color: #8B90A0; line-height: 1.7; margin-top: 10px; }
 </style>
   <script defer src="https://cloud.umami.is/script.js" data-website-id="983c91be-28ac-4280-b541-aa45730b0d7e"></script>
 </head>
@@ -304,6 +322,90 @@
     <table class="summary-table" id="summaryTable"></table>
     <div class="stat-row" id="statRow"></div>
   </div>
+</div>
+
+<div class="tool-content">
+
+  <section class="tool-section">
+    <h2>What the round logger is for</h2>
+    <p>The practice round logger tracks how long each speech actually took versus how long it was allowed to take, across a complete debate round. At the end of the round it produces a summary table plus a CSV export — concrete feedback for the debater about which speeches consistently run long, which run short, and where the timing discipline needs work.</p>
+    <p>Most debaters know they sometimes go over, but few have data on which specific speech positions are the problem. The logger turns vague "you ran long today" feedback into specific "you were 47 seconds over on the 2NR and 12 seconds over on the 1AR" feedback.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>Supported formats</h2>
+    <p>Eight formats are built in, each with the correct speech order and allowed time for every position:</p>
+    <ul>
+      <li><strong>Lincoln-Douglas</strong> — 7 speeches plus two CX periods (AC, Neg CX, NC, Aff CX, 1AR, NR, 2AR)</li>
+      <li><strong>Policy (CX)</strong> — all 12 speeches plus 4 CX periods</li>
+      <li><strong>Public Forum</strong> — 8 main speeches plus 3 crossfire periods (including Grand Crossfire)</li>
+      <li><strong>Parliamentary</strong> — 6 speeches (PMC, LOC, MG, MO, LOR, PMR)</li>
+      <li><strong>World Schools (WSDC)</strong> — 6 main speeches plus 2 reply speeches</li>
+      <li><strong>British Parliamentary</strong> — 8 speeches across 4 teams (OG, OO, CG, CO)</li>
+      <li><strong>Asian Parliamentary</strong> — 6 main speeches plus 2 reply speeches</li>
+      <li><strong>Canadian Parliamentary (CUSID)</strong> — full CUSID speech order</li>
+    </ul>
+  </section>
+
+  <section class="tool-section">
+    <h2>How to use it</h2>
+    <ol>
+      <li>Pick your format from the dropdown.</li>
+      <li>Click <strong>Start round</strong>. The full speech list appears with each speech showing its allowed time.</li>
+      <li>When a speech starts, click <strong>Start</strong> on that row. The active header at the top shows the current speech, allowed time, and a live running clock.</li>
+      <li>When the speech ends, click <strong>Stop</strong>. The actual time is recorded and the row turns green / yellow / red based on how it compares to the allowed time.</li>
+      <li>If a speech was not given (e.g. a side waived), click <strong>Skip</strong> instead of Start.</li>
+      <li>When every speech is done or skipped, the round summary appears automatically with a full table and stat breakdown.</li>
+      <li>Click <strong>Export CSV</strong> to download the round data for review or sharing.</li>
+    </ol>
+  </section>
+
+  <section class="tool-section">
+    <h2>How the timing colours work</h2>
+    <ul>
+      <li><strong>Green (on time).</strong> Within 10 seconds of allowed. Judge tolerance is comfortably within range.</li>
+      <li><strong>Yellow (warning).</strong> 10 to 30 seconds over. Most judges allow this as natural grace time, but it adds up across a round.</li>
+      <li><strong>Red (over).</strong> 30+ seconds over. Past most judges' tolerance and likely to affect speaker points, especially in tight rounds.</li>
+    </ul>
+    <p>The same colour scheme applies to the diff badge per row and to the three stat boxes in the round summary. A round with all green is exceptional timing discipline; a round with several yellows is normal; a round with reds is where coaching attention is needed.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>Common use cases</h2>
+    <ul>
+      <li><strong>Practice round timing audit.</strong> Coach runs the logger during a practice round and shares the CSV with the debater afterwards. Specific numbers replace vague "you ran long" feedback.</li>
+      <li><strong>Self-coaching.</strong> Solo debater giving practice speeches at home runs the logger to spot which speeches they consistently undershoot or overshoot.</li>
+      <li><strong>Pre-tournament drilling.</strong> Run a logger session a few days before tournament to check whether timing has drifted since the last competition.</li>
+      <li><strong>Cross-round tracking.</strong> Export CSVs from multiple practice rounds and compare across weeks to see whether timing discipline is improving.</li>
+      <li><strong>Identifying speech-position weaknesses.</strong> Over many rounds, debaters often have one specific speech (commonly the 1AR or 2NR in Policy, or the Final Focus in PF) where they consistently struggle with time. The logger surfaces this pattern.</li>
+    </ul>
+  </section>
+
+  <section class="tool-section">
+    <h2>What the data does not include</h2>
+    <p>The logger tracks time only — not content. There is no flow recording, no argument tracking, no quality assessment. It answers a single question: how long did each speech take? Pair it with a flow sheet or a coach's notes if you need to correlate timing problems with content problems (for example: "the 1AR was 47 seconds over because the debater spent too long on theory and never got to the disad turns").</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>Other practice tools</h2>
+    <p>For single-speech timed practice, the <a href="/practice/motion/">motion timer</a> combines prep countdown and speech timer in one flow. For structured multi-interval practice sessions, the <a href="/practice/flow/">flow timer</a> handles work-and-break cycles. For random motions to use in your practice rounds, the <a href="/practice/motions/">motion generator</a> pulls from a curated pool of 150+ real tournament motions.</p>
+    <p>For real competition rounds with full prep-pool tracking and judge sync, the <a href="/app/">two-device timer</a> supports all major formats including <a href="/formats/lincoln-douglas/">Lincoln-Douglas</a>, <a href="/formats/policy-debate/">Policy</a>, <a href="/formats/public-forum/">Public Forum</a>, <a href="/formats/world-schools/">World Schools</a>, and <a href="/formats/british-parliamentary/">British Parliamentary</a>.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>Frequently asked questions</h2>
+    <div class="tool-faq">
+      <details><summary>What does the round logger track?</summary><div>For every speech in a round, the logger records the speech name, side (affirmative, negative, or cross-examination), the allowed time for that speech position, the actual time you spoke, and the difference between actual and allowed. At the end of the round it produces a summary table plus stats (how many speeches were on time, 10 to 30 seconds over, or 30 seconds or more over).</div></details>
+      <details><summary>Which debate formats does it support?</summary><div>Eight formats are built in with the correct speech order and allowed times for each position: Lincoln-Douglas, Policy (CX), Public Forum, Parliamentary, World Schools (WSDC), British Parliamentary, Asian Parliamentary, and Canadian Parliamentary (CUSID). Pick a format from the dropdown and the speech list loads automatically.</div></details>
+      <details><summary>How is the diff colour-coded?</summary><div>Green for on-time speeches (within 10 seconds of allowed). Yellow for 10 to 30 seconds over — within typical judge grace. Red for 30+ seconds over — past most judges' tolerance and likely affecting speaker points. The colour applies to both individual rows and the round-summary stats.</div></details>
+      <details><summary>Can I skip a speech if it was not given?</summary><div>Yes. Each speech row has a Skip button next to Start. Skipped speeches appear in the summary as a dash rather than a number, so they do not pollute the round average.</div></details>
+      <details><summary>What does the CSV export include?</summary><div>A row per speech with columns for Speech, Side, Allowed (s), Actual (s), Diff (s), and Status (on time / warning / over). Filename is round-log-YYYY-MM-DD.csv so multiple rounds in the same day will appear in your downloads folder in order.</div></details>
+      <details><summary>Does the data save between sessions?</summary><div>No — round data is held in memory only during the active session. Once you click New round or close the tab, that round's data is gone unless you exported the CSV. This is intentional: a coach using the same browser to log multiple rounds in a day should not see one round's data carry into the next.</div></details>
+      <details><summary>Can I edit a speech's time after I stopped it?</summary><div>Not in the current version. If you misclicked Stop, you can use Skip on that speech to remove it from the summary stats, but the actual recorded time cannot be edited. Best practice: stop a speech only when you are confident the speaker has actually finished.</div></details>
+      <details><summary>Is this useful during a real round or only practice?</summary><div>Both. Designed for practice rounds where the goal is timing feedback, but coaches can also use it to track speeches in actual competition rounds — the CSV export makes a useful artifact for post-round conversations with the team.</div></details>
+    </div>
+  </section>
+
 </div>
 
 <div class="site-disclaimer">

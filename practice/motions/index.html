@@ -6,6 +6,9 @@
 <title>Random Debate Motion Generator — 150+ Real Motions | DebateClock</title>
 <meta name="description" content="Free random debate motion generator. 200+ real motions from LD, PF, BP, and WSDC archives. Filter by format and topic area. No signup.">
 <link rel="canonical" href="https://www.debateclock.org/practice/motions/">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Where do the motions come from?","acceptedAnswer":{"@type":"Answer","text":"Every motion in the built-in pool is a real motion from competitive debate archives — Lincoln-Douglas resolutions, Public Forum tournament topics, British Parliamentary motions from university circuits, World Schools and Asian Parliamentary motions from regional and international tournaments. Nothing is AI-generated or paraphrased."}},{"@type":"Question","name":"Can I add my own motions?","acceptedAnswer":{"@type":"Answer","text":"Yes. The 'Your motions' section at the bottom of the page lets you add custom motions. They appear alongside the built-in motions when generating and are tagged 'Custom' so you can spot them. Useful for adding tournament-specific topic packets or motions you want to rotate into your practice."}},{"@type":"Question","name":"Will my custom motions be saved if I close the browser?","acceptedAnswer":{"@type":"Answer","text":"Yes — custom motions are saved to your browser's local storage and persist across sessions on the same browser and device. They will be lost if you clear browser data or use a different browser or device. Nothing syncs to a server."}},{"@type":"Question","name":"How are motions classified as Novice vs Varsity?","acceptedAnswer":{"@type":"Answer","text":"Novice motions tend to be more accessible — concrete policy questions with relatively clear sides and well-known arguments. Varsity motions tend to be more abstract, more philosophically loaded, or have less obvious argument paths. The classifications are subjective and meant as a rough guide rather than a strict rule."}},{"@type":"Question","name":"What is the difference between BP-style and WSDC-style motions?","acceptedAnswer":{"@type":"Answer","text":"Both start with 'This house...' but BP motions tend to be tighter and built for impromptu debate (BP allows only 15 minutes of prep), while WSDC motions are sometimes broader and more policy-oriented since WSDC tournaments include prepared motions announced weeks in advance. The structural difference is real but the line is fuzzy in practice."}},{"@type":"Question","name":"Why are some motions phrased 'Resolved:' and others 'This house would'?","acceptedAnswer":{"@type":"Answer","text":"It is a format convention. American formats (Lincoln-Douglas, Public Forum) use the 'Resolved:' phrasing. British, World Schools, Asian, and Parliamentary formats use 'This house...' (THW for would, THBT for believes that, THS for supports). The generator preserves the original phrasing of each motion so you are practising against what you will actually see at competition."}},{"@type":"Question","name":"Can I share my custom motion list with my team?","acceptedAnswer":{"@type":"Answer","text":"Not through the page directly — custom motions live in your browser's local storage and there is no built-in sharing or export. If you want to share a list, the simplest workflow is to paste motions into a shared doc and have teammates manually add the ones they want."}},{"@type":"Question","name":"How often is the motion pool updated?","acceptedAnswer":{"@type":"Answer","text":"The built-in pool is updated periodically. If you have specific motions you want added — particularly current-events motions or motions from recent tournaments — the feedback button at the bottom of any page is the right channel."}}]}
+</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,6 +67,21 @@
   .timer-cta { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2); border-radius: 12px; padding: 16px 20px; margin-top: 28px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
   .timer-cta p { font-size: 14px; color: #8B90A0; margin: 0; }
   .timer-cta a { background: #22C55E; color: #04140a; font-weight: 700; font-size: 13px; padding: 8px 18px; border-radius: 8px; text-decoration: none; white-space: nowrap; }
+
+  /* ── Tool content sections (added for SEO / page depth) ── */
+  .tool-content { max-width: 760px; margin: 40px auto 0; padding: 0 24px; }
+  .tool-section { margin-bottom: 32px; }
+  .tool-section h2 { font-size: 20px; font-weight: 700; color: #E8EAF0; margin: 0 0 12px; line-height: 1.3; }
+  .tool-section p { font-size: 15px; color: #8B90A0; line-height: 1.75; margin: 0 0 14px; }
+  .tool-section ul, .tool-section ol { margin: 0 0 14px 20px; padding: 0; }
+  .tool-section li { font-size: 15px; color: #8B90A0; line-height: 1.75; margin-bottom: 8px; }
+  .tool-section strong { color: #E8EAF0; }
+  .tool-section a { color: #3B82F6; }
+  .tool-faq details { background: #111318; border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 14px 18px; margin-bottom: 8px; }
+  .tool-faq summary { font-size: 14px; font-weight: 600; color: #E8EAF0; cursor: pointer; list-style: none; outline: none; }
+  .tool-faq summary::after { content: " +"; color: #5B6175; float: right; }
+  .tool-faq details[open] summary::after { content: " −"; }
+  .tool-faq details div { font-size: 14px; color: #8B90A0; line-height: 1.7; margin-top: 10px; }
 </style>
   <script defer src="https://cloud.umami.is/script.js" data-website-id="983c91be-28ac-4280-b541-aa45730b0d7e"></script>
 </head>
@@ -176,6 +194,89 @@
     <p>Ready to practice? Open the motion timer with prep countdown.</p>
     <a href="/practice/motion/" id="timerLink">Open motion timer &rarr;</a>
   </div>
+</div>
+
+<div class="tool-content">
+
+  <section class="tool-section">
+    <h2>What the motion generator is for</h2>
+    <p>The motion generator pulls a random motion from a curated pool of 150+ real debate motions across Lincoln-Douglas, Public Forum, British Parliamentary, World Schools, Asian Parliamentary, and standard Parliamentary formats. Filter by format, topic area, or difficulty level — or pull from the entire pool at once.</p>
+    <p>Most debate practice sessions stall because the hardest part is picking what to debate about. A motion you have thought about ten times before does not push you the way an unfamiliar one does. The generator removes the choosing decision: hit the button, take what comes, prep against it.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>What is in the motion pool</h2>
+    <p>Every motion in the pool is a real motion from competitive debate archives — not AI-generated, not paraphrased. The pool spans:</p>
+    <ul>
+      <li><strong>Lincoln-Douglas:</strong> values and philosophy resolutions in the standard LD "Resolved:" phrasing.</li>
+      <li><strong>Public Forum:</strong> contemporary policy and current-events motions in the standard PF policy-question phrasing.</li>
+      <li><strong>British Parliamentary:</strong> classic BP "This house would..." motions covering economics, politics, ethics, and international relations.</li>
+      <li><strong>World Schools:</strong> WSDC tournament-style motions, including both narrow policy debates and broader principle debates.</li>
+      <li><strong>Asian Parliamentary:</strong> motions from Asian university and school circuits.</li>
+      <li><strong>Parliamentary:</strong> general parliamentary-style motions used at American university tournaments.</li>
+    </ul>
+    <p>Topic coverage includes ethics and philosophy, politics and governance, economics and trade, science and technology, criminal justice, international relations, social policy, and environment. Each motion is also tagged by difficulty level (Novice or Varsity).</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>How the filters work</h2>
+    <p>Three filters let you narrow the pool before generating:</p>
+    <ul>
+      <li><strong>Format.</strong> Restrict to motions in a specific format's style (LD's "Resolved" phrasing vs BP's "This house" phrasing, for example). Useful when you are prepping for a specific tournament format.</li>
+      <li><strong>Topic area.</strong> Eight categories. Useful when you want to drill within a domain — for example, all economics motions before an econ-heavy bracket, or all justice motions if your team is weak on criminal-justice arguments.</li>
+      <li><strong>Level.</strong> Novice motions tend to be more accessible (concrete policy questions with obvious sides); Varsity motions tend to be more abstract or have less clear-cut argument paths.</li>
+    </ul>
+    <p>The count badge below the generator tells you how many motions match your current filters. If you narrow too far and get zero matches, broaden the filters and try again.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>How to use it</h2>
+    <ol>
+      <li>Set your filters at the top (or leave them as "All" to pull from the entire pool).</li>
+      <li>Click <strong>Generate motion</strong>. A random motion appears with format, topic, and level tags.</li>
+      <li>Click <strong>Another →</strong> to skip and pull a new one.</li>
+      <li>Click <strong>Copy</strong> to copy the motion to your clipboard. The "Resolved:" prefix is added automatically when the motion does not already start with "This house".</li>
+      <li>To time a practice speech on the motion, scroll down and click <strong>Open motion timer →</strong>. The motion and format pre-fill automatically.</li>
+    </ol>
+  </section>
+
+  <section class="tool-section">
+    <h2>Common use cases</h2>
+    <ul>
+      <li><strong>Solo case-construction drilling.</strong> Generate a motion, prep against it for the appropriate time, give a speech. Repeat with new motions across a session.</li>
+      <li><strong>Partner sparring.</strong> Both partners look at the same generated motion (one person sets the filters), then debate opposite sides with timed prep.</li>
+      <li><strong>Team practice warmup.</strong> Project the page on a screen, generate a motion, and have the whole team spend 5 minutes brainstorming arguments on both sides before discussing.</li>
+      <li><strong>Judge practice.</strong> Generate a motion, watch a recorded round on it (or have students debate it live), then write a ballot.</li>
+      <li><strong>Filling drill sessions with variety.</strong> Without a generator, practice sessions tend to cycle the same few motions everyone in the room can debate confidently — which defeats the purpose of practice.</li>
+    </ul>
+  </section>
+
+  <section class="tool-section">
+    <h2>Adding your own motions</h2>
+    <p>The "Your motions" section at the bottom lets you add custom motions to the pool. They appear alongside the built-in ones when generating with default filters, tagged "Custom." Useful for adding tournament-specific motions, topic packets your coach wants you to drill, or motions you have encountered that should rotate into your practice.</p>
+    <p>Custom motions are stored in your browser's local storage — they persist across sessions on the same browser and device, but they do not sync across devices and will be lost if you clear browser data. Nothing uploads to a server.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>Other practice tools</h2>
+    <p>Once you have a motion, the <a href="/practice/motion/">motion timer</a> handles prep countdown plus speech timing in one flow — the "Open motion timer" link at the bottom of this page passes the generated motion and format directly. For structured multi-interval practice sessions, the <a href="/practice/flow/">flow timer</a> handles work-and-break cycles. For coaches running extemp practice rounds, the <a href="/practice/extemp/">extemp prep room clock</a> tracks individual prep windows for up to 10 students.</p>
+    <p>For real competition rounds, the <a href="/app/">two-device timer</a> supports all major formats including <a href="/formats/lincoln-douglas/">Lincoln-Douglas</a>, <a href="/formats/policy-debate/">Policy</a>, <a href="/formats/public-forum/">Public Forum</a>, <a href="/formats/world-schools/">World Schools</a>, <a href="/formats/british-parliamentary/">British Parliamentary</a>, and <a href="/formats/asian-parliamentary/">Asian Parliamentary</a>.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>Frequently asked questions</h2>
+    <div class="tool-faq">
+      <details><summary>Where do the motions come from?</summary><div>Every motion in the built-in pool is a real motion from competitive debate archives — Lincoln-Douglas resolutions, Public Forum tournament topics, British Parliamentary motions from university circuits, World Schools and Asian Parliamentary motions from regional and international tournaments. Nothing is AI-generated or paraphrased.</div></details>
+      <details><summary>Can I add my own motions?</summary><div>Yes. The 'Your motions' section at the bottom of the page lets you add custom motions. They appear alongside the built-in motions when generating and are tagged 'Custom' so you can spot them. Useful for adding tournament-specific topic packets or motions you want to rotate into your practice.</div></details>
+      <details><summary>Will my custom motions be saved if I close the browser?</summary><div>Yes — custom motions are saved to your browser's local storage and persist across sessions on the same browser and device. They will be lost if you clear browser data or use a different browser or device. Nothing syncs to a server.</div></details>
+      <details><summary>How are motions classified as Novice vs Varsity?</summary><div>Novice motions tend to be more accessible — concrete policy questions with relatively clear sides and well-known arguments. Varsity motions tend to be more abstract, more philosophically loaded, or have less obvious argument paths. The classifications are subjective and meant as a rough guide rather than a strict rule.</div></details>
+      <details><summary>What is the difference between BP-style and WSDC-style motions?</summary><div>Both start with 'This house...' but BP motions tend to be tighter and built for impromptu debate (BP allows only 15 minutes of prep), while WSDC motions are sometimes broader and more policy-oriented since WSDC tournaments include prepared motions announced weeks in advance. The structural difference is real but the line is fuzzy in practice.</div></details>
+      <details><summary>Why are some motions phrased 'Resolved:' and others 'This house would'?</summary><div>It is a format convention. American formats (Lincoln-Douglas, Public Forum) use the 'Resolved:' phrasing. British, World Schools, Asian, and Parliamentary formats use 'This house...' (THW for would, THBT for believes that, THS for supports). The generator preserves the original phrasing of each motion so you are practising against what you will actually see at competition.</div></details>
+      <details><summary>Can I share my custom motion list with my team?</summary><div>Not through the page directly — custom motions live in your browser's local storage and there is no built-in sharing or export. If you want to share a list, the simplest workflow is to paste motions into a shared doc and have teammates manually add the ones they want.</div></details>
+      <details><summary>How often is the motion pool updated?</summary><div>The built-in pool is updated periodically. If you have specific motions you want added — particularly current-events motions or motions from recent tournaments — the feedback button at the bottom of any page is the right channel.</div></details>
+    </div>
+  </section>
+
 </div>
 
 <div class="site-disclaimer">

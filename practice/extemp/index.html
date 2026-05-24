@@ -11,6 +11,9 @@
 <meta property="og:description" content="Free extemp prep room clock. Up to 10 individual 30-min countdowns on one screen. No app, no signup.">
 <meta property="og:url" content="https://www.debateclock.org/practice/extemp/">
 <meta property="og:type" content="website">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is extemporaneous speaking?","acceptedAnswer":{"@type":"Answer","text":"Extemporaneous Speaking is an individual speech event where competitors draw a current-events question, get 30 minutes of prep time to research and write a structured response, and then deliver the speech from memory. It is offered as both US (domestic) and Foreign (international) divisions in NSDA competition."}},{"@type":"Question","name":"How long is the standard prep time for extemp?","acceptedAnswer":{"@type":"Answer","text":"NSDA Extemp uses 30 minutes of prep. This page defaults to that preset. Other formats vary — Impromptu Speaking typically uses 2 to 5 minutes, some collegiate variants use longer windows. The custom preset supports any duration from 1 to 60 minutes."}},{"@type":"Question","name":"Can I track more than 10 students at once?","acceptedAnswer":{"@type":"Answer","text":"The grid supports up to 10 students per page. If you need to track more, open the page in two browser tabs and split the group between them — each tab runs an independent session with its own timers and bells."}},{"@type":"Question","name":"What is the difference between extemp and impromptu speaking?","acceptedAnswer":{"@type":"Answer","text":"Extemp gives competitors 30 minutes of prep with full internet access to research a current-events topic. Impromptu gives 2 to 5 minutes of prep with no external resources, on broader prompts (quotes, abstract topics). Extemp rewards research and current-events knowledge; impromptu rewards speed of thinking and stage presence."}},{"@type":"Question","name":"Can each student have a different prep time?","acceptedAnswer":{"@type":"Answer","text":"Not directly — the page uses one prep time for all students in a session. If different students need different prep times, run separate sessions or open multiple tabs and put different students in each."}},{"@type":"Question","name":"Will students see what their classmates' timers say?","acceptedAnswer":{"@type":"Answer","text":"Only if they look at the coach's screen. The page is designed as a single display for the coach, not as a multi-user system — each student is expected to track their own time using their own watch or phone. The clock exists so the coach can intervene if a student loses track."}},{"@type":"Question","name":"Does the timer remember student names if I refresh the page?","acceptedAnswer":{"@type":"Answer","text":"No. Names, topics, and timer state reset on refresh. The tool is designed for a single session — there is no persistence and no login. This is intentional to keep it simple and to make sure a coach using it for a new round is not seeing stale data from the previous one."}},{"@type":"Question","name":"Can I use this for one-on-one coaching?","acceptedAnswer":{"@type":"Answer","text":"Yes. Set the student count to 1 and you have a single-student timer with the same controls. For more involved single-student practice including motion entry and automatic speech-time transition, the motion timer is a better fit."}}]}
+</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -258,6 +261,21 @@
   @media (max-width: 400px) {
     .student-grid { grid-template-columns: 1fr; }
   }
+
+  /* ── Tool content sections (added for SEO / page depth) ── */
+  .tool-content { max-width: 760px; margin: 40px auto 0; padding: 0 24px; }
+  .tool-section { margin-bottom: 32px; }
+  .tool-section h2 { font-size: 20px; font-weight: 700; color: #E8EAF0; margin: 0 0 12px; line-height: 1.3; }
+  .tool-section p { font-size: 15px; color: #8B90A0; line-height: 1.75; margin: 0 0 14px; }
+  .tool-section ul, .tool-section ol { margin: 0 0 14px 20px; padding: 0; }
+  .tool-section li { font-size: 15px; color: #8B90A0; line-height: 1.75; margin-bottom: 8px; }
+  .tool-section strong { color: #E8EAF0; }
+  .tool-section a { color: #3B82F6; }
+  .tool-faq details { background: #111318; border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 14px 18px; margin-bottom: 8px; }
+  .tool-faq summary { font-size: 14px; font-weight: 600; color: #E8EAF0; cursor: pointer; list-style: none; outline: none; }
+  .tool-faq summary::after { content: " +"; color: #5B6175; float: right; }
+  .tool-faq details[open] summary::after { content: " −"; }
+  .tool-faq details div { font-size: 14px; color: #8B90A0; line-height: 1.7; margin-top: 10px; }
 </style>
   <script defer src="https://cloud.umami.is/script.js" data-website-id="983c91be-28ac-4280-b541-aa45730b0d7e"></script>
 </head>
@@ -351,6 +369,97 @@
     <button class="grid-action-btn" onclick="addStudent()">+ Add student</button>
     <button class="grid-action-btn" onclick="startAll()">▶ Start all</button>
   </div>
+</div>
+
+<div class="tool-content">
+
+  <section class="tool-section">
+    <h2>What the extemp prep room is for</h2>
+    <p>The extemp prep room clock lets a coach or tournament director track every student's individual prep countdown on a single screen. Each student gets their own card with their own clock, their own controls, and their own audible bells at the 5-minute, 1-minute, and zero marks. Up to 10 students can be running simultaneously.</p>
+    <p>The standard alternative — a stopwatch app per student, or one timer shown on a screen with no individual tracking — works for one or two students but breaks down at scale. A coach running an extemp practice round with eight students has to either trust each student's self-tracking or constantly cycle between phones. This page replaces both.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>What extemp is (and what this tool supports)</h2>
+    <p>Extemporaneous Speaking is an individual speech event where competitors draw a topic — typically a current-events question — and have a fixed prep time (30 minutes in NSDA Extemp) to research, organise, and write a structured speech, which they then deliver from memory.</p>
+    <p>The tool supports five preset prep times:</p>
+    <ul>
+      <li><strong>30 minutes (Extemp).</strong> Standard NSDA Extemp prep window.</li>
+      <li><strong>5 minutes (Impromptu).</strong> Standard collegiate Impromptu Speaking prep.</li>
+      <li><strong>2 minutes (Impromptu).</strong> Shorter impromptu variant used at some high-school tournaments.</li>
+      <li><strong>15 minutes (Practice).</strong> A middle option useful for in-class drills.</li>
+      <li><strong>Custom.</strong> Any duration from 1 to 60 minutes.</li>
+    </ul>
+    <p>Although designed primarily for extemp and impromptu speaking, the multi-student structure also works for any practice scenario where multiple students need individual prep timers running concurrently — including silent reading drills, in-class essay writing, debate prep simulations, and group test preparation.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>How to use it</h2>
+    <ol>
+      <li>Pick the prep time at the top of the page (30 min by default).</li>
+      <li>Set the number of students (1 to 10).</li>
+      <li>Each student card has a name field — students or the coach can fill in names so the cards are identifiable.</li>
+      <li>Optionally fill in the topic field on each card after the student draws their topic.</li>
+      <li>Either click <strong>▶ Start</strong> on each card individually as students draw, or click <strong>▶ Start all</strong> in the actions row to start every idle student at once.</li>
+      <li>Each card's colour and status badge update as the prep time elapses: green during the bulk of prep, yellow at 5 minutes left, red at 1 minute left, flashing red after overtime.</li>
+      <li>Bells sound per-student at the 5-minute warning, 1-minute warning, and zero (overtime). The first click anywhere on the page enables audio (browser requirement).</li>
+      <li>Use Pause, Resume, Reset, or Remove on individual cards as needed. The <strong>↺ Reset all</strong> button resets every card back to Ready state.</li>
+    </ol>
+  </section>
+
+  <section class="tool-section">
+    <h2>Use cases for coaches and tournament directors</h2>
+    <ul>
+      <li><strong>Extemp practice rounds.</strong> The original use case. Eight students draw topics, prep for 30 minutes, and deliver speeches in sequence. The coach watches one screen instead of eight phones.</li>
+      <li><strong>Impromptu drills.</strong> Use the 5-minute preset for college-style Impromptu Speaking or 2-minute for shorter variants. The coach can call topics every few minutes and start the timer for whichever student is up.</li>
+      <li><strong>Mixed-event practice.</strong> If different students need different prep times, set the custom preset and run one round per time bracket, or run separate sessions.</li>
+      <li><strong>Classroom essay or reading practice.</strong> The same multi-timer structure works for any timed individual task. Set custom prep, fill in student names, and students self-monitor their own time without disturbing each other.</li>
+      <li><strong>Small-tournament time tracking.</strong> For local tournaments without a tab system, the page can serve as a quick way to track each competitor's prep window while a single judge oversees the room.</li>
+    </ul>
+  </section>
+
+  <section class="tool-section">
+    <h2>How the bells work</h2>
+    <p>Each student card sounds three independent bells during a prep session:</p>
+    <ul>
+      <li><strong>5-minute warning.</strong> Single short tone at exactly 5 minutes remaining.</li>
+      <li><strong>1-minute warning.</strong> Single short tone at exactly 1 minute remaining.</li>
+      <li><strong>Overtime.</strong> Distinctive double tone the moment the timer hits zero, plus a brief flash of the card to draw the coach's eye.</li>
+    </ul>
+    <p>Bells are unique per student and play whenever any student's clock crosses these thresholds. If two students hit the same warning at the same time the bells overlap (both play). Audio is enabled by clicking anywhere on the page once — browsers require a user gesture before allowing sound, which is why the audio context is locked until the first click.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>Tips for running the room</h2>
+    <ul>
+      <li>Have students fill in their own names at the start — easier than the coach typing eight names while the room settles.</li>
+      <li>Use the topic field as soon as a student draws — it acts as a written record the coach can scan to give relevant feedback after the round.</li>
+      <li>For NSDA Extemp practice, run the 30-minute preset exactly as in competition. The discipline of using the real prep window is part of the practice.</li>
+      <li>"Start all" is fastest when everyone draws topics simultaneously; individual starts are better when students draw one-by-one.</li>
+      <li>The screen does not need to be visible to students — they have their own watches or phones for individual tracking. The clock is for the coach.</li>
+    </ul>
+  </section>
+
+  <section class="tool-section">
+    <h2>Other practice tools</h2>
+    <p>For single-speech prep plus speech timing in one flow, the <a href="/practice/motion/">motion timer</a> handles prep countdown and speech timer for solo practice. For structured multi-interval practice sessions, the <a href="/practice/flow/">flow timer</a> runs work-and-break cycles. For random debate motions, the <a href="/practice/motions/">motion generator</a> pulls from a curated pool of 150+ tournament motions.</p>
+    <p>For real competition timing, the <a href="/app/">two-device timer</a> handles all major formats including <a href="/formats/lincoln-douglas/">Lincoln-Douglas</a>, <a href="/formats/policy-debate/">Policy</a>, <a href="/formats/public-forum/">Public Forum</a>, <a href="/formats/world-schools/">World Schools</a>, and <a href="/formats/british-parliamentary/">British Parliamentary</a>.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>Frequently asked questions</h2>
+    <div class="tool-faq">
+      <details><summary>What is extemporaneous speaking?</summary><div>Extemporaneous Speaking is an individual speech event where competitors draw a current-events question, get 30 minutes of prep time to research and write a structured response, and then deliver the speech from memory. It is offered as both US (domestic) and Foreign (international) divisions in NSDA competition.</div></details>
+      <details><summary>How long is the standard prep time for extemp?</summary><div>NSDA Extemp uses 30 minutes of prep. This page defaults to that preset. Other formats vary — Impromptu Speaking typically uses 2 to 5 minutes, some collegiate variants use longer windows. The custom preset supports any duration from 1 to 60 minutes.</div></details>
+      <details><summary>Can I track more than 10 students at once?</summary><div>The grid supports up to 10 students per page. If you need to track more, open the page in two browser tabs and split the group between them — each tab runs an independent session with its own timers and bells.</div></details>
+      <details><summary>What is the difference between extemp and impromptu speaking?</summary><div>Extemp gives competitors 30 minutes of prep with full internet access to research a current-events topic. Impromptu gives 2 to 5 minutes of prep with no external resources, on broader prompts (quotes, abstract topics). Extemp rewards research and current-events knowledge; impromptu rewards speed of thinking and stage presence.</div></details>
+      <details><summary>Can each student have a different prep time?</summary><div>Not directly — the page uses one prep time for all students in a session. If different students need different prep times, run separate sessions or open multiple tabs and put different students in each.</div></details>
+      <details><summary>Will students see what their classmates' timers say?</summary><div>Only if they look at the coach's screen. The page is designed as a single display for the coach, not as a multi-user system — each student is expected to track their own time using their own watch or phone. The clock exists so the coach can intervene if a student loses track.</div></details>
+      <details><summary>Does the timer remember student names if I refresh the page?</summary><div>No. Names, topics, and timer state reset on refresh. The tool is designed for a single session — there is no persistence and no login. This is intentional to keep it simple and to make sure a coach using it for a new round is not seeing stale data from the previous one.</div></details>
+      <details><summary>Can I use this for one-on-one coaching?</summary><div>Yes. Set the student count to 1 and you have a single-student timer with the same controls. For more involved single-student practice including motion entry and automatic speech-time transition, the motion timer is a better fit.</div></details>
+    </div>
+  </section>
+
 </div>
 
 <div class="site-disclaimer">

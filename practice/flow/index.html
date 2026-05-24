@@ -7,6 +7,9 @@
 <meta name="description" content="Free structured debate practice timer. Set work and break intervals for flowing, rebuttal drills, and prep sessions. Bell between intervals. No signup.">
 <link rel="canonical" href="https://www.debateclock.org/practice/flow/">
 <meta name="robots" content="index, follow">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a flow timer in debate?","acceptedAnswer":{"@type":"Answer","text":"A flow timer is a structured practice timer that breaks a session into work and rest intervals with audible bells between them. The name comes from the practice of flowing in debate (taking structured notes during a round), but the same interval-timing structure is useful for any deliberate practice activity: case writing, rebuttal drills, evidence research, or speech reps."}},{"@type":"Question","name":"How is this different from a regular Pomodoro timer?","acceptedAnswer":{"@type":"Answer","text":"The underlying structure (work intervals broken by short breaks) is the same as a Pomodoro timer. The difference is that the presets here are tuned for the kinds of practice debaters actually do — 8-minute speech reps, 15-minute prep windows, 45-minute case-writing blocks — rather than the standard 25/5 Pomodoro pattern. The custom option lets you set any combination."}},{"@type":"Question","name":"Can I customize the work and break times?","acceptedAnswer":{"@type":"Answer","text":"Yes. Click the Custom preset and set work time, break time, and number of rounds independently. Work and break can each be set from 1 minute up; rounds from 1 to 20."}},{"@type":"Question","name":"Does the timer work offline?","acceptedAnswer":{"@type":"Answer","text":"Once the page is loaded, yes. The timer runs entirely in your browser — no server connection is needed during the session. If you lose internet partway through a session, it will continue working."}},{"@type":"Question","name":"What does the bell sound like?","acceptedAnswer":{"@type":"Answer","text":"Two tones — a higher pair when work ends and a break starts, a lower pair when a break ends and the next work interval begins. A triple tone signals the entire session is complete. The first click anywhere on the page enables audio (browsers require a user gesture before playing sounds)."}},{"@type":"Question","name":"Will the timer keep running if I switch tabs?","acceptedAnswer":{"@type":"Answer","text":"Yes — the clock continues counting in the background. Bells play even if the tab is hidden, as long as the browser has not been completely closed and the audio context was unlocked by an earlier click."}},{"@type":"Question","name":"Why does the clock turn orange near the end of an interval?","acceptedAnswer":{"@type":"Answer","text":"The colour shifts to orange in the final minute as a visual cue that the interval is wrapping up. The bell still sounds at zero — the colour change is just an additional signal."}},{"@type":"Question","name":"Can I use this for partner or group practice?","acceptedAnswer":{"@type":"Answer","text":"Yes. Open the page on one device and put it where everyone can see and hear it. The Drill preset (10/2 × 6) is particularly useful for partner rebuttal practice — both partners get three speeches each with feedback gaps in between."}}]}
+</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -159,6 +162,21 @@
     .preset-grid { grid-template-columns: 1fr 1fr; }
     .custom-row { grid-template-columns: 1fr 1fr; }
   }
+
+  /* ── Tool content sections (added for SEO / page depth) ── */
+  .tool-content { max-width: 760px; margin: 40px auto 0; padding: 0 24px; }
+  .tool-section { margin-bottom: 32px; }
+  .tool-section h2 { font-size: 20px; font-weight: 700; color: #E8EAF0; margin: 0 0 12px; line-height: 1.3; }
+  .tool-section p { font-size: 15px; color: #8B90A0; line-height: 1.75; margin: 0 0 14px; }
+  .tool-section ul, .tool-section ol { margin: 0 0 14px 20px; padding: 0; }
+  .tool-section li { font-size: 15px; color: #8B90A0; line-height: 1.75; margin-bottom: 8px; }
+  .tool-section strong { color: #E8EAF0; }
+  .tool-section a { color: #3B82F6; }
+  .tool-faq details { background: #111318; border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 14px 18px; margin-bottom: 8px; }
+  .tool-faq summary { font-size: 14px; font-weight: 600; color: #E8EAF0; cursor: pointer; list-style: none; outline: none; }
+  .tool-faq summary::after { content: " +"; color: #5B6175; float: right; }
+  .tool-faq details[open] summary::after { content: " −"; }
+  .tool-faq details div { font-size: 14px; color: #8B90A0; line-height: 1.7; margin-top: 10px; }
 </style>
   <script defer src="https://cloud.umami.is/script.js" data-website-id="983c91be-28ac-4280-b541-aa45730b0d7e"></script>
 </head>
@@ -293,6 +311,80 @@
       <button class="flow-btn" onclick="resetSession()" style="margin-top:10px;width:100%;">New session</button>
     </div>
   </div>
+</div>
+
+<div class="tool-content">
+
+  <section class="tool-section">
+    <h2>What the flow timer is for</h2>
+    <p>The flow timer turns any deliberate debate practice session — case writing, rebuttal drills, flow practice on recorded rounds, prep-window simulations — into structured work and break intervals with audible bells between segments. It uses the same principle as a Pomodoro timer, but the presets are tuned for the kinds of focused work debaters actually do: long case-writing blocks, short repetitive drills, and timed prep windows.</p>
+    <p>Most debaters either grind through hours of practice without breaks (and lose focus halfway through) or get distracted and never reach deep work at all. A structured timer with hard transitions forces the rhythm — you know exactly how long you have to work, and you know a break is coming.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>Picking the right preset</h2>
+    <p>Each preset targets a different kind of practice session:</p>
+    <ul>
+      <li><strong>Focus (25 / 5 × 4).</strong> Two hours of structured deep work. Ideal for case construction, brief writing, or evidence research where you need extended concentration with regular short resets.</li>
+      <li><strong>Drill (10 / 2 × 6).</strong> Six tight rounds of repetitive skill work. Use for rebuttal drills with a partner, POI practice, framing exercises, or speech delivery reps where you want lots of attempts in a short session.</li>
+      <li><strong>Deep work (45 / 10 × 2).</strong> Two long blocks for tournament prep, novel topic research, or writing a full case from scratch when interruptions would break your flow.</li>
+      <li><strong>Prep drill (15 / 3 × 4).</strong> Four cycles of 15-minute prep windows. Mirrors the prep time at BP and most parliamentary formats — trains you to actually finish a case in the time you will have at competition.</li>
+      <li><strong>Speed rounds (8 / 2 × 8).</strong> Eight high-rep cycles for impromptu speech practice. Eight minutes is close to a WSDC main constructive or a Policy debate constructive; two-minute breaks force you to reset fast.</li>
+      <li><strong>Custom.</strong> Set any work, break, and round count from one minute up.</li>
+    </ul>
+  </section>
+
+  <section class="tool-section">
+    <h2>How to use it</h2>
+    <ol>
+      <li>Pick a preset, or click Custom and set your own work, break, and round count.</li>
+      <li>Click <strong>Start session</strong>. The first work interval begins immediately.</li>
+      <li>Work through the green phase. A bell sounds when it ends and the timer flips to blue for your break.</li>
+      <li>Another bell signals the start of the next work interval. The dot indicator at the bottom shows how many rounds remain.</li>
+      <li>Use <strong>Skip</strong> to jump ahead, <strong>Pause</strong> to stop the clock, or <strong>Reset</strong> to end the session early.</li>
+    </ol>
+    <p>The timer runs entirely in your browser. Nothing syncs, nothing uploads, and nothing depends on a server — close the tab and the session ends.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>Common debate use cases</h2>
+    <ul>
+      <li><strong>Pre-tournament case writing.</strong> Run Deep work (45 / 10 × 2) the night before a tournament. Two 45-minute writing blocks with one real break gets a full case plus extensions done without burning out.</li>
+      <li><strong>Rebuttal drills with a partner.</strong> Drill (10 / 2 × 6) gives each of you three 10-minute rebuttal speeches with two-minute feedback windows. Six cycles, one hour total.</li>
+      <li><strong>Solo speech reps.</strong> Speed rounds (8 / 2 × 8) for impromptu — pick a new motion at the start of each work interval, give an 8-minute speech, get two minutes to reset before the next one.</li>
+      <li><strong>Flow practice on recorded rounds.</strong> Focus (25 / 5 × 4) lets you flow four full rounds back-to-back with short breaks to compare your flow against an answer key or a partner.</li>
+      <li><strong>Topic research.</strong> Focus (25 / 5 × 4) keeps you reading sources without zoning out. The 5-minute breaks are long enough to stretch but short enough not to context-switch into something else.</li>
+      <li><strong>Prep window simulation.</strong> Prep drill (15 / 3 × 4) trains the specific skill of writing a usable case in a constrained prep window — relevant for BP, EUDC, WUDC, and most parli circuits.</li>
+    </ul>
+  </section>
+
+  <section class="tool-section">
+    <h2>Why interval timing works for skill development</h2>
+    <p>Deliberate practice research — most associated with Anders Ericsson's work on expert performance — consistently finds that structured, time-bounded practice with explicit goals outperforms unstructured practice of the same total duration. Two hours of grinding through case writing produces less actual improvement than two hours split into focused blocks with deliberate rest.</p>
+    <p>Short breaks are not downtime — they are consolidation. The break is where your brain processes what you just did and resets the attention budget for the next block. Without breaks, fatigue degrades the quality of self-feedback faster than most debaters realise; you stop noticing what your speech is doing wrong because you are exhausted by the third or fourth run-through.</p>
+    <p>The exact interval length matters less than the discipline of switching. The presets above are reasonable defaults — if you want longer or shorter intervals, the custom option supports any combination.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>Other practice tools</h2>
+    <p>For a single-speech prep and speech timer, use the <a href="/practice/motion/">motion practice timer</a> — type your motion, set your format, get a prep countdown that auto-transitions into the speech timer. For random motions to drill against, the <a href="/practice/motions/">motion generator</a> has 200+ real motions from LD, PF, BP, and WSDC archives. The <a href="/practice/extemp/">extemp prep room clock</a> handles multi-student prep tracking for coaches running an extemp practice round.</p>
+    <p>For real competition timing, the <a href="/app/">two-device timer</a> handles all major formats including <a href="/formats/lincoln-douglas/">Lincoln-Douglas</a>, <a href="/formats/policy-debate/">Policy</a>, <a href="/formats/public-forum/">Public Forum</a>, <a href="/formats/world-schools/">World Schools</a>, and <a href="/formats/british-parliamentary/">British Parliamentary</a>.</p>
+  </section>
+
+  <section class="tool-section">
+    <h2>Frequently asked questions</h2>
+    <div class="tool-faq">
+      <details><summary>What is a flow timer in debate?</summary><div>A flow timer is a structured practice timer that breaks a session into work and rest intervals with audible bells between them. The name comes from the practice of flowing in debate (taking structured notes during a round), but the same interval-timing structure is useful for any deliberate practice activity: case writing, rebuttal drills, evidence research, or speech reps.</div></details>
+      <details><summary>How is this different from a regular Pomodoro timer?</summary><div>The underlying structure (work intervals broken by short breaks) is the same as a Pomodoro timer. The difference is that the presets here are tuned for the kinds of practice debaters actually do — 8-minute speech reps, 15-minute prep windows, 45-minute case-writing blocks — rather than the standard 25/5 Pomodoro pattern. The custom option lets you set any combination.</div></details>
+      <details><summary>Can I customize the work and break times?</summary><div>Yes. Click the Custom preset and set work time, break time, and number of rounds independently. Work and break can each be set from 1 minute up; rounds from 1 to 20.</div></details>
+      <details><summary>Does the timer work offline?</summary><div>Once the page is loaded, yes. The timer runs entirely in your browser — no server connection is needed during the session. If you lose internet partway through a session, it will continue working.</div></details>
+      <details><summary>What does the bell sound like?</summary><div>Two tones — a higher pair when work ends and a break starts, a lower pair when a break ends and the next work interval begins. A triple tone signals the entire session is complete. The first click anywhere on the page enables audio (browsers require a user gesture before playing sounds).</div></details>
+      <details><summary>Will the timer keep running if I switch tabs?</summary><div>Yes — the clock continues counting in the background. Bells play even if the tab is hidden, as long as the browser has not been completely closed and the audio context was unlocked by an earlier click.</div></details>
+      <details><summary>Why does the clock turn orange near the end of an interval?</summary><div>The colour shifts to orange in the final minute as a visual cue that the interval is wrapping up. The bell still sounds at zero — the colour change is just an additional signal.</div></details>
+      <details><summary>Can I use this for partner or group practice?</summary><div>Yes. Open the page on one device and put it where everyone can see and hear it. The Drill preset (10/2 × 6) is particularly useful for partner rebuttal practice — both partners get three speeches each with feedback gaps in between.</div></details>
+    </div>
+  </section>
+
 </div>
 
 <div class="site-disclaimer">

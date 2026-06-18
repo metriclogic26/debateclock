@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lincoln-Douglas (LD) Debate Format: Speech Times, Round Structure & Free Timer</title>
-<meta name="description" content="Lincoln-Douglas debate format guide. LD speech times, round structure, 4-minute prep pool, and free LD timer. Complete one-on-one format reference for debaters and judges.">
+<meta name="description" content="Complete Lincoln-Douglas debate format guide. LD speech times, round structure, prep pool rules, value-criterion frameworks, judging conventions, tournament landscape, and free LD timer.">
 <link rel="canonical" href="https://www.debateclock.org/formats/lincoln-douglas/">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Article","headline":"Lincoln-Douglas Debate Format: Complete Guide","description":"Complete guide to Lincoln-Douglas debate format. Speech order, prep time rules, and how to time an LD round.","url":"https://www.debateclock.org/formats/lincoln-douglas/"}
+{"@context":"https://schema.org","@type":"Article","headline":"Lincoln-Douglas Debate Format: Complete Guide","description":"Complete guide to Lincoln-Douglas debate format. Speech order, prep time rules, value-criterion frameworks, judging conventions, and the LD tournament landscape.","url":"https://www.debateclock.org/formats/lincoln-douglas/"}
 </script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
@@ -21,7 +21,9 @@
 {"@type":"Question","name":"How do you judge a Lincoln-Douglas debate?","acceptedAnswer":{"@type":"Answer","text":"LD judges evaluate the philosophical framework each debater presents, then assess which side better upheld their value and criterion throughout the round. Judges track prep time usage, speech times, and cross-examination. DebateClock handles timing automatically — select LD from the format picker and all 7 speeches load with correct times and the 4-minute prep pool."}},
 {"@type":"Question","name":"Can you use prep time during cross-examination?","acceptedAnswer":{"@type":"Answer","text":"No. Prep time may only be used before a debater's own speeches, not during cross-examination."}},
 {"@type":"Question","name":"What happens if prep time runs out?","acceptedAnswer":{"@type":"Answer","text":"The debater must begin their speech immediately when called. Running out of prep time is a competitive disadvantage, not a rule violation."}},
-{"@type":"Question","name":"How is LD different from Policy debate?","acceptedAnswer":{"@type":"Answer","text":"LD is one-on-one (Policy is 2v2), has fewer and shorter speeches, and focuses on philosophical values rather than policy advocacy. LD prep pools are 4 min per debater vs 8 min per team in Policy."}}
+{"@type":"Question","name":"How is LD different from Policy debate?","acceptedAnswer":{"@type":"Answer","text":"LD is one-on-one (Policy is 2v2), has fewer and shorter speeches, and focuses on philosophical values rather than policy advocacy. LD prep pools are 4 min per debater vs 8 min per team in Policy."}},
+{"@type":"Question","name":"What is the difference between traditional and progressive Lincoln-Douglas?","acceptedAnswer":{"@type":"Answer","text":"Traditional LD is slower-paced (around 200 words per minute), philosophy-focused, value-criterion-centred, and most common at local and regional tournaments. Progressive (or circuit) LD is faster (often 350+ words per minute), more technical, and often includes Policy-style argument types like theory and kritiks. Both use the same speech times and round structure — the difference is in delivery speed and argument culture, not format rules."}},
+{"@type":"Question","name":"How do speaker points work in Lincoln-Douglas?","acceptedAnswer":{"@type":"Answer","text":"Speaker points are scored independently of the win-loss decision and used for seeding and tiebreakers. The standard NSDA scale runs from roughly 25 to 30: 27.5 is average, 28 is good, 28.5 is very good, 29 is excellent, 29.5 is exceptional, 30 is reserved for the best speech a judge has ever heard. Below 26 indicates serious problems. Speaker point conventions vary by region and tournament."}}
 ]}</script>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,12 +33,14 @@
   <style>
     .content-wrap { max-width: 760px; margin: 0 auto; padding: 40px 24px 80px; }
     .content-wrap h1 { font-size: 32px; font-weight: 700; margin-bottom: 12px; line-height: 1.2; }
-    .content-wrap h2 { font-size: 20px; font-weight: 700; margin: 36px 0 12px; }
-    .content-wrap h3 { font-size: 16px; font-weight: 600; margin: 24px 0 8px; }
+    .content-wrap h2 { font-size: 22px; font-weight: 700; margin: 40px 0 14px; line-height: 1.3; }
+    .content-wrap h3 { font-size: 17px; font-weight: 600; margin: 26px 0 10px; }
     .content-wrap p { font-size: 15px; color: var(--muted, #8B90A0); line-height: 1.75; margin-bottom: 16px; }
-    .content-wrap ul { margin: 0 0 16px 20px; }
-    .content-wrap ul li { font-size: 15px; color: var(--muted, #8B90A0); line-height: 1.75; margin-bottom: 6px; }
+    .content-wrap ul, .content-wrap ol { margin: 0 0 16px 20px; }
+    .content-wrap li { font-size: 15px; color: var(--muted, #8B90A0); line-height: 1.75; margin-bottom: 6px; }
     .content-wrap strong { color: #E8EAF0; }
+    .content-wrap a { color: #3B82F6; }
+    .content-wrap em { color: #B8BDD0; }
     .speech-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
     .speech-table th { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #5B6175; padding: 8px 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.08); }
     .speech-table td { padding: 10px 12px; color: #E8EAF0; border-bottom: 1px solid rgba(255,255,255,0.04); font-family: 'DM Mono', monospace; font-size: 13px; }
@@ -44,6 +48,20 @@
     .side-aff { background: rgba(34,197,94,0.12); color: #22C55E; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 600; }
     .side-neg { background: rgba(239,68,68,0.12); color: #EF4444; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 600; }
     .side-cx  { background: rgba(245,158,11,0.12); color: #F59E0B; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+    .compare-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+    .compare-table th { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #5B6175; padding: 10px 14px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .compare-table td { padding: 12px 14px; color: #E8EAF0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 14px; line-height: 1.5; }
+    .compare-table td:first-child { font-weight: 600; color: #8B90A0; font-size: 13px; white-space: nowrap; vertical-align: top; }
+    .quick-box { background: rgba(59,130,246,0.04); border: 1px solid rgba(59,130,246,0.18); border-radius: 12px; padding: 18px 22px; margin: 20px 0; }
+    .quick-box .quick-label { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #3B82F6; margin-bottom: 8px; }
+    .quick-box p { font-size: 14px; color: #B8BDD0; margin-bottom: 8px; line-height: 1.7; }
+    .quick-box p:last-child { margin-bottom: 0; }
+    .speech-detail { background: #0A0C0F; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 18px 22px; margin: 14px 0; }
+    .speech-detail .speech-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+    .speech-detail .speech-name { font-size: 15px; font-weight: 700; color: #E8EAF0; }
+    .speech-detail .speech-meta { font-family: 'DM Mono', monospace; font-size: 12px; color: #5B6175; letter-spacing: 0.05em; }
+    .speech-detail p { font-size: 14px; color: #B8BDD0; margin-bottom: 8px; line-height: 1.7; }
+    .speech-detail p:last-child { margin-bottom: 0; }
     .cta-box { background: #111318; border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 28px; margin: 36px 0; text-align: center; }
     .cta-box h3 { font-size: 18px; margin-bottom: 8px; }
     .cta-box p { margin-bottom: 20px; }
@@ -99,13 +117,30 @@
 <div class="content-wrap">
   <div style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#5B6175;margin-bottom:12px;">Format Guide</div>
   <h1>Lincoln-Douglas debate: speech order, prep time &amp; rules</h1>
-  <p>Lincoln-Douglas (LD) is a one-on-one debate format focused on values and philosophy. It is one of the most widely competed individual debate events in US high school competition, governed by the National Speech and Debate Association (NSDA). This guide covers the complete speech order, prep time rules, and how to time an LD round.</p>
+  <p>Lincoln-Douglas (LD) is a one-on-one debate format focused on values and philosophy. Named after the 1858 senate debates between Abraham Lincoln and Stephen Douglas, it is one of the three major competitive events governed by the National Speech and Debate Association (NSDA) — alongside <a href="/formats/policy-debate/">Policy debate</a> and <a href="/formats/public-forum/">Public Forum</a> — and the most widely competed individual debate event in US high schools.</p>
+  <p>What makes LD distinct: every other major US debate format has at least two-person teams. LD pits one debater against one debater across seven speeches in roughly 40 minutes. Every argument, every cross-examination, every rebuttal — one person, both sides of the issue, prepared and delivered alone. The format rewards philosophical depth over evidence volume, and strategic prioritisation over breadth of argument.</p>
+  <p>This guide is the complete LD format reference: speech-by-speech timing, prep pool rules, the value-criterion framework that distinguishes LD from other debate formats, how to flow an LD round, how judges evaluate rounds, the traditional-versus-progressive style spectrum, and the major tournaments where LD is competed. Deep-dive resources on case writing, judging, and individual speech strategy are linked throughout — this page is the hub.</p>
 
-  <div class="cta-box">
-    <h3>Free LD Timer</h3>
-    <p>Shared prep pool, two-device sync, all 7 speeches preloaded. No signup.</p>
-    <a href="/app/?format=LD">Open LD timer &rarr;</a>
+  <div class="quick-box">
+    <div class="quick-label">The 30-second answer</div>
+    <p>AC 6 min &middot; CX 3 min &middot; NC 7 min &middot; CX 3 min &middot; 1AR 4 min &middot; NR 6 min &middot; 2AR 3 min. Plus 4 minutes of prep per debater (NSDA standard). Total round length around 40 minutes. One debater per side, value-criterion framework, no team partner. Use the <a href="/timer/lincoln-douglas/">LD timer</a> to run a round.</p>
   </div>
+
+  <h2>The Lincoln-Douglas format at a glance</h2>
+  <table class="compare-table">
+    <tbody>
+      <tr><td>Team size</td><td>1 debater per side</td></tr>
+      <tr><td>Total speeches per round</td><td>7 (4 affirmative, 3 negative)</td></tr>
+      <tr><td>Cross-examination periods</td><td>2 (after each constructive)</td></tr>
+      <tr><td>Total speaking time</td><td>32 minutes (26 minutes of constructives and rebuttals plus 6 minutes of CX)</td></tr>
+      <tr><td>Prep pool per debater</td><td>4 minutes (NSDA standard)</td></tr>
+      <tr><td>Total round length</td><td>~40 minutes including transitions</td></tr>
+      <tr><td>Argument focus</td><td>Philosophical values, ethical frameworks</td></tr>
+      <tr><td>Resolution change frequency</td><td>Every 2 months (NSDA bi-monthly topics)</td></tr>
+      <tr><td>Governing body</td><td>National Speech and Debate Association (NSDA)</td></tr>
+      <tr><td>Major tournaments</td><td>NSDA Nationals, NCFL, Tournament of Champions (TOC), Glenbrooks, Bronx, state championships</td></tr>
+    </tbody>
+  </table>
 
   <h2>Lincoln-Douglas speech order</h2>
   <table class="speech-table">
@@ -120,64 +155,215 @@
       <tr><td>7</td><td>2nd Affirmative Rebuttal (2AR)</td><td><span class="side-aff">AFF</span></td><td>3:00</td></tr>
     </tbody>
   </table>
-  <p><strong>Prep time:</strong> 4 minutes per debater, distributed freely across the round. Each debater draws from their own pool and may use it before any of their speeches.</p>
+  <p><strong>Prep time:</strong> 4 minutes per debater (NSDA standard), distributed freely across the round. Each debater draws from their own pool and may use it before any of their speeches. Some tournaments use 3 or 5 minutes — always check the specific invitation. For more on prep allocation and how to use the pool strategically, see <a href="/blog/lincoln-douglas-debate-speech-times/">Lincoln-Douglas speech times and round structure</a>.</p>
+
+  <h2>Understanding each LD speech</h2>
+  <p>The seven speeches each play a distinct strategic role. Treating them as interchangeable time blocks is the surest way to lose rounds at any level above novice.</p>
+
+  <div class="speech-detail">
+    <div class="speech-head">
+      <div class="speech-name">Affirmative Constructive (AC)</div>
+      <div class="speech-meta">6:00 &middot; AFFIRMATIVE OPENING</div>
+    </div>
+    <p>The Affirmative's only opportunity to build the full case before any responses. The AC introduces the value premise, the value criterion, and two to three contentions with supporting evidence. It ends with a brief closing weighing statement that previews how the Affirmative wants the round evaluated. At moderate LD speed (around 300 words per minute), the AC fits roughly 1,800 words. For complete case-writing strategy, see <a href="/blog/how-to-write-a-lincoln-douglas-case/">how to write a Lincoln-Douglas case</a>.</p>
+  </div>
+
+  <div class="speech-detail">
+    <div class="speech-head">
+      <div class="speech-name">Negative Cross-Examination of Affirmative</div>
+      <div class="speech-meta">3:00 &middot; NEGATIVE QUESTIONS</div>
+    </div>
+    <p>The Negative questions the Affirmative for three minutes. CX is for questioning, not argument — the questioner can ask, demand clarification, or interrupt rambling answers, but cannot make speeches. The answerer cannot ask questions back. CX produces material that gets used in later speeches; what actually happens during CX is not on the flow unless someone references it later. See <a href="/blog/cross-examination-in-debate/">cross-examination in debate</a> for full CX strategy.</p>
+  </div>
+
+  <div class="speech-detail">
+    <div class="speech-head">
+      <div class="speech-name">Negative Constructive (NC)</div>
+      <div class="speech-meta">7:00 &middot; LONGEST SPEECH IN THE ROUND</div>
+    </div>
+    <p>The longest single speech in LD and the most strategically dense. The Negative does two things in 7 minutes: builds their own case (framework, contentions, evidence) and directly responds to the Affirmative case from the AC. The standard split is roughly 4 minutes of NC construction plus 3 minutes of AC refutation, though strong Negatives sometimes weight it differently based on the AC's vulnerabilities. Most strategic choices for the negative are locked in here.</p>
+  </div>
+
+  <div class="speech-detail">
+    <div class="speech-head">
+      <div class="speech-name">Affirmative Cross-Examination of Negative</div>
+      <div class="speech-meta">3:00 &middot; AFFIRMATIVE QUESTIONS</div>
+    </div>
+    <p>The Affirmative questions the Negative for three minutes. Same rules as the first CX — Affirmative asks, Negative answers, no speeches, no questions back. The Affirmative usually has more strategic value to extract here because they have the 1AR coming up and need ammunition for the most compressed speech in the round.</p>
+  </div>
+
+  <div class="speech-detail">
+    <div class="speech-head">
+      <div class="speech-name">First Affirmative Rebuttal (1AR)</div>
+      <div class="speech-meta">4:00 &middot; HARDEST SPEECH IN THE ROUND</div>
+    </div>
+    <p>Almost universally considered the hardest speech in any US debate format. The 1AR has 4 minutes to respond to everything the Negative just spent 7 minutes establishing — the entire NC (framework, contentions, evidence) plus the Negative's direct attacks on the AC. The compression ratio is brutal: roughly 1 minute of 1AR for every 1:45 of NC. Strong 1ARs are surgical — they identify the highest-leverage Negative arguments, deal with those decisively, and extend the strongest AC contentions with new warrants. Trying to respond line-by-line is usually a losing strategy.</p>
+  </div>
+
+  <div class="speech-detail">
+    <div class="speech-head">
+      <div class="speech-name">Negative Rebuttal (NR)</div>
+      <div class="speech-meta">6:00 &middot; NEGATIVE'S FINAL SPEECH</div>
+    </div>
+    <p>The Negative's last opportunity to speak. The NR has to close out the framework debate, decisively win the contentions the Negative is winning, address surviving Affirmative arguments, and do the comparative weighing that tells the judge how to evaluate the round. Strong NRs include explicit overviews ("there are three things the judge has to decide in this round, and here is how each one breaks for me") rather than just walking down the flow.</p>
+  </div>
+
+  <div class="speech-detail">
+    <div class="speech-head">
+      <div class="speech-name">Second Affirmative Rebuttal (2AR)</div>
+      <div class="speech-meta">3:00 &middot; FINAL SPEECH OF THE ROUND</div>
+    </div>
+    <p>The Affirmative's final speech and the last words the judge hears. The 2AR is pure rebuttal — by convention, the Affirmative cannot introduce new arguments here because the Negative has no opportunity to respond. The 2AR should crystallise the round: which framework controls, which 1-2 contentions decisively prove the resolution, and explicit weighing of impacts. Three minutes is enough if the speech is planned in advance; 2ARs that try to address everything from the NR usually run out of time before they get to weighing.</p>
+  </div>
 
   <h2>How prep time works in LD</h2>
-  <p>Prep time in Lincoln-Douglas is a shared pool — each debater has 4 minutes total and can use it in any combination before any of their speeches. There is no per-speech limit. A debater might use 3 minutes before the NC and 1 minute before the NR, or all 4 minutes in a single block.</p>
-  <p>The judge tracks prep time separately for each debater. When a debater calls for prep, the judge starts the clock. When the debater indicates they are ready, prep stops and the remaining time is noted.</p>
-  <p>DebateClock handles this automatically — the prep pool for each side counts down independently and saves state between speeches.</p>
+  <p>Prep time in Lincoln-Douglas is a pool — each debater has 4 minutes total (under NSDA standard) and can use it in any combination before any of their speeches. There is no per-speech limit. A debater might use 3 minutes before the NC and 1 minute before the NR, or all 4 minutes in a single block before the 1AR.</p>
+  <p>The judge tracks prep time separately for each debater. When a debater calls for prep, the judge starts the clock. When the debater indicates they are ready, prep stops and the remaining time is noted. DebateClock handles this automatically — the prep pool for each side counts down independently and saves state between speeches.</p>
+  <p>Tournament variations: NSDA standard is 4 minutes. Some Florida tournaments and California regional circuits use 3 minutes. A few national circuit tournaments use 5 minutes. Always check the specific tournament invitation, as prep time changes affect strategy significantly. For broader coverage of how prep pools work across formats, see <a href="/blog/debate-timer-prep-time/">debate timer prep time explained</a>.</p>
 
-  <h2>Cross-examination rules</h2>
-  <p>Cross-examination periods are 3 minutes each. During CX, the questioner asks questions and the respondent answers. Neither debater may use prep time during cross-examination. Cross-examination is not a speech — it does not count toward either debater's speaking time.</p>
+  <h2>Cross-examination in LD</h2>
+  <p>Cross-examination periods are 3 minutes each and follow the two constructive speeches. The questioner controls the time: they can ask, demand clarification, or interrupt rambling answers. The answerer cannot ask questions back. Neither debater may use prep time during cross-examination.</p>
+  <p>CX is not a speech — it does not appear on the flow unless someone references it later. What it produces is strategic material: concessions, contradictions, definitions, or evidence challenges that get used in subsequent rebuttals. Strong LD debaters treat CX as setup for arguments they will make later, not as a place to win the round directly.</p>
+  <p>The two CX periods serve different strategic functions. The first (Negative cross-examining Affirmative) is reconnaissance — clarifying terms in the AC, identifying weak spots in the framework, setting up the NC. The second (Affirmative cross-examining Negative) is preparation for the 1AR — locking in concessions, identifying the strongest Negative argument to prioritise, and surfacing weaknesses in the NC's case construction. For deeper coverage of CX strategy across formats, see <a href="/blog/cross-examination-in-debate/">cross-examination in debate</a>.</p>
 
-  <h2>The 1AR challenge</h2>
-  <p>The 1st Affirmative Rebuttal (1AR) is widely considered the hardest speech in LD. The affirmative has only 4 minutes to respond to the 7-minute NC plus the 6-minute NR, a combined 13 minutes of negative material. Efficient line-by-line refutation and strategic prioritization are essential.</p>
+  <div class="cta-box">
+    <h3>Free Lincoln-Douglas debate timer</h3>
+    <p>All 7 speeches preloaded. Independent prep pools per debater. Two-device sync between judge and debater. No signup.</p>
+    <a href="/app/?format=LD">Open LD timer &rarr;</a>
+  </div>
+
+  <h2>Lincoln-Douglas case structure</h2>
+  <p>Every LD case is built from four standard components: a value premise (the moral concept the case prioritises), a value criterion (the standard for measuring whether the value is upheld), two to three contentions (the substantive arguments), and supporting evidence. The components must connect in a specific way — contentions support the criterion, the criterion measures the value, and the value tells the judge what matters most. Break the chain anywhere and the case collapses.</p>
+  <p>Affirmative cases run roughly 1,400 to 1,700 words at moderate LD speed. Negative cases are slightly longer (the NC is 7 minutes vs the AC's 6) and have an extra structural choice: substantive negative (own framework plus contentions) versus counter-framework negative (attack the affirmative's framework directly). Strong LD debaters write cases in advance with sharp tags, tight evidence, and explicit weighing built into the structure.</p>
+  <p>For the complete case-writing methodology including a flow sheet template, value-criterion pairings, and a worked example on a sample resolution, see <a href="/blog/how-to-write-a-lincoln-douglas-case/">how to write a Lincoln-Douglas case</a>. For practising delivery once a case is written, the <a href="/practice/motion/">motion practice timer</a> handles prep countdown plus speech timing in one flow with the LD preset.</p>
 
   <h2>Value and criterion framework</h2>
-  <p>Lincoln-Douglas debate is a values-based format. Each debater presents a philosophical framework consisting of two components: a <strong>value</strong> (a broad ideal such as justice, liberty, or human dignity) and a <strong>criterion</strong> (a standard for measuring whether the value is achieved). The affirmative defends the resolution by arguing their value and criterion better upholds the resolution. The negative argues against.</p>
-  <p>The value criterion framework is what distinguishes LD from Policy debate. Where Policy focuses on evidence and plan implementation, LD focuses on philosophical argumentation. A judge evaluates which debater better upholds their value premise through their criterion, and which criterion better measures the value at stake in the resolution.</p>
-  <p>Common values in LD include: justice, morality, human dignity, societal welfare, autonomy, and democracy. Common criteria include: maximizing utility, upholding rights, social contract theory, and categorical imperatives.</p>
+  <p>Lincoln-Douglas is a values-based format. Each debater presents a philosophical framework consisting of two components: a <strong>value premise</strong> (a broad ideal such as justice, liberty, morality, or human dignity) and a <strong>value criterion</strong> (a standard for measuring whether the value is achieved). The affirmative defends the resolution by arguing their value and criterion better uphold the resolution. The negative argues against — either by accepting the value but contesting the criterion, by proposing a different value entirely, or by arguing that the affirmative's contentions do not actually link to the chosen criterion.</p>
+  <p>The framework debate happens in the first two speeches (AC and NC), gets developed across the rebuttals, and is usually the decisive layer in any close round. Judges evaluate the round by first determining which framework controls, then assessing which contentions survive under that framework, then weighing surviving impacts. If the framework debate is lost, the substantive contention debate becomes nearly impossible to recover.</p>
 
-  <h2>How to flow a Lincoln-Douglas round</h2>
-  <p>Flowing is the process of taking structured notes during a debate round. LD judges and debaters typically use a sheet divided into columns — one column per speech. Arguments are tracked across columns to show how each point was extended, dropped, or refuted as the round progressed.</p>
-  <p>A standard LD flow sheet has 7 columns for the 7 speeches: AC, CX, NC, CX, 1AR, NR, 2AR. Arguments made in the AC are tracked left to right. If the negative doesn't respond to an argument in the NC, it is considered "dropped" and the affirmative can extend it in the 1AR as conceded ground.</p>
-  <p>DebateClock's <a href="/practice/flow/">flow timer</a> helps debaters practice structured work and review intervals. The <a href="/practice/round-logger/">round logger</a> tracks actual vs allowed speech times across a full round.</p>
+  <h2>Common Lincoln-Douglas frameworks</h2>
+  <p>Most LD cases draw from a relatively small set of philosophical frameworks. Understanding the major frameworks — and which values and criteria pair naturally — is the foundation of competitive LD.</p>
+
+  <h3>Utilitarianism</h3>
+  <p>The view that the morally right action is the one that produces the greatest good for the greatest number. Originating with Jeremy Bentham and John Stuart Mill in the 18th and 19th centuries. As a criterion: "maximising utility" or "minimising aggregate harm." Pairs naturally with values like welfare, societal good, or justice (when justice is understood consequentially). Common in resolutions about policy outcomes and competing harms.</p>
+
+  <h3>Kantian deontology</h3>
+  <p>The view that morality is grounded in duty and the inherent wrongness or rightness of actions, independent of consequences. Drawing from Immanuel Kant's categorical imperative. As a criterion: "respecting the categorical imperative" or "treating persons as ends rather than means." Pairs with values like human dignity, autonomy, or morality. Common in resolutions involving rights, lying, or treatment of vulnerable populations.</p>
+
+  <h3>Rawlsian justice</h3>
+  <p>The view that just principles are those that would be agreed to behind a "veil of ignorance" — without knowing one's own position in society. Drawing from John Rawls's <em>A Theory of Justice</em>. As a criterion: "the difference principle" (inequalities are justified only if they benefit the least advantaged) or "veil of ignorance." Pairs with values like justice, fairness, or equity. Common in distributive justice resolutions.</p>
+
+  <h3>Social contract theory</h3>
+  <p>The view that legitimate authority derives from the consent of the governed. Drawing from Hobbes, Locke, and Rousseau. As a criterion: "consent of the governed" or "fulfilling the social contract." Pairs with values like governmental legitimacy, liberty, or political obligation. Common in resolutions about state action and individual rights.</p>
+
+  <h3>Natural rights theory</h3>
+  <p>The view that certain rights exist by nature independent of government recognition. As a criterion: "protecting natural rights" or "non-interference with inherent freedoms." Pairs with values like liberty, individual autonomy, or human rights. Common in resolutions about government overreach.</p>
+
+  <h3>Capabilities approach</h3>
+  <p>The view, developed by Martha Nussbaum and Amartya Sen, that justice requires ensuring people have the capabilities to live lives they have reason to value. As a criterion: "expanding human capabilities" or "ensuring central capabilities." Pairs with values like human dignity, flourishing, or development. Common in resolutions about welfare state policy and global development.</p>
+
+  <p>The right framework for a case depends on what the contentions need, not on which philosophy the debater personally finds most compelling. The case is a strategic tool to win this round, not a statement of personal ethical views. For more on choosing frameworks and pairing them with contentions effectively, see the framework section of <a href="/blog/how-to-write-a-lincoln-douglas-case/">how to write a Lincoln-Douglas case</a>.</p>
+
+  <h2>Flowing in Lincoln-Douglas</h2>
+  <p>Flowing is the process of taking structured notes during a debate round so you can track every argument across every speech. The standard LD flow sheet has 5 columns for the 5 main speeches: AC, NC, 1AR, NR, 2AR. Arguments made in the AC are tracked left to right — if the negative does not respond to an argument in the NC, it is considered "dropped" and the affirmative can extend it in the 1AR as conceded ground.</p>
+  <p>Flowing is the most important note-taking skill in LD. Dropped arguments decide more LD rounds than any other single factor. Without a flow sheet, judges cannot accurately evaluate what was said vs what was dropped — and debaters cannot prioritise responses across the highly compressed 1AR. Standard notation includes <strong>xtnd</strong> (extend), <strong>resp</strong> (response), <strong>turn</strong> (argument flips against the side that ran it), and <strong>drop</strong> (unanswered argument, conceded).</p>
+  <p>DebateClock's <a href="/practice/flow/">flow timer</a> helps debaters practise structured work and review intervals. The <a href="/practice/round-logger/">round logger</a> tracks actual vs allowed speech times across a full round and exports a CSV for coach review. For a worked example showing how arguments move across columns in a real round, see the flow sheet section of <a href="/blog/how-to-write-a-lincoln-douglas-case/">how to write a Lincoln-Douglas case</a>.</p>
 
   <h2>Judging Lincoln-Douglas debate</h2>
-  <p>LD judges evaluate three main areas: the framework debate (which value and criterion should govern the round), the substantive arguments (which debater better upholds their framework), and overall presentation and logical consistency.</p>
-  <p>A judge's decision typically follows this process: first, determine which framework wins — if the affirmative's criterion is accepted, do the affirmative's arguments meet it? If the negative's framework wins, does the negative successfully negate the resolution under that framework?</p>
+  <p>LD judges evaluate three main areas: the framework debate (which value and criterion should govern the round), the substantive arguments (which debater better upholds their framework), and overall presentation and logical consistency. Unlike Policy debate where judges often have years of experience and well-known paradigms, LD draws judges from across the spectrum — parents recruited by their schools, community members, former debaters returning as alumni, coaches, college students, and full-circuit judges.</p>
+  <p>A judge's decision typically follows this process: first, determine which framework wins — if the affirmative's criterion is accepted, do the affirmative's contentions meet it? If the negative's framework wins, does the negative successfully negate the resolution under that framework? Then evaluate which contentions survive under the controlling framework, then weigh surviving impacts comparatively.</p>
   <p>Practical judging notes:</p>
   <ul>
     <li>Track prep time carefully — each debater has exactly 4 minutes to use freely across the round</li>
     <li>The 1AR is the most time-pressured speech — 4 minutes to answer a 7-minute NC</li>
     <li>Dropped arguments in the NR that were clearly extended in the 1AR carry significant weight</li>
+    <li>Speaker points should reflect speaking quality and conduct; the win-loss decision should reflect arguments</li>
     <li>Always defer to official tournament rules for any timing disputes</li>
   </ul>
+  <p>For complete judging methodology including flow conventions, framework evaluation, weighing mechanisms, RFD structure, and common judging pitfalls, see <a href="/blog/how-to-judge-lincoln-douglas-debate/">how to judge a Lincoln-Douglas debate</a>. Judges should also write a <a href="/setup/judge-paradigm/">Tabroom paradigm</a> before the tournament so debaters know how to adapt to their preferences.</p>
+
+  <h2>Speed and circuit conventions</h2>
+  <p>The same LD format produces dramatically different round styles depending on the tournament circuit. Two broad styles dominate, and the distinction matters because it affects everything from delivery speed to which argument types are acceptable.</p>
+
+  <h3>Traditional LD</h3>
+  <p>Slower-paced (around 200 words per minute, comparable to a normal political speech), philosophy-focused, value-criterion-centred. Most common at local and regional tournaments, novice and JV divisions, and any tournament with a primarily lay or parent judge pool. Cases are typically delivered conversationally, with emphasis on clear framework debate and persuasive delivery. The dominant style in most parts of the country.</p>
+
+  <h3>Progressive / circuit LD</h3>
+  <p>Fast (often 350+ words per minute, approaching Policy debate speed), more technical, often includes Policy-style argument types like theory arguments, kritiks, plans, and counterplans. Common at national circuit tournaments — TOC qualifiers, the Tournament of Champions itself, Glenbrooks, the Bronx Round Robin, Harvard. Cases are dense with evidence and require flowing skill to track.</p>
+
+  <p>Both styles use identical speech times and round structure. The difference is in delivery speed and argument culture, not format rules. Judges should write a <a href="/setup/judge-paradigm/">Tabroom paradigm</a> indicating which style they are comfortable with, and debaters should adapt to their judge. A circuit-fast 1AR delivered to a traditional judge who cannot flow at that speed is a guaranteed loss regardless of argument quality.</p>
+
+  <h2>The LD tournament landscape</h2>
+  <p>Competitive Lincoln-Douglas runs from late August through June, with the heaviest tournament density in February and March (qualifier season) and June (NSDA Nationals).</p>
+
+  <table class="compare-table">
+    <thead><tr><th>Tournament</th><th>When</th><th>Type</th></tr></thead>
+    <tbody>
+      <tr><td>Local invitationals</td><td>September through May</td><td>Weekly weekend tournaments hosted by schools across each state. The bread and butter of competitive LD.</td></tr>
+      <tr><td>State championships</td><td>March through April</td><td>State-level championships organised by state speech and debate leagues.</td></tr>
+      <tr><td>NCFL Grand National Tournament</td><td>Late May</td><td>The National Catholic Forensic League's annual championship. Open to all Catholic-affiliated schools and many public schools.</td></tr>
+      <tr><td>NSDA National Tournament</td><td>Mid-June</td><td>The largest academic competition in the world. Open to debaters who qualify through their NSDA district tournaments earlier in the year.</td></tr>
+      <tr><td>Tournament of Champions (TOC)</td><td>Late April</td><td>Held at the University of Kentucky. Considered the most prestigious circuit tournament — requires multiple bids from designated qualifier tournaments to attend.</td></tr>
+      <tr><td>Major circuit tournaments</td><td>September through April</td><td>Glenbrooks, the Bronx Round Robin, Harvard, Greenhill, Berkeley, Yale, Stanford. TOC qualifier tournaments where progressive LD culture is dominant.</td></tr>
+      <tr><td>Summer institutes</td><td>June through August</td><td>Camps like Stanford NDF, Wake Forest, Michigan, Dartmouth, and many regional camps. The off-season training ground for serious competitors.</td></tr>
+    </tbody>
+  </table>
+
+  <p>The structure of competitive LD: most debaters compete primarily at local and state tournaments, with some attending NSDA Nationals or NCFL through district qualification. A smaller subset of debaters pursue the national circuit (TOC qualifiers), which requires extensive travel and runs alongside the local circuit through the year. Both paths produce skilled debaters; they just emphasise different things — traditional LD rewards rhetorical persuasion and philosophical depth, while circuit LD rewards technical efficiency and breadth of argument.</p>
 
   <h2>LD resolution structure</h2>
-  <p>Lincoln-Douglas resolutions are value statements, typically in the form "Resolved: [value claim]." Unlike Policy resolutions which propose a specific plan, LD resolutions assert a philosophical position for debaters to affirm or negate.</p>
-  <p>The National Speech and Debate Association (NSDA) releases new LD resolutions every two months. Resolutions typically address ethical dilemmas, political philosophy, or competing social values. Examples of resolution structures include:</p>
+  <p>Lincoln-Douglas resolutions are value statements, typically in the form "Resolved: [value claim]." Unlike Policy resolutions which propose a specific plan, LD resolutions assert a philosophical position for debaters to affirm or negate. NSDA releases new LD resolutions every two months (September-October, November-December, January-February, March-April, and a separate Nationals topic for May-June), with a separate resolution used at NSDA Nationals.</p>
+  <p>Resolutions typically address ethical dilemmas, political philosophy, or competing social values. Common resolution structures include:</p>
   <ul>
-    <li>Comparative value judgments: "X is preferable to Y"</li>
-    <li>Obligation statements: "Governments ought to..."</li>
-    <li>Evaluative claims: "X is morally justified"</li>
+    <li><strong>Comparative value judgments:</strong> "X is preferable to Y"</li>
+    <li><strong>Obligation statements:</strong> "Governments ought to..." or "The United States ought to..."</li>
+    <li><strong>Evaluative claims:</strong> "X is morally justified" or "X requires Y"</li>
+    <li><strong>Right-versus-right framings:</strong> "When [value 1] conflicts with [value 2], [value 1] ought to prevail"</li>
   </ul>
-  <p>Practice debating resolutions with the <a href="/practice/motions/">LD motion generator</a> — 150+ real motions filtered by format, topic, and difficulty level.</p>
+  <p>Each new resolution release prompts a few weeks of community case-writing, evidence-cutting, and topic-specific reading. The bi-monthly cycle means LD debaters become deeply expert in five or six distinct topic areas across a year. Practice debating resolutions with the <a href="/practice/motions/">LD motion generator</a> — 150+ motions filtered by format, topic, and difficulty.</p>
+
+  <h2>Speaker points in LD</h2>
+  <p>Speaker points are scored independently of the win-loss decision and used for seeding (when multiple teams have the same record) and for awards (best speaker awards). The standard NSDA scale runs from roughly 25 to 30, in 0.5 increments at most tournaments and 0.1 at some.</p>
+
+  <table class="compare-table">
+    <thead><tr><th>Points</th><th>What it indicates</th></tr></thead>
+    <tbody>
+      <tr><td>30</td><td>Best speech a judge has ever heard. Reserved for exceptional rounds — once a season or once a career at most.</td></tr>
+      <tr><td>29 to 29.5</td><td>Excellent. Clean delivery, strong strategic choices, polished case construction.</td></tr>
+      <tr><td>28 to 28.5</td><td>Above average. Solid round at the level of the tournament.</td></tr>
+      <tr><td>27.5</td><td>Average. The default starting point for a competent debater.</td></tr>
+      <tr><td>27</td><td>Slightly below average — minor issues with clarity, organisation, or strategy.</td></tr>
+      <tr><td>26</td><td>Significant issues — unclear delivery, dropped arguments, weak organisation.</td></tr>
+      <tr><td>25 or below</td><td>Serious problems — rudeness, unpreparedness, or technical violations. Used when the judge wants the tournament to take notice.</td></tr>
+    </tbody>
+  </table>
+
+  <p>Speaker point conventions vary by region and tournament. Lay-judge-heavy tournaments often inflate (everyone gets 28+). Circuit tournaments often deflate (27 is genuinely average). Read the tournament invitation or ask the tab room if unsure what range to use. Speaker points are also the appropriate place to reflect speaking quality and conduct issues — a debater who wins on arguments but was rude or unprofessional should still get the win, but with reduced speaker points reflecting the conduct.</p>
 
   <h2>Lincoln-Douglas vs other formats</h2>
-  <p>LD is one of three major NSDA formats alongside Policy and Public Forum. The key differences:</p>
+  <p>LD is one of three major NSDA formats alongside <a href="/formats/policy-debate/">Policy</a> and <a href="/formats/public-forum/">Public Forum</a>. The key differences:</p>
   <ul>
-    <li><strong>LD vs Policy:</strong> LD is one-on-one with philosophical frameworks. <a href="/formats/policy-debate/">Policy</a> is two-on-two with plan-based advocacy and large evidence files. <a href="/blog/lincoln-douglas-vs-policy/">Full comparison →</a></li>
-    <li><strong>LD vs Public Forum:</strong> Both are individual-accessible formats, but <a href="/formats/public-forum/">Public Forum</a> uses two-person teams and focuses on current events rather than philosophical values. <a href="/blog/lincoln-douglas-vs-public-forum/">Full comparison →</a></li>
-    <li><strong>LD vs World Schools:</strong> <a href="/formats/world-schools/">WSDC</a> uses three-person teams and Points of Information. LD has no POI system and is strictly one-on-one. <a href="/blog/lincoln-douglas-vs-world-schools/">Full comparison →</a></li>
+    <li><strong>LD vs Policy:</strong> LD is one-on-one with philosophical frameworks. Policy is two-on-two with plan-based advocacy and extensive evidence files. LD round lengths are roughly half of Policy's. <a href="/blog/lincoln-douglas-vs-policy/">Full comparison &rarr;</a></li>
+    <li><strong>LD vs Public Forum:</strong> Both are individually accessible formats, but Public Forum uses two-person teams and focuses on current events rather than philosophical values. PF rounds are similar in length to LD but use different speech structure with crossfires instead of one-sided cross-examinations. <a href="/blog/lincoln-douglas-vs-public-forum/">Full comparison &rarr;</a></li>
+    <li><strong>LD vs World Schools:</strong> <a href="/formats/world-schools/">WSDC</a> uses three-person teams and Points of Information. LD has no POI system and is strictly one-on-one. WSDC is internationally competed; LD is primarily a US format. <a href="/blog/lincoln-douglas-vs-world-schools/">Full comparison &rarr;</a></li>
   </ul>
+
+  <div class="cta-box">
+    <h3>Free LD timer for tournaments and practice</h3>
+    <p>All 7 LD speeches preloaded with correct timing. Independent 4-minute prep pools per debater. Two-device sync between judge controller and debater display.</p>
+    <a href="/app/?format=LD">Open LD timer &rarr;</a>
+  </div>
+
   <h2>Related guides</h2>
   <ul>
-    <li><a href="/formats/public-forum/">Public Forum format guide</a></li>
+    <li><a href="/blog/how-to-write-a-lincoln-douglas-case/">How to write a Lincoln-Douglas case</a> — value-criterion frameworks, flow sheet template, worked example</li>
+    <li><a href="/blog/how-to-judge-lincoln-douglas-debate/">How to judge a Lincoln-Douglas debate</a> — for new and experienced LD judges</li>
+    <li><a href="/blog/lincoln-douglas-debate-speech-times/">Lincoln-Douglas speech times and round structure</a> — detailed reference</li>
+    <li><a href="/blog/cross-examination-in-debate/">Cross-examination in debate</a> — CX strategy across formats</li>
     <li><a href="/blog/debate-timer-prep-time/">How shared prep time pools work</a></li>
     <li><a href="/blog/tournament-day-setup/">How to set up a debate timer for tournament day</a></li>
-    <li><a href="/blog/cross-examination-in-debate/">Cross-examination in debate (CX) explained</a></li>
-    <li><a href="/app/?format=Policy">Policy (CX) timer</a></li>
+    <li><a href="/setup/judge-paradigm/">Tabroom judge paradigm setup</a> — for writing your judging paradigm</li>
+    <li><a href="/timer/lincoln-douglas/">Lincoln-Douglas timer</a> &middot; <a href="/timer/policy-debate/">Policy (CX) timer</a> &middot; <a href="/timer/public-forum/">Public Forum timer</a></li>
   </ul>
 
   <h2>Frequently asked questions</h2>
@@ -206,6 +392,8 @@
     <details><summary>Can you use prep time during cross-examination?</summary><div>No. Prep time may only be used before a debater's own speeches, not during cross-examination.</div></details>
     <details><summary>What happens if prep time runs out?</summary><div>The debater must begin their speech immediately when called. Running out of prep time is a competitive disadvantage, not a rule violation.</div></details>
     <details><summary>How is LD different from Policy debate?</summary><div>LD is one-on-one (Policy is 2v2), has fewer and shorter speeches, and focuses on philosophical values rather than policy advocacy. LD prep pools are 4 min per debater vs 8 min per team in Policy.</div></details>
+    <details><summary>What is the difference between traditional and progressive Lincoln-Douglas?</summary><div>Traditional LD is slower-paced (around 200 words per minute), philosophy-focused, value-criterion-centred, and most common at local and regional tournaments. Progressive (or circuit) LD is faster (often 350+ words per minute), more technical, and often includes Policy-style argument types like theory and kritiks. Both use the same speech times and round structure — the difference is in delivery speed and argument culture, not format rules.</div></details>
+    <details><summary>How do speaker points work in Lincoln-Douglas?</summary><div>Speaker points are scored independently of the win-loss decision and used for seeding and tiebreakers. The standard NSDA scale runs from roughly 25 to 30: 27.5 is average, 28 is good, 28.5 is very good, 29 is excellent, 29.5 is exceptional, 30 is reserved for the best speech a judge has ever heard. Below 26 indicates serious problems. Speaker point conventions vary by region and tournament.</div></details>
   </div>
 </div>
 <div class="site-disclaimer">

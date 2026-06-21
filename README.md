@@ -2,8 +2,6 @@
 >
 > The live site at debateclock.org has been taken offline.
 >
-> **Traffic before closing:** 69 clicks, 3.6K impressions. Real timer sessions in 41 countries. ChatGPT referrals were growing weekly.
->
 > This code is MIT licensed. Feel free to fork, self-host, or continue development. No permission needed.
 
 # DebateClock
